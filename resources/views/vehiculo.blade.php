@@ -1,0 +1,72 @@
+<x-app-layout>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="flex gap-8 flex-wrap justify-center bg-gray-300 py-10">
+
+            <x-panelformulario lateral="borde">
+
+                <form method="POST" class="flex flex-row" action="{{ route('register') }}">
+                    @csrf
+
+                    <div class="flex-auto w-1/2 py-4 px-4">
+                        <!-- Primer Nombre -->
+                        <div>
+                            <x-input-label for="marcavehiculo" :value="__('Marca Vehículo')" />
+                            <x-text-input id="marcavehiculo" class="block mt-1 w-full" type="text" name="marcavehiculo"
+                                :value="old('marcavehiculo')" requiredo autofocus autocomplete="marcavehiculo" />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
+
+                        <!-- Segundo Nombre -->
+                        <div class="mt-4">
+                            <x-input-label for="tipovehiculo" :value="__('Tipo Vehículo')" />
+                            <x-text-input id="tipovehiculo" class="block mt-1 w-full" type="text"
+                                name="tipovehiculo" :value="old('tipovehiculo')" requiredo autofocus
+                                autocomplete="tipovehiculo" />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex-auto w-1/2 py-4 px-4">
+                        <!-- Password -->
+                        <div>
+                            <x-input-label for="password" :value="__('Password')" />
+
+                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
+                                required autocomplete="new-password" />
+
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mt-4">
+                            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
+
+                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+                        {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    href="{{ route('login') }}">
+                                    {{ __('Already registered?') }}
+                                </a> --}}
+
+                        <x-primary-button class="ms-4">
+                            {{ __('Registrar Vehículo') }}
+                        </x-primary-button>
+                    </div>
+                </form>
+
+            </x-panelformulario>
+        </div>
+    </div>
+
+</x-app-layout>
