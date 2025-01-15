@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected function getId(string $nombreusuario): int{
+        $id = self::where("name", $nombreusuario)->first()->id;
+        return $id;
+    }
+
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\personalController;
+use App\Http\Controllers\vehiculosController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -66,5 +68,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('dependencia', function () {return view('dependencia');
     })->name('dependencia');
+
+    Route::get('personal', [personalController::class, 'showallpersonal'])->name('personal');
+
+    Route::get('vehiculos', [vehiculosController::class, 'showallvehiculos'])->name('vehiculos');
 
 });

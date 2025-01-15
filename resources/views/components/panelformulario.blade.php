@@ -17,9 +17,9 @@
         </div>
     </div>
 @elseif (isset($lateral) && $lateral == 'borde')
-    <div class="border-2 border-gray-100 w-full">
-        <div class="px-12 pb-12 pt-12 justify-center">
+    <div class="border-2 border-gray-100 w-full px-7 justify-center">
+        {{-- <div class="px-7 justify-center"> --}}
             {{ $slot }}
-        </div>
+        {{-- </div> --}}
     </div>
 @endif
