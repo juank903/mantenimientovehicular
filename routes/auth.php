@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dependencia', function () {return view('dependencia');
     })->name('dependencia');
 
-    Route::get('personal', [personalController::class, 'showallpersonal'])->name('personal');
+    Route::get('personal', [personalController::class, 'showallpersonal'])->name('allpersonal');
 
     Route::get('vehiculos', [vehiculosController::class, 'showallvehiculos'])->name('vehiculos');
 

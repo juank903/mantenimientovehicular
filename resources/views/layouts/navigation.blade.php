@@ -1,3 +1,8 @@
+@php
+    $menuPersonal = ['Ingresar personal'=>'register', 'Listar personal'=>'allpersonal'];
+    $menuVehiculo = ['Ingresar vehículo'=>'vehiculo'];
+
+@endphp
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,12 +18,12 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
-                        {{ __('Personal Policial') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('vehiculo')" :active="request()->routeIs('vehiculo')">
+                    <x-nav-link-group class="mt-4" :items="$menuPersonal" :active="request()->routeIs('allpersonal')">
+                        {{ __('Personal') }}
+                    </x-nav-link-group>
+                    <x-nav-link-group class="mt-4" :items="$menuVehiculo" :active="request()->routeIs('vehiculo')">
                         {{ __('Vehículos') }}
-                    </x-nav-link>
+                    </x-nav-link-group>
                     <x-nav-link :href="route('dependencia')" :active="request()->routeIs('dependencia')">
                         {{ __('Dependencias') }}
                     </x-nav-link>
