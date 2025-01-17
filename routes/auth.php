@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
 
+    Route::get('/', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
@@ -36,6 +39,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('dashboard', function () {
+        return view('dashboard'); })
+        ->name('dashboard');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -52,7 +60,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::put('password', [PasswordController::class, 'update'])
+        ->name('password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
@@ -63,19 +72,31 @@ Route::middleware('auth')->group(function () {
     Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
 
     Route::get('registrarvehiculo', function () {
-        return view('vehiculo'); })->name('vehiculos');
-    Route::get('listarvehiculos', [vehiculosController::class, 'showallvehiculos'])->name('vehiculos.view');
-    Route::post('ingresarvehiculos', [vehiculosController::class, 'create'])->name('vehiculos.create');
+        return view('vehiculo');})
+        ->name('vehiculos');
+
+    Route::get('listarvehiculos', [vehiculosController::class, 'showallvehiculos'])
+        ->name('vehiculos.view');
+
+    Route::post('ingresarvehiculos', [vehiculosController::class, 'create'])
+        ->name('vehiculos.create');
 
     Route::get('dependencia', function () {
-        return view('dependencia');
-    })->name('dependencia');
+        return view('dependencia');})
+        ->name('dependencia');
 
-    Route::get('listarpersonal', [personalController::class, 'showallpersonal'])->name('personal');
+    Route::get('listarpersonal', [personalController::class, 'showallpersonal'])
+        ->name('personal');
 
-    Route::get('perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
-    Route::patch('perfil', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('perfil', [ProfileController::class, 'edit'])
+        ->name('perfil.edit');
 
-    Route::get('solicitudmantenimiento/{id}', [PedidoMantenimientoController::class, 'index'])->name('pedidomantenimiento');
+    Route::patch('perfil', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('perfil', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
+    Route::get('solicitudmantenimiento/{id}', [PedidoMantenimientoController::class, 'index'])
+        ->name('pedidomantenimiento');
 });

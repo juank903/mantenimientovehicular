@@ -46,9 +46,16 @@ class User extends Authenticatable
         ];
     }
 
-    protected function getId(string $nombreusuario): int{
+    protected function getId(string $nombreusuario): int
+    {
         $id = self::where("name", $nombreusuario)->first()->id;
         return $id;
+    }
+
+    protected function role()
+    {
+        return $this->belongsTo(Personal_policia::class);
+        //return 'esta es una prueba';
     }
 
 }

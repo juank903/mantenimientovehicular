@@ -28,4 +28,9 @@ class Personal_policia extends Model
         $id = self::where("name", $nombreusuario)->first()->id;
         return $id;
     }
+
+    protected function getPersonal(string $idusuario) {
+        $personal = self::where("iduser_personal_policias", $idusuario)->first();
+        return $personal->attributes;
+    }
 }

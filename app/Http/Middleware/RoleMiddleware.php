@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\User;
 
 class RoleMiddleware
 {
@@ -17,10 +18,15 @@ class RoleMiddleware
     {
         return $next($request);
     } */
-    public function handle($request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!auth()->check() || !in_array(auth()->user()->role->name, $roles)) {
-            return redirect('/'); // O a donde desees redirigir
+        $roles = ['administrador', 'gerente'];
+        if ((!auth()->check() && !in_array(User::role(), $roles))|| true) {
+        //if(true){
+            echo"hola";
+            var_dump(User::role());
+            //echo auth()->user()->role->name;
+            //return redirect('/login');
         }
 
         return $next($request);
