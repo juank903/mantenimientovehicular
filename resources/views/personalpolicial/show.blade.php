@@ -1,25 +1,27 @@
-<x-app-layout>
-{{--         <ul>
-            @foreach ($personaljson as $personal)
-                <li>{{ $personal->rango_personal_policias }}&nbsp; {{ $personal->primernombre_personal_policias}}&nbsp; {{ $personal->primerapellido_personal_policias }}</li> <!-- Ajusta los campos según tu tabla -->
-            @endforeach
-        </ul> --}}
 
+    <!--Regular Datatables CSS-->
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!--Responsive Extension Datatables CSS-->
+    <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
+<x-app-layout>
 
 	<!--Container-->
-	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0">
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
 
 
 		<!--Card-->
 		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
 
 
-			<table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+			<table id="personal" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
 				<thead>
 					<tr>
-						<th data-priority="1">Rango</th>
-						<th data-priority="2">Apellido</th>
-						<th data-priority="3">Nombre</th>
+						<th class="w-1/6" data-priority="5">Rango</th>
+						<th class="w-1/6" data-priority="1">Apellido Paternos</th>
+                        <th class="w-1/6" data-priority="2">Apellido Materno</th>
+						<th class="w-1/6" data-priority="3">Primer Nombre</th>
+                        <th class="w-1/6" data-priority="4">Segundo Nombre</th>
+                        <th class="w-1/6" ></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,7 +30,14 @@
 
 						<td>{{ $personal->rango_personal_policias }}</td>
 						<td>{{ $personal->primerapellido_personal_policias }}</td>
+                        <td>{{ $personal->segundoapellido_personal_policias }}</td>
 						<td>{{ $personal->primernombre_personal_policias}}</td>
+                        <td>{{ $personal->segundonombre_personal_policias}}</td>
+                        <td class="flex justify-center space-x-4 align-middle cursor-pointer">
+                            <x-show-button />
+                            <x-edit-button />
+                            <x-delete-button />
+                        </td>
 					</tr>
                     @endforeach
 				</tbody>
@@ -51,7 +60,7 @@
 	<script>
 		$(document).ready(function () {
 
-			var table = $('#example').DataTable({
+			var table = $('#personal').DataTable({
 				responsive: true
 			})
 				.columns.adjust()

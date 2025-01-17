@@ -1,72 +1,75 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex gap-8 flex-wrap justify-center bg-gray-300 py-10">
+    <div class="mx-auto sm:px-6 lg:px-8 py-10">
 
-            <x-panelformulario lateral="borde">
+        <x-panelformulario lateral="borde">
 
-                <form method="POST" class="flex flex-row" action="{{ route('register') }}">
-                    @csrf
+            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('vehiculos.create') }}">
 
-                    <div class="flex-auto w-1/2 py-4 px-4">
-                        <!-- Primer Nombre -->
-                        <div>
-                            <x-input-label for="marcavehiculo" :value="__('Marca Vehículo')" />
-                            <x-text-input id="marcavehiculo" class="block mt-1 w-full" type="text" name="marcavehiculo"
-                                :value="old('marcavehiculo')" requiredo autofocus autocomplete="marcavehiculo" />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                        </div>
+                @csrf
 
-                        <!-- Segundo Nombre -->
-                        <div class="mt-4">
-                            <x-input-label for="tipovehiculo" :value="__('Tipo Vehículo')" />
-                            <x-text-input id="tipovehiculo" class="block mt-1 w-full" type="text"
-                                name="tipovehiculo" :value="old('tipovehiculo')" requiredo autofocus
-                                autocomplete="tipovehiculo" />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                        </div>
-
-                    </div>
-
-
-                    <div class="flex-auto w-1/2 py-4 px-4">
-                        <!-- Password -->
-                        <div>
-                            <x-input-label for="password" :value="__('Password')" />
-
-                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
-                                required autocomplete="new-password" />
-
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mt-4">
-                            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                        </div>
-
-                    </div>
-
-
-
+                <div class="w-full md:w-1/2 p-4 ">
+                    <!-- Marca vehículo -->
                     <div>
-                        {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    href="{{ route('login') }}">
-                                    {{ __('Already registered?') }}
-                                </a> --}}
+                        <x-input-label for="marca" :value="__('Marca')" />
+                        <x-text-input id="marca" class="block mt-1 w-full" type="text" name="marca"
+                            :value="old('marca')" requiredo autofocus autocomplete="marca" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    </div>
 
-                        <x-primary-button class="ms-4">
-                            {{ __('Registrar Vehículo') }}
+                    <!-- Placa vehiculo -->
+                    <div class="mt-4">
+                        <x-input-label for="placa" :value="__('Placa')" />
+                        <x-text-input id="placa" class="block mt-1 w-full" type="text" name="placa"
+                            :value="old('placa')" requiredo autofocus autocomplete="placa" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    </div>
+
+                    <!-- Tipo vehículo -->
+                    <div class="mt-4">
+                        <x-input-label for="tipo" :value="__('Tipo')" />
+                        <x-text-input id="tipo" class="block mt-1 w-full" type="text" name="tipo"
+                            :value="old('tipo')" requiredo autofocus autocomplete="tipo" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    </div>
+
+                 </div>
+
+
+                <div class="w-full md:w-1/2 p-4">
+
+
+                    <!-- modelo -->
+                    <div >
+                        <x-input-label for="modelo" :value="__('Modelo')" />
+                        <x-text-input id="modelo" class="block mt-1 w-full" type="text" name="modelo"
+                            :value="old('modelo')" requiredo autofocus autocomplete="modelo" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    </div>
+
+                    <!-- Confirme modelo -->
+                    <div class="mt-4">
+                        <x-input-label for="color" :value="__('Color')" />
+                        <x-text-input id="color" class="block mt-1 w-full" type="text" name="color"
+                            :value="old('color')" requiredo autofocus autocomplete="color" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    </div>
+                    <div class="justify-end">
+                        {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        href="{{ route('login') }}">
+                                        {{ __('Already registered?') }}
+                                    </a> --}}
+
+                        <x-primary-button class="mt-4">
+                            {{ __('Registrar') }}
                         </x-primary-button>
                     </div>
-                </form>
 
-            </x-panelformulario>
-        </div>
+                </div>
+
+            </form>
+
+        </x-panelformulario>
+
     </div>
 
 </x-app-layout>

@@ -56,6 +56,6 @@ class RegisteredUserController extends Controller
 
         $request["id"]=User::getId($request->name);
         Personal_policia::savepersonalpolicia($request);
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('personal', absolute: false));
     }
 }

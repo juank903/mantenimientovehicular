@@ -1,5 +1,6 @@
 @if (isset($lateral) && $lateral == 'logotipo-lateral')
-    <div class="sm:border-b-0 md:border-t-2 md:border-r-2 md:border-b-2 border-gray-100 lg:w-full md:w-1/2">
+{{-- <div class="sm:border-b-0 md:border-t-2 md:border-r-2 md:border-b-2 border-gray-100 lg:w-full md:w-1/2"> --}}
+    <div class="sm:border-b-0 md:border-t-0 md:border-r-0 md:border-b-0 border-gray-100 lg:w-full md:w-1/2">
 
         <x-logopoliciahorizontal />
 

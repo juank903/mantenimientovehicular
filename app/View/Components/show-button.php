@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class navigation-levels extends Component
+class show-button extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class navigation-levels extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.navigation-levels');
+        return view('components.show-button');
     }
 }

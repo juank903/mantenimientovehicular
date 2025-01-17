@@ -28,8 +28,4 @@ class Personal_policia extends Model
         $id = self::where("name", $nombreusuario)->first()->id;
         return $id;
     }
-    protected function show() : mixed {
-        $datos = self::get();
-        return $datos;
-    }
 }

@@ -1,7 +1,7 @@
 @php
-    $menuPersonal = ['Ingresar personal'=>'register', 'Listar personal'=>'allpersonal'];
-    $menuVehiculo = ['Ingresar vehículo'=>'vehiculo'];
-
+    $menuPersonal = ['Ingresar personal'=>'register', 'Listar personal'=>'personal'];
+    $menuVehiculo = ['Ingresar vehículo'=>'vehiculos', 'Listar vehículos'=>'vehiculos.view'];
+    $menuSolicitudes = ['Pedido mantenimiento'=>'pedidomantenimiento/{5}'];
 @endphp
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->
@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link-group class="mt-4" :items="$menuPersonal" :active="request()->routeIs('allpersonal')">
+                    <x-nav-link-group class="mt-4" :items="$menuPersonal" :active="request()->routeIs('personal')">
                         {{ __('Personal') }}
                     </x-nav-link-group>
                     <x-nav-link-group class="mt-4" :items="$menuVehiculo" :active="request()->routeIs('vehiculo')">
@@ -27,6 +27,9 @@
                     <x-nav-link :href="route('dependencia')" :active="request()->routeIs('dependencia')">
                         {{ __('Dependencias') }}
                     </x-nav-link>
+                    <x-nav-link-group class="mt-4" :items="$menuSolicitudes" >
+                        {{ __('Solicitudes') }}
+                    </x-nav-link-group>
                 </div>
             </div>
 
@@ -50,7 +53,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('perfil.edit')">
                             {{ __('Perfil') }}
                         </x-dropdown-link>
 
@@ -100,7 +103,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('perfil.edit')">
                     {{ __('Perfil') }}
                 </x-responsive-nav-link>
 

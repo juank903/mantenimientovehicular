@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Vehiculo;
 
@@ -9,12 +10,11 @@ class vehiculosController extends Controller
 {
     public function showallvehiculos()  {
         $vehiculosjson = Vehiculo::all();
-
-        /* return view('personalpolicial.show', [
-            'user' => "Estoy aqui"
-        ]); */
         return view('vehiculo.show', compact('vehiculosjson'));
-        //return gettype($personaljson);
+    }
 
+    public function create(Request $request) {
+        Vehiculo::savevehiculo($request);
+        return redirect(route('vehiculos.view', absolute: false));
     }
 }

@@ -9,14 +9,13 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\personalController;
-use App\Http\Controllers\vehiculosController;
+use App\Http\Controllers\Auth\PedidoMantenimientoController;
+use App\Http\Controllers\Auth\personalController;
+use App\Http\Controllers\Auth\vehiculosController;
+use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-
-
-
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
@@ -58,19 +57,25 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
         ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
 
-    Route::get('vehiculo', function () {return view('vehiculo');
-    })->name('vehiculo');
+    Route::get('registrarvehiculo', function () {
+        return view('vehiculo'); })->name('vehiculos');
+    Route::get('listarvehiculos', [vehiculosController::class, 'showallvehiculos'])->name('vehiculos.view');
+    Route::post('ingresarvehiculos', [vehiculosController::class, 'create'])->name('vehiculos.create');
 
-    Route::get('dependencia', function () {return view('dependencia');
+    Route::get('dependencia', function () {
+        return view('dependencia');
     })->name('dependencia');
 
-    Route::get('personal', [personalController::class, 'showallpersonal'])->name('allpersonal');
+    Route::get('listarpersonal', [personalController::class, 'showallpersonal'])->name('personal');
 
-    Route::get('vehiculos', [vehiculosController::class, 'showallvehiculos'])->name('vehiculos');
+    Route::get('perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
+    Route::patch('perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('solicitudmantenimiento/{id}', [PedidoMantenimientoController::class, 'index'])->name('pedidomantenimiento');
 });
