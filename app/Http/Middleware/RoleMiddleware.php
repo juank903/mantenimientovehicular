@@ -20,13 +20,10 @@ class RoleMiddleware
     } */
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        $roles = ['administrador', 'gerente'];
-        if ((!auth()->check() && !in_array(User::role(), $roles))|| true) {
-        //if(true){
-            echo"hola";
-            var_dump(User::role());
-            //echo auth()->user()->role->name;
-            //return redirect('/login');
+        if (session('rolusuario')!== $roles) {
+            // Optionally, you can redirect to a specific page or return a 403 response
+            //abort(403, 'Unauthorized action.');
+            return redirect('/');
         }
 
         return $next($request);

@@ -1,9 +1,11 @@
 <x-app-layout>
-    <ul>
-        @foreach (session('personal') as $key => $dato)
-            <li> {{ $key }} {{ $dato }} </li>
-        @endforeach
-    </ul>
+    <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
+        <ul>
+            @foreach (session('personal') as $key => $dato)
+                <li> {{ $key }} {{ $dato }} </li>
+            @endforeach
+        </ul>
+    </div>
     {{-- <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex gap-8 flex-wrap justify-center bg-gray-300 h-screen py-10">

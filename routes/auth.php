@@ -41,7 +41,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('dashboard', function () {
-        return view('dashboard'); })
+        return view('dashboard');
+    })
         ->name('dashboard');
 
     Route::get('verify-email', EmailVerificationPromptController::class)
@@ -72,7 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
 
     Route::get('registrarvehiculo', function () {
-        return view('vehiculo');})
+        return view('vehiculo');
+    })
         ->name('vehiculos');
 
     Route::get('listarvehiculos', [vehiculosController::class, 'showallvehiculos'])
@@ -82,11 +84,14 @@ Route::middleware('auth')->group(function () {
         ->name('vehiculos.create');
 
     Route::get('dependencia', function () {
-        return view('dependencia');})
+        return view('dependencia');
+    })
         ->name('dependencia');
 
+    //if (session('rolusuario') === 'policia') {
     Route::get('listarpersonal', [personalController::class, 'showallpersonal'])
         ->name('personal');
+    //}
 
     Route::get('perfil', [ProfileController::class, 'edit'])
         ->name('perfil.edit');

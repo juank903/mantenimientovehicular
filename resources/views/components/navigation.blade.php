@@ -53,6 +53,7 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <div class="text-sm px-4">su rol es: {{session('rolusuario')}}</div>
                         <x-dropdown-link :href="route('perfil.edit')">
                             {{ __('Perfil') }}
                         </x-dropdown-link>
@@ -103,6 +104,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <div class="text-sm px-4">su rol es: {{session('rolusuario')}}</div>
                 <x-responsive-nav-link :href="route('perfil.edit')">
                     {{ __('Perfil') }}
                 </x-responsive-nav-link>
