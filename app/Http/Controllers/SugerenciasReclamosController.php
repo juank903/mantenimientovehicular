@@ -12,6 +12,13 @@ class SugerenciasReclamosController extends Controller
         $arraySubcircuitos = Subcircuito_dependencia::get();
         //$arraySubcircuitos = ['sub1', 'sub2', 'sub3'];
         //$arraySubcircuitos = $arraySubcircuitos->attributes;
-        return view("sugerenciasreclamos",compact("arraySubcircuitos"));
+        return view("sugerenciasreclamos", compact("arraySubcircuitos"));
+    }
+
+    public function get(){
+        $arraySubcircuitos = Subcircuito_dependencia::get();
+        //$arraySubcircuitos = ['sub1', 'sub2', 'sub3'];
+        //$arraySubcircuitos = $arraySubcircuitos->attributes;
+        return $arraySubcircuitos;
     }
 }

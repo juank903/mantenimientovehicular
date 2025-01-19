@@ -1,6 +1,7 @@
 <?php
 
 // use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\CircuitoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SugerenciasReclamosController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\SugerenciasReclamosController;
     return view('sugerenciasreclamos');
 })->name('sugerenciasreclamos'); */
 Route::get('sugerenciasreclamos', [SugerenciasReclamosController::class, 'index'])->name('sugerenciasreclamos');
+Route::get('sugerenciasreclamos.get', [SugerenciasReclamosController::class, 'get'])->name('sugerenciasreclamos.get');
+Route::get('getcircuitoid/{id}', [CircuitoController::class, 'getCircuitoId'])->name('getcircuitoid');
 
 /* Route::get('/dashboard', function () {
     return view('dashboard');
