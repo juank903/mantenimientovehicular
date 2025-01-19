@@ -32,14 +32,14 @@
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
-                 </div>
+                </div>
 
 
                 <div class="w-full md:w-1/2 p-4">
 
 
                     <!-- modelo -->
-                    <div >
+                    <div>
                         <x-input-label for="modelo" :value="__('Modelo')" />
                         <x-text-input id="modelo" class="block mt-1 w-full" type="text" name="modelo"
                             :value="old('modelo')" requiredo autofocus autocomplete="modelo" />

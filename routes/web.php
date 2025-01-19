@@ -3,11 +3,12 @@
 // use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SugerenciasReclamosController;
 
-/* Route::get('/', function () {
-    return view('auth.login');
-}); */
-//Route::get('login', [LoginController::class, 'index'])->name('login');
+/* Route::get('sugerenciasreclamos', function () {
+    return view('sugerenciasreclamos');
+})->name('sugerenciasreclamos'); */
+Route::get('sugerenciasreclamos', [SugerenciasReclamosController::class, 'index'])->name('sugerenciasreclamos');
 
 /* Route::get('/dashboard', function () {
     return view('dashboard');
