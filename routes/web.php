@@ -9,9 +9,7 @@ use App\Http\Controllers\SugerenciasReclamosController;
 /* Route::get('sugerenciasreclamos', function () {
     return view('sugerenciasreclamos');
 })->name('sugerenciasreclamos'); */
-Route::get('sugerenciasreclamos', [SugerenciasReclamosController::class, 'index'])->name('sugerenciasreclamos');
-Route::get('sugerenciasreclamos.get', [SugerenciasReclamosController::class, 'get'])->name('sugerenciasreclamos.get');
-Route::get('getcircuitoid/{id}', [CircuitoController::class, 'getCircuitoId'])->name('getcircuitoid');
+
 
 /* Route::get('/dashboard', function () {
     return view('dashboard');

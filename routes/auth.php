@@ -13,9 +13,18 @@ use App\Http\Controllers\Auth\PedidoMantenimientoController;
 use App\Http\Controllers\Auth\personalController;
 use App\Http\Controllers\Auth\vehiculosController;
 use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\SugerenciasReclamosController;
+use App\Http\Controllers\CircuitoController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
+    Route::get('sugerenciasreclamos', [SugerenciasReclamosController::class, 'index'])->name('sugerenciasreclamos');
+
+    Route::get('sugerenciasreclamos.get', [SugerenciasReclamosController::class, 'get'])->name('sugerenciasreclamos.get');
+
+    Route::post('sugerenciasreclamos.post', [SugerenciasReclamosController::class, 'save'])->name('sugerenciasreclamos.post');
+
+    Route::get('getcircuitoid/{id}', [CircuitoController::class, 'getCircuitoId'])->name('getcircuitoid');
 
     Route::get('/', [AuthenticatedSessionController::class, 'create'])
         ->name('login');

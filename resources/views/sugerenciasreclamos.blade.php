@@ -8,7 +8,7 @@
 <x-guest-layout>
     <div class="mx-auto sm:px-6 lg:px-8 py-10">
         <x-panelformulario lateral="borde">
-            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('sugerenciasreclamos') }}">
+            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('sugerenciasreclamos.post') }}">
                 @csrf
                 <div class="w-full md:w-1/2 p-4 ">
                     <!-- nombres vehículo -->
@@ -51,7 +51,7 @@
                         <x-input-label for="detalle" :value="__('Digite su mensaje')" />
                         {{-- <div class="max-w-md mx-auto p-4"> --}}
                         {{-- <label for="message" class="block text-sm font-medium text-gray-700">Your Message</label> --}}
-                        <textarea id="message" rows="4"
+                        <textarea name="detalle" rows="4"
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm resize-none focus:ring focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Digite su mensaje aquí..."></textarea>
                         {{-- </div> --}}
