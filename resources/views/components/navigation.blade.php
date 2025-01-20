@@ -2,6 +2,7 @@
     $menuPersonal = ['Ingresar personal'=>'register', 'Listar personal'=>'personal'];
     $menuVehiculo = ['Ingresar vehículo'=>'vehiculos', 'Listar vehículos'=>'vehiculos.view'];
     $menuSolicitudes = ['Pedido mantenimiento'=>'pedidomantenimiento/{5}'];
+    $menuReportes = ['Listado quejas y sugerencias'=>'quejasugerencias.show'];
 @endphp
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->
@@ -29,6 +30,9 @@
                     </x-nav-link>
                     <x-nav-link-group class="mt-4" :items="$menuSolicitudes" >
                         {{ __('Solicitudes') }}
+                    </x-nav-link-group>
+                    <x-nav-link-group class="mt-4" :items="$menuReportes" >
+                        {{ __('Reportes') }}
                     </x-nav-link-group>
                 </div>
             </div>

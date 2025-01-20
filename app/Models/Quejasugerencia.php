@@ -9,6 +9,12 @@ class Quejasugerencia extends Model
 {
     //
     public $timestamps = false;
+
+    public function subcircuitodependencia()
+    {
+        return $this->belongsToMany(Subcircuitodependencia::class);
+    }
+
     protected function create($request){
         $queja = new Quejasugerencia();
         $queja->id_subcircuito = $request->subcircuito;
@@ -18,4 +24,6 @@ class Quejasugerencia extends Model
         $queja->nombres_quejasugerencias = $request->nombres;
         $queja->save();
     }
+
+
 }

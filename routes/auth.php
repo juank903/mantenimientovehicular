@@ -113,4 +113,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('solicitudmantenimiento/{id}', [PedidoMantenimientoController::class, 'index'])
         ->name('pedidomantenimiento');
+
+    Route::get('listarquejasugerencias', [SugerenciasReclamosController::class, 'listarquejasugerencias'])
+        ->name('quejasugerencias.show');
 });

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Subcircuito_dependencia extends Model
+class Distritodependencia extends Model
 {
     //
 }
