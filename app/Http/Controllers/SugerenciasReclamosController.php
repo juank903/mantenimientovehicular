@@ -26,21 +26,18 @@ class SugerenciasReclamosController extends Controller
 
     public function save(Request $request)
     {
-        Quejasugerencia::create($request);
+        $id = Quejasugerencia::create($request);
+        Quejasugerencia::find($id)->subcircuitodependencia()->attach( [ 1 => ['quejasugerencia_id'=>$id, 'subcircuitodependencia_id'=>$request->subcircuito]]);
         return redirect()->intended(route('login', absolute: false));
     }
 
     public function formularioquejasugerencias()
     {
-        //$arrayQuejasugerencias = Quejasugerencia::all();
         return view("reportes.quejasugerencias");
     }
 
     public function quejasugerenciasfechashow(Request $request)
     {
-
-        //dd($request);
-        // Validar las fechas
         $request->validate([
             'fechainicio' => 'required|date',
             'fechafin' => 'required|date|after_or_equal:fecha_inicio',
@@ -51,11 +48,7 @@ class SugerenciasReclamosController extends Controller
 
         $fechaInicio = Carbon::createFromFormat('Y-m-d', $fechaInicio); // Fecha de inicio
         $fechaFin = Carbon::createFromFormat('Y-m-d', $fechaFin); // Fecha de fin
-        //dd($fechaInicio);
-        // Realizar la consulta
-        //$usuarios = User::whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
 
-        //return view('usuarios.resultados', compact('usuarios'));
         $arrayQuejasugerencias = Quejasugerencia::whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
         return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
     }
