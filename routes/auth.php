@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\PedidoMantenimientoController;
 use App\Http\Controllers\Auth\personalController;
 use App\Http\Controllers\Auth\vehiculosController;
 use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\QuejasugerenciaController;
 use App\Http\Controllers\SugerenciasReclamosController;
 use App\Http\Controllers\CircuitoController;
 use Illuminate\Support\Facades\Route;
@@ -114,6 +115,11 @@ Route::middleware('auth')->group(function () {
     Route::get('solicitudmantenimiento/{id}', [PedidoMantenimientoController::class, 'index'])
         ->name('pedidomantenimiento');
 
-    Route::get('listarquejasugerencias', [SugerenciasReclamosController::class, 'listarquejasugerencias'])
-        ->name('quejasugerencias.show');
+    Route::get('quejasugerencias', [SugerenciasReclamosController::class, 'formularioquejasugerencias'])
+        ->name('formularoquejasugerencias');
+
+    Route::post('quejasugerencias', [SugerenciasReclamosController::class, 'quejasugerenciasfechashow'])
+        ->name('quejasugerenciasfechas.show');
+
+    Route::resource('quejasugerencia', QuejasugerenciaController::class);
 });

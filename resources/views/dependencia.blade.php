@@ -36,7 +36,6 @@
 
                     </div>
 
-
                     <div class="flex-auto w-1/2 py-4 px-4">
                         <!-- Segundo Nombre -->
                         <div class="">
@@ -72,8 +71,6 @@
                         </div>
 
                     </div>
-
-
 
                     <div>
                         {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

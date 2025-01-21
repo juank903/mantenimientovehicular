@@ -2,7 +2,7 @@
     $menuPersonal = ['Ingresar personal'=>'register', 'Listar personal'=>'personal'];
     $menuVehiculo = ['Ingresar vehículo'=>'vehiculos', 'Listar vehículos'=>'vehiculos.view'];
     $menuSolicitudes = ['Pedido mantenimiento'=>'pedidomantenimiento/{5}'];
-    $menuReportes = ['Listado quejas y sugerencias'=>'quejasugerencias.show'];
+    $menuReportes = ['Listado quejas y sugerencias'=>'formularoquejasugerencias'];
 @endphp
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->

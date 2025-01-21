@@ -1,8 +1,6 @@
 @php
     $datosTipo = ['Reclamo', 'Sugerencia'];
     $datosDefault = [''];
-    //dd($arraySubcircuitos->pluck( 'id' ));
-    //var_dump($arraySubcircuitos);
 @endphp
 
 <x-guest-layout>
@@ -11,14 +9,14 @@
             <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('sugerenciasreclamos.post') }}">
                 @csrf
                 <div class="w-full md:w-1/2 p-4 ">
-                    <!-- nombres vehículo -->
+                    <!-- nombres -->
                     <div>
                         <x-input-label for="nombres" :value="__('Ingrese sus nombres')" />
                         <x-text-input id="nombres" class="block mt-1 w-full" type="text" name="nombres"
                             :value="old('nombres')" requiredo autofocus autocomplete="nombres" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
-                    <!-- apellidos vehiculo -->
+                    <!-- apellidos -->
                     <div class="mt-4">
                         <x-input-label for="apellidos" :value="__('Ingrese sus apellidos')" />
                         <x-text-input id="apellidos" class="block mt-1 w-full" type="text" name="apellidos"
