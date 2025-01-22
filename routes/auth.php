@@ -118,7 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::get('quejasugerencias', [SugerenciasReclamosController::class, 'formularioquejasugerencias'])
         ->name('formularoquejasugerencias');
 
-    Route::post('quejasugerencias', [SugerenciasReclamosController::class, 'quejasugerenciasfechashow'])
+    Route::post('quejasugerencias', [SugerenciasReclamosController::class, 'quejasugerenciassubcircuitofechashow'])
         ->name('quejasugerenciasfechas.show');
 
     Route::resource('quejasugerencia', QuejasugerenciaController::class);

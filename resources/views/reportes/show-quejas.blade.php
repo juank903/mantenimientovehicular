@@ -16,10 +16,10 @@
             @isset($arrayQuejasugerencias)
                 @foreach ($arrayQuejasugerencias as $clave => $queja)
                     <tr>
-                        <td>{{ $queja->created_at }}</td>
-                        <td></td>
+                        <td>{{ $queja->fecha }}</td>
+                        <td>{{ $queja->total }}</td>
                         <td>{{ $queja->tipo_quejasugerencias }}</td>
-                        <td>{{ $queja->subcircuitodependencia[0]->nombre_subcircuito_dependencias }}</td>
+                        <td>{{ $queja->nombre_subcircuito }}</td>
                     </tr>
                 @endforeach
             @endisset

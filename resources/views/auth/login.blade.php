@@ -3,7 +3,11 @@
     //var_dump(User::role());
 @endphp
 <x-main-layout>
-    @include('components.mensajemodalexito')
+    @if(session('mensaje'))
+        @include('components.mensajemodalexito')
+    @endif
+
+
     <div class="container mx-auto">
         <div class="grid grid-cols-3 gap-4">
             <!-- Columna 1 - Oculta en dispositivos pequeños -->
