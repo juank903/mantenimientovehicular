@@ -1,9 +1,17 @@
 @php
-    $menuPersonal = ['Ingresar personal'=>'register', 'Listar personal'=>'personal'];
-    $menuVehiculo = ['Ingresar vehículo'=>'vehiculos', 'Listar vehículos'=>'vehiculos.view'];
-    $menuSolicitudes = ['Pedido mantenimiento'=>'pedidomantenimiento/{5}'];
-    $menuReportes = ['Listado quejas y sugerencias'=>'formularoquejasugerencias'];
+    if (session('rolusuario') == 'administrador') {
+        $menuPersonal = ['Ingresar personal' => 'register', 'Listar personal' => 'personal'];
+        $menuVehiculo = ['Ingresar vehículo' => 'vehiculos', 'Listar vehículos' => 'vehiculos.view'];
+        $menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
+        $menuReportes = ['Listado quejas y sugerencias' => 'formularoquejasugerencias'];
+    }
+    if (session('rolusuario') == 'policia') {
+        $menuSolicitudes = ['Pedido vehículo' => 'form-solicitudvehiculo', 'Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
+    }
+
 @endphp
+@if (session('rolusuario') == 'policia')
+@endif
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,28 +21,44 @@
                 <div class="py-6">
                     <x-logopoliciah />
                 </div>
+                @if (session('rolusuario') == 'administrador')
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link-group class="mt-4" :items="$menuPersonal" :active="request()->routeIs('personal')">
+                            {{ __('Personal') }}
+                        </x-nav-link-group>
+                        <x-nav-link-group class="mt-4" :items="$menuVehiculo" :active="request()->routeIs('vehiculo')">
+                            {{ __('Vehículos') }}
+                        </x-nav-link-group>
+                        <x-nav-link :href="route('dependencia')" :active="request()->routeIs('dependencia')">
+                            {{ __('Dependencias') }}
+                        </x-nav-link>
+                        <x-nav-link-group class="mt-4" :items="$menuSolicitudes">
+                            {{ __('Solicitudes') }}
+                        </x-nav-link-group>
+                        <x-nav-link-group class="mt-4" :items="$menuReportes">
+                            {{ __('Reportes') }}
+                        </x-nav-link-group>
+                    </div>
+                @endif
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link-group class="mt-4" :items="$menuPersonal" :active="request()->routeIs('personal')">
-                        {{ __('Personal') }}
-                    </x-nav-link-group>
-                    <x-nav-link-group class="mt-4" :items="$menuVehiculo" :active="request()->routeIs('vehiculo')">
-                        {{ __('Vehículos') }}
-                    </x-nav-link-group>
-                    <x-nav-link :href="route('dependencia')" :active="request()->routeIs('dependencia')">
-                        {{ __('Dependencias') }}
-                    </x-nav-link>
-                    <x-nav-link-group class="mt-4" :items="$menuSolicitudes" >
-                        {{ __('Solicitudes') }}
-                    </x-nav-link-group>
-                    <x-nav-link-group class="mt-4" :items="$menuReportes" >
-                        {{ __('Reportes') }}
-                    </x-nav-link-group>
-                </div>
+                @if (session('rolusuario') == 'policia')
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link-group class="mt-4" :items="$menuSolicitudes">
+                            {{ __('Solicitudes') }}
+                        </x-nav-link-group>
+
+                    </div>
+                @endif
+
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -57,7 +81,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="text-sm px-4">su rol es: {{session('rolusuario')}}</div>
+                        <div class="text-sm px-4">su rol es: {{ session('rolusuario') }}</div>
                         <x-dropdown-link :href="route('perfil.edit')">
                             {{ __('Perfil') }}
                         </x-dropdown-link>
@@ -108,7 +132,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <div class="text-sm px-4">su rol es: {{session('rolusuario')}}</div>
+                <div class="text-sm px-4">su rol es: {{ session('rolusuario') }}</div>
                 <x-responsive-nav-link :href="route('perfil.edit')">
                     {{ __('Perfil') }}
                 </x-responsive-nav-link>

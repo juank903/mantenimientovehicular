@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Personal_policia;
+use App\Models\Personalpolicia;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -53,9 +53,8 @@ class RegisteredUserController extends Controller
         //event(new Registered($user));
         //Auth::login($user);
 
-
         $request["id"]=User::getId($request->name);
-        Personal_policia::savepersonalpolicia($request);
+        Personalpolicia::savepersonalpolicia($request);
         return redirect(route('personal', absolute: false));
     }
 }

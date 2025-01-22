@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Personal_policia extends Model
+class Personalpolicia extends Model
 {
     public $timestamps = false;
+    public function vehiculo(){
+        return $this->hasOne(Vehiculo::class);
+    }
     protected function savepersonalpolicia(Request $request): void{
-        $policia = new Personal_policia;
+        $policia = new Personalpolicia;
         $policia->iduser_personal_policias = $request-> id;
         $policia->primernombre_personal_policias = $request-> primernombre;
         $policia->segundonombre_personal_policias = $request-> segundonombre;

@@ -10,6 +10,9 @@ class Vehiculo extends Model
     //
     public $timestamps = false;
 
+    public function personalpolicia(){
+        return $this->belongsTo(PersonalPolicia::class);
+    }
     protected function savevehiculo(Request $request): void{
         $vehiculo = new Vehiculo;
         $vehiculo->marca_vehiculos = $request-> marca;

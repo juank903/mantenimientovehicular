@@ -55,6 +55,11 @@ Route::middleware('auth')->group(function () {
     })
         ->name('dashboard');
 
+    Route::get('form-solicitudvehiculo', function () {
+            return view('solicitudes.form-solicitudvehiculo');
+    })
+        ->name('form-solicitudvehiculo');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

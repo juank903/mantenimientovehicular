@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     protected function role()
     {
-        return $this->belongsTo(Personal_policia::class);
+        return $this->belongsTo(Personalpolicia::class);
         //return 'esta es una prueba';
     }
 

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Models\Personal_policia;
+use App\Models\Personalpolicia;
 
 class LoginRequest extends FormRequest
 {
@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
         }
 
         session(['idusuario' => auth()->id()]);
-        session(['personal' => Personal_policia::getPersonal(session('idusuario'))]);
+        session(['personal' => Personalpolicia::getPersonal(session('idusuario'))]);
         session(['rolusuario' => session('personal')['rol_personal_policias']]);
 
         RateLimiter::clear($this->throttleKey());
