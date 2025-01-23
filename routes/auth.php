@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\Solicitudes\SolicitudvehiculoController;
 use App\Http\Controllers\Auth\Vehiculos\VehiculosController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 
@@ -66,7 +67,6 @@ Route::middleware('auth')->group(function () {
         ->name('profile.destroy');
     /* fin rutas por defecto*/
 
-
     /*Rutas personal policial */
     Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
         ->name('mostrartodopersonal');
@@ -82,19 +82,24 @@ Route::middleware('auth')->group(function () {
     Route::get('mostrartodovehiculos', function () {
         return view('vehiculosViews.showall');
     })->name('mostrartodovehiculos');
-
-    /* Route::get('registrarvehiculo', function () {
-        return view('vehiculo');
-    })->name('vehiculos');
-
-    Route::get('listarvehiculos', [vehiculosController::class, 'showallvehiculos'])
-        ->name('vehiculos.view');
-    Route::post('ingresarvehiculos', [vehiculosController::class, 'create'])
-        ->name('vehiculos.create'); */
     /*Fin Rutas Vehículos*/
 
     /*Rutas Mantenimientos*/
 
     /*Fin Rutas Mantenimientos*/
+
+    /*Rutas Reportes*/
+
+
+    /*Fin Rutas Reportes*/
+
+    /*Rutas Solicitudes*/
+    Route::get('solicitarvehiculo.index', function () {
+        return view('inputsViews.vehiculos.index-vehiculo');
+    })->name('solicitudvehiculo.index');
+
+    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
+    ->name('guardarsolicitudvehiculo');
+    /*Fin Rutas Solicitudes*/
 
 });

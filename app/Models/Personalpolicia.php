@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Solicitudvehiculo;
+use App\Models\Subcircuitodependencia;
 
 class Personalpolicia extends Model
 {
@@ -14,6 +16,16 @@ class Personalpolicia extends Model
     public function vehiculo(){
         return $this->hasOne(Vehiculo::class);
     }
+
+    public function subcircuito(){
+        return $this->belongsToMany(Subcircuitodependencia::class);
+    }
+
+    public function solicitudes()
+    {
+        return $this->belongsToMany(SolicitudVehiculo::class);
+    }
+
     protected function guardarpersonal(Request $request): JsonResponse{
         try {
             // Validación de los datos de entrada
@@ -59,8 +71,24 @@ class Personalpolicia extends Model
         return $id;
     }
 
-    protected function getPersonal(string $idusuario) {
+    protected function getPersonalIdUsuario(string $idusuario) {
         $personal = self::where("iduser_personal_policias", $idusuario)->first();
         return $personal->attributes;
+    }
+
+    public function getNumeroSolicitudes($personalId): JsonResponse
+    {
+        $personal = self::find($personalId);
+
+        if ($personal) {
+            $numeroSolicitudes = $personal->solicitudes()->count();
+        } else {
+            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
+        }
+
+        return response()->json([
+            'personal_id' => $personalId,
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
     }
 }

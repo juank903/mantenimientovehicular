@@ -52,8 +52,9 @@ class LoginRequest extends FormRequest
         }
 
         session(['idusuario' => auth()->id()]);
-        session(['personal' => Personalpolicia::getPersonal(session('idusuario'))]);
+        session(['personal' => Personalpolicia::getpersonalIdUsuario(session('idusuario'))]);
         session(['rolusuario' => session('personal')['rol_personal_policias']]);
+        session(['subcircuito' => Personalpolicia::find(session('idusuario'))->subcircuito[0]->nombre_subcircuito_dependencias]);
 
         RateLimiter::clear($this->throttleKey());
     }

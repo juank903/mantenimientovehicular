@@ -7,7 +7,7 @@
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }
     if (session('rolusuario') == 'policia') {
-        $menuSolicitudes = ['Pedido vehículo' => 'form-solicitudvehiculo', 'Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
+        $menuSolicitudes = ['Pedido vehículo' => 'solicitudvehiculo.index'];
     }
 
 @endphp

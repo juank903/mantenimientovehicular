@@ -11,4 +11,8 @@ class Subcircuitodependencia extends Model
     {
         return $this->belongsToMany(Quejasugerencia::class);
     }
+    public function personal()
+    {
+        return $this->belongsToMany(Personalpolicia::class);
+    }
 }
