@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+
 
 
 class Quejasugerencia extends Model
@@ -15,7 +17,8 @@ class Quejasugerencia extends Model
         return $this->belongsToMany(Subcircuitodependencia::class);
     }
 
-    protected function crearquejasugerencia($request)   {
+    protected function crearquejasugerencia($request): JsonResponse
+    {
 
         try {
             // Validación de los datos de entrada
@@ -45,7 +48,8 @@ class Quejasugerencia extends Model
         }
     }
 
-    protected function actualizarintegridadId($request, $quejaId){
+    protected function actualizarintegridadId($request, $quejaId): JsonResponse
+    {
         try {
             // Validación de los datos de entrada
             /* $request->validate([
@@ -78,6 +82,4 @@ class Quejasugerencia extends Model
             return response()->json(['success' => false, 'error' => 'Es posible que haya problemas de integridad referencial entre una queja y subcircuito'], 500);
         }
     }
-
-
 }
