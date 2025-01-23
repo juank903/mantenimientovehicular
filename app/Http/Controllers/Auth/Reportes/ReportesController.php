@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth\Reportes;
 
 use App\Http\Controllers\Controller;
+use App\Models\Quejasugerencia;
 use Illuminate\Http\Request;
-use Carbon\Carbon
+use Carbon\Carbon;
 
 class ReportesController extends Controller
 {

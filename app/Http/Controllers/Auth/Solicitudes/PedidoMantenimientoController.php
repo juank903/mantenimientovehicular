@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 class PedidoMantenimientoController extends Controller
 {
     //
-    public function index(int $id){
+    /* public function index(int $id){
         $vehiculo=Vehiculo::find($id);
         return view('solicitudes.pedidomantenimiento',compact('vehiculo', 'id'));
-    }
+    } */
 }

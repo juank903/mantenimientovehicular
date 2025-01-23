@@ -77,7 +77,11 @@ Route::middleware('auth')->group(function () {
     ->name('vehiculos');
 
     Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
-        ->name('guardarvehiculo');
+    ->name('guardarvehiculo');
+
+    Route::get('mostrartodovehiculos', function () {
+        return view('vehiculosViews.showall');
+    })->name('mostrartodovehiculos');
 
     /* Route::get('registrarvehiculo', function () {
         return view('vehiculo');

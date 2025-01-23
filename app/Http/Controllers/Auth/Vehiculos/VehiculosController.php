@@ -9,10 +9,9 @@ use App\Models\Vehiculo;
 
 class VehiculosController extends Controller
 {
-    public function mostrartodovehiculos()  {
-        $vehiculosjson = Vehiculo::all();
-        return view('vehiculo.show', compact('vehiculosjson'));
-    }
+    /* public function mostrartodovehiculos()  {
+        return view('vehiculo.show');
+    } */
     public function guardarvehiculo(Request $request): RedirectResponse {
         $response = Vehiculo::guardarvehiculo($request);
         $data = json_decode($response->getContent(), true);

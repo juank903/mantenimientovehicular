@@ -1,8 +1,8 @@
 @php
     if (session('rolusuario') == 'administrador') {
         $menuPersonal = ['Ingresar personal' => 'register', 'Listar personal' => 'mostrartodopersonal'];
-        $menuVehiculo = ['Ingresar vehículo' => 'vehiculos'];
-        //$menuVehiculo = ['Ingresar vehículo' => 'vehiculos.index', 'Listar vehículos' => 'vehiculos.view'];
+        $menuVehiculo = ['Ingresar vehículo' => 'vehiculos', 'Listar vehículos' => 'mostrartodovehiculos'];
+        //$menuVehiculo = ['Ingresar vehículo' => 'vehiculos.index', 'Listar vehículos' => 'mostrartodovehiculos'];
         //$menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }
