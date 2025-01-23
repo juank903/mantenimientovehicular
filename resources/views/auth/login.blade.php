@@ -1,13 +1,11 @@
 @php
     //echo $usuario;
-    //var_dump(User::role());
+    //var_dump(session('mensaje'));
 @endphp
 <x-main-layout>
-    @if(session('mensaje'))
+    @if (session('mensaje') || session('error'))
         @include('components.mensajemodalexito')
     @endif
-
-
     <div class="container mx-auto">
         <div class="grid grid-cols-3 gap-4">
             <!-- Columna 1 - Oculta en dispositivos pequeños -->
@@ -18,13 +16,13 @@
             <!-- Columna 2 - Ocupa 100% en dispositivos pequeños -->
             <div class="col-span-3 md:col-span-1 flex flex-col justify-between items-center">
                 <div class="mt-10">
-                    <a href="{{ route('sugerenciasreclamos') }}">
+                    <a href="{{ route('quejas') }}">
                         <x-imagensugerencia alt="imagen de un hombre escribiendo frente a un computador"
                             src="escribir.png" />
                     </a>
                 </div>
                 <div class="grid items-center justify-center mb-52">
-                    <a href="{{ route('sugerenciasreclamos') }}"
+                    <a href="{{ route('quejas') }}"
                         class="relative flex items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold rounded-full shadow-lg transform hover:scale-105 transition-transform duration-200">
                         <!-- Arka Plan Puls Etkisi -->
                         <span class="absolute inset-0 rounded-full bg-red-500 opacity-50 animate-ping"></span>

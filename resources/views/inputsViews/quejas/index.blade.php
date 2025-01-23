@@ -3,10 +3,11 @@
     $datosDefault = [''];
 @endphp
 
-<x-app-layout>
+<x-guest-layout>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="mx-auto sm:px-6 lg:px-8 py-10">
         <x-panelformulario lateral="borde">
-            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('sugerenciasreclamos.post') }}">
+            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('guardarquejasugerencia') }}">
                 @csrf
                 <div class="w-full md:w-1/2 p-4 ">
                     <!-- nombres -->
@@ -72,8 +73,7 @@
         <script>
             $(document).ready(function() {
                 $.ajax({
-                    //url: '{{ route('getcircuitoid', '10106') }}',
-                    url: '{{route('sugerenciasreclamos.get')}}',
+                    url: '{{ url('api/subcircuitos') }}',
                     method: 'GET',
                     success: function(data) {
                         // Limpiar el select antes de llenarlo
@@ -81,27 +81,30 @@
 
                         // Llenar el select con las opciones
                         data.forEach(function(opcion) {
-                            $('#subcircuito').append(`<option id="${opcion.id_circuito_dependencias}" value="${opcion.id}">${opcion.nombre_subcircuito_dependencias}</option>`);
+                            $('#subcircuito').append(
+                                `<option id="${opcion.id_circuito_dependencias}" value="${opcion.id}">${opcion.nombre_subcircuito_dependencias}</option>`
+                                );
                         });
                     },
                     error: function(xhr, status, error) {
-                        console.error('Error en consulta circuito:', error);
+                        console.error('Error en consulta subcircuito:', error);
                     }
                 });
 
                 $('#subcircuito').change(function() {
                     var id = $('option:selected', this).attr('id');
-                    urlcompleta = 'getcircuitoid/' + id;
-                    console.log(urlcompleta);
+                    //urlcompleta = 'api/circuito' + id;
+                    //console.log(urlcompleta);
                     $.ajax({
-                        //url: '{{ route('getcircuitoid', '10106') }}',
-                        url: urlcompleta,
+                        url: '{{ url('api/circuito') }}/' + id,
+                        //url: urlcompleta,
                         method: 'GET',
                         success: function(data) {
                             //console.log(data);
                             if (data) {
                                 $('#circuito').val(data
-                                .nombre_circuito_dependencias); // Llenar el input con el nombre del usuario
+                                    .nombre_circuito_dependencias
+                                    ); // Llenar el input con el nombre del usuario
                             } else {
                                 alert('Circuito no encontrado');
                             }
@@ -114,4 +117,4 @@
             });
         </script>
     </div>
-</x-app-layout>
+</x-guest-layout>

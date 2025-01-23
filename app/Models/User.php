@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -52,10 +54,19 @@ class User extends Authenticatable
         return $id;
     }
 
-    protected function role()
+    protected function eliminarultimousuarioagreado(): JsonResponse
     {
-        return $this->belongsTo(Personalpolicia::class);
-        //return 'esta es una prueba';
-    }
+        try {
+            $ultimoRegistro = User::latest()->first();
+            $ultimoRegistro->delete();
+            return response()->json([
+                'success' => true,
+                'mensaje' => 'Eliminado usuario creado para mantener la integridad',
+                'error' => 'Tuvo problemas al ingresar Personal Policial',
+            ], 200);
 
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => 'Error al eliminar el usuario agregado'], 500);
+        }
+    }
 }

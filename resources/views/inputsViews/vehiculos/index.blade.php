@@ -3,7 +3,7 @@
 
         <x-panelformulario lateral="borde">
 
-            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('vehiculos.create') }}">
+            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('guardarvehiculo') }}">
 
                 @csrf
 

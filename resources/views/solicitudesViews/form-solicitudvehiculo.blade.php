@@ -1,12 +1,14 @@
 @php
-    $datosTipo = ['Reclamo', 'Sugerencia'];
+    $datosPrioridad = ['Alta', 'Baja'];
+    $datosTipoVehiculo = ['Moto', 'Auto', 'Camioneta'];
     $datosDefault = [''];
 @endphp
 
-<x-guest-layout>
+<x-app-layout>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="mx-auto sm:px-6 lg:px-8 py-10">
         <x-panelformulario lateral="borde">
-            <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('sugerenciasreclamos.post') }}">
+            <form method="POST" class="flex flex-col md:flex-row gap-4" action="">
                 @csrf
                 <div class="w-full md:w-1/2 p-4 ">
                     <!-- nombres -->
@@ -26,10 +28,10 @@
                     <!-- Subcircuito -->
                     <div class="mt-4">
                         <x-input-label for="subcircuito" :value="__('Elija subcircuito')" />
-                        {{-- <x-select-with-array id="subcircuito" name="subcircuito" :items="$arraySubcircuitos" /> --}}
                         <x-select required id="subcircuito" name="subcircuito" :items="$datosDefault" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
+                    <!-- Circuito -->
                     <div class="mt-4">
                         <x-input-label for="circuito" :value="__('Circuito')" />
                         <x-text-input id="circuito" class="block mt-1 w-full" type="text" name="circuito"
@@ -38,15 +40,15 @@
                     </div>
                 </div>
                 <div class="w-full md:w-1/2 p-4">
-                    <!-- Tipo queja -->
+                    <!-- Tipo prioridad -->
                     <div>
-                        <x-input-label for="tipoqueja" :value="__('Tipo mensaje')" />
-                        <x-select required name="tipoqueja" :items="$datosTipo" index="0" />
+                        <x-input-label for="tipoprioridad" :value="__('Prioridad')" />
+                        <x-select required name="tipoprioridad" :items="$datosPrioridad" index="0" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
                     <!-- Detalle mensaje -->
                     <div class="mt-4">
-                        <x-input-label for="detalle" :value="__('Digite su mensaje')" />
+                        <x-input-label for="detalle" :value="__('Razón de solicitud')" />
                         {{-- <div class="max-w-md mx-auto p-4"> --}}
                         {{-- <label for="message" class="block text-sm font-medium text-gray-700">Your Message</label> --}}
                         <textarea required name="detalle" rows="4"
@@ -62,7 +64,7 @@
                                     </a> --}}
 
                         <x-primary-button class="mt-4">
-                            {{ __('Registrar') }}
+                            {{ __('Solicitar') }}
                         </x-primary-button>
                     </div>
                 </div>
@@ -114,4 +116,4 @@
             });
         </script>
     </div>
-</x-guest-layout>
+</x-app-layout>

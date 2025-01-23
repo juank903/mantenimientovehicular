@@ -1,12 +1,15 @@
+@php
+        //valores para los select
+        $rangosarray = ["Capitan", "Teniente", "Subteniente", "Sargento Primero", "Sargento Segundo", "Cabo Primero", "Cabo Segundo"];
+        $rolesarray = ["administrador", "auxiliar", "gerencia", "policia"];
+        $conductorarray = ["no", "si"];
+        $tiposangrearray = ["O+","O-","A+","A-","B+","B-","AB+","AB-"];
+@endphp
 <x-app-layout>
     <div class="mx-auto sm:px-6 lg:px-8 py-10">
-
         <x-panelformulario lateral="borde">
-
             <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('register') }}">
-
                 @csrf
-
                 <div class="w-full md:w-1/2 p-4 ">
                     <!-- Primer Nombre -->
                     <div>

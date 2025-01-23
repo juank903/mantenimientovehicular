@@ -21,13 +21,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        //$estados = Personal_policia::select('rango_personal_policias')->distinct();
-        $rangosarray = ["Capitan", "Teniente", "Subteniente", "Sargento Primero", "Sargento Segundo", "Cabo Primero", "Cabo Segundo"];
-        $rolesarray = ["administrador", "auxiliar", "gerencia", "policia"];
-        $conductorarray = ["no", "si"];
-        $tiposangrearray = ["O+","O-","A+","A-","B+","B-","AB+","AB-"];
-        //$enumoption = General::getEnumValues('personal_policias','rango_personal_policias') ;
-        return view('auth.register',  compact('rangosarray', 'rolesarray', 'conductorarray', 'tiposangrearray'));
+        return view('auth.register');
     }
 
     /**
@@ -38,11 +32,11 @@ class RegisteredUserController extends Controller
     //public function store(Request $request): RedirectResponse
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        /* $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            /*'password' => ['required', 'confirmed', Rules\Password::defaults()],*/
-        ]);
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]); */
 
         $user = User::create([
             'name' => $request->name,
@@ -54,7 +48,20 @@ class RegisteredUserController extends Controller
         //Auth::login($user);
 
         $request["id"]=User::getId($request->name);
-        Personalpolicia::savepersonalpolicia($request);
-        return redirect(route('personal', absolute: false));
+        $response = Personalpolicia::guardarpersonal($request);
+        $data = json_decode($response->getContent(), true);
+        if($data['success']){
+            return redirect()->intended(route('dashboard', absolute: false))->with('mensaje',$data['mensaje']);
+        }
+        else {
+            $response = User::eliminarultimousuarioagreado();
+            $data = json_decode($response->getContent(), true);
+            if ($data['success']){
+                return redirect()->intended(route('dashboard', absolute: false))->with('error',$data['mensaje']);
+            }else{
+                return redirect()->intended(route('dashboard', absolute: false))->with('error',$data['mensaje']);
+            }
+
+        }
     }
 }
