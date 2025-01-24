@@ -15,7 +15,7 @@
                             <th data-priority="4">Modelo Vehículo</th>
                             <th data-priority="5">Color Vehículo</th>
                             <th data-priority="1">Placa Vehículo</th>
-                            <th class="flex justify-center space-x-4 align-middle cursor-pointer">Acciones</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,14 +28,28 @@
 
         </div>
         <!-- /Container -->
-        <!-- CSS de DataTables -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
+        <!-- DataTables Buttons CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
 
         <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+        <!-- DataTables Buttons JS -->
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+        <!-- JSZip for Excel export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <!-- pdfmake for PDF export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
-        <!-- JS de DataTables -->
-        <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
 
         <style>
             #vehiculos {
@@ -54,6 +68,11 @@
         <script>
             $(document).ready(function() {
                 $('#vehiculos').DataTable({
+                    /*                     layout: {
+                                            topStart: {
+                                                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+                                            }
+                                        }, */
                     processing: true,
                     serverSide: true,
                     ajax: {
@@ -66,11 +85,11 @@
                         data: function(d) {
                             // Aquí puedes agregar cualquier dato adicional que necesites enviar
                             d.perPage = d.length ||
-                                10; // Captura el valor seleccionado de perPage
+                                0; // Captura el valor seleccionado de perPage
                             d.page = d.start / d.length + 1; // Calcula la página actual
                             // Si tienes un campo de búsqueda
                             d.search = {
-                                value: $('#searchInput').val()
+                                value: d.search.value || ' '
                             };
                             console.log(d); // Ver los parámetros enviados
                         }
@@ -103,10 +122,15 @@
                             orderable: false
                         }
                     ],
+                    layout: {
+                        topStart: {
+                            buttons: ['pageLength', 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print']
+                        }
+                    },
                     language: {
                         "sProcessing": "Procesando...",
                         "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
+                        "sZeroRecords": "Filtre los datos para visualizar la tabla",
                         "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
                         "sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
                         "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
@@ -114,9 +138,12 @@
                         // Otros mensajes de idioma
                     },
                     // Configura la paginación para que use los valores de `currentPage` y `perPage` de la API
-                    pageLength: 10, // Establece el valor por defecto
-                    lengthMenu: [5, 10, 25, 50, 100], // Opciones de longitud de página
-
+                    pageLength: 0, // Establece el valor por defecto
+                    lengthMenu: [0, 5, 10, 25, 50, 100], // Opciones de longitud de página
+                    order: {
+                        idx: 1,
+                        dir: 'asc'
+                    }
                 });
 
                 // Función para cargar la siguiente página

@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class ReportesController extends Controller
 {
     //
-    public function quejasugerenciasfechashow(Request $request)
+    /* public function quejasugerenciasfechashow(Request $request)
     {
         $request->validate([
             'fechainicio' => 'required|date',
@@ -25,9 +25,9 @@ class ReportesController extends Controller
 
         $arrayQuejasugerencias = Quejasugerencia::whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
         return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
-    }
+    } */
 
-    public function quejasugerenciassubcircuitofechashow(Request $request)
+    public function getQuejasugerenciassubcircuitoFechas(Request $request)
     {
         $request->validate([
             'fechainicio' => 'required|date',
@@ -48,6 +48,8 @@ class ReportesController extends Controller
         ->groupBy('c.subcircuitodependencia_id', 'fecha', 'quejasugerencias.tipo_quejasugerencias', 'b.nombre_subcircuito_dependencias')
         ->get();
 
-        return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
+        return response()->json($arrayQuejasugerencias);
+
+        //return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
     }
 }
