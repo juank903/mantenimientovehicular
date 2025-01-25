@@ -25,7 +25,10 @@ class Personalpolicia extends Model
     {
         return $this->belongsToMany(SolicitudVehiculo::class);
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     protected function guardarpersonal(Request $request): JsonResponse{
         try {
             // Validación de los datos de entrada
@@ -71,8 +74,9 @@ class Personalpolicia extends Model
         return $id;
     }
 
-    protected function getPersonalIdUsuario(string $idusuario) {
-        $personal = self::where("iduser_personal_policias", $idusuario)->first();
+    public function getPersonalIdUsuario(string $idusuario) {
+        //dd($idusuario);
+        $personal = self::where("user_id", $idusuario)->first();
         return $personal->attributes;
     }
 

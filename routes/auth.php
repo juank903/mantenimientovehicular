@@ -57,10 +57,10 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
     Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
-        ->name('register');
+        ->name('register')->middleware('rolpolicia');
     Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
     Route::get('perfil', [ProfileController::class, 'edit'])
-        ->name('perfil.edit');
+        ->name('profile.edit');
     Route::patch('perfil', [ProfileController::class, 'update'])
         ->name('profile.update');
     Route::delete('perfil', [ProfileController::class, 'destroy'])
@@ -73,8 +73,8 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas personal policial*/
 
     /*Rutas Vehículos*/
-    Route::get('vehiculos.index', [InputvehiculosviewsController::class, 'index'])
-    ->name('vehiculos');
+    Route::get('vehiculos.policia.index', [InputvehiculosviewsController::class, 'policiaIndex'])
+    ->name('vehiculos.policia');
 
     Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
     ->name('guardarvehiculo');
@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
 
     /*Rutas Solicitudes*/
     Route::get('solicitarvehiculo.index', function () {
-        return view('inputsViews.vehiculos.index-vehiculo');
+        return view('inputsViews.vehiculos.policia.index-vehiculo');
     })->name('solicitudvehiculo.index');
 
     Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])

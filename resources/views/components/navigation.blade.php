@@ -1,17 +1,17 @@
 @php
-    if (session('rolusuario') == 'administrador') {
+    if (Auth::user()->rol() == 'administrador') {
         $menuPersonal = ['Ingresar personal' => 'register', 'Listar personal' => 'mostrartodopersonal'];
-        $menuVehiculo = ['Ingresar vehículo' => 'vehiculos', 'Listar vehículos' => 'mostrartodovehiculos'];
+        $menuVehiculo = ['Listar vehículos' => 'mostrartodovehiculos'];
         //$menuVehiculo = ['Ingresar vehículo' => 'vehiculos.index', 'Listar vehículos' => 'mostrartodovehiculos'];
         //$menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }
-    if (session('rolusuario') == 'policia') {
-        $menuSolicitudes = ['Pedido vehículo' => 'solicitudvehiculo.index'];
+    if (Auth::user()->rol()  == 'policia') {
+        $menuSolicitudes = ['Pedido vehículo' => 'vehiculos.policia'];
     }
 
 @endphp
-@if (session('rolusuario') == 'policia')
+@if (Auth::user()->rol() == 'policia')
 @endif
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->
@@ -22,7 +22,7 @@
                 <div class="py-6">
                     <x-logopoliciah />
                 </div>
-                @if (session('rolusuario') == 'administrador')
+                @if (Auth::user()->rol() == 'administrador')
                     <!-- Navigation Links -->
                     <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
                         <x-navigation.navlink :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -46,7 +46,7 @@
                     </div>
                 @endif
 
-                @if (session('rolusuario') == 'policia')
+                @if (Auth::user()->rol() == 'policia')
                     <!-- Navigation Links -->
                     <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
                         <x-navigation.navlink :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -82,8 +82,8 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="text-sm px-4">su rol es: {{ session('rolusuario') }}</div>
-                        <x-dropdown-link :href="route('perfil.edit')">
+                        <div class="text-sm px-4">su rol es: {{ Auth::user()->rol() }}</div>
+                        <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Perfil') }}
                         </x-dropdown-link>
 
@@ -133,8 +133,8 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <div class="text-sm px-4">su rol es: {{ session('rolusuario') }}</div>
-                <x-responsive-nav-link :href="route('perfil.edit')">
+                <div class="text-sm px-4">su rol es: {{ Auth::user()->rol()}}</div>
+                <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Perfil') }}
                 </x-responsive-nav-link>
 

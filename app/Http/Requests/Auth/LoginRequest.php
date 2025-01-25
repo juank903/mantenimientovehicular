@@ -50,11 +50,13 @@ class LoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+        $personal = new Personalpolicia();
 
-        session(['idusuario' => auth()->id()]);
-        session(['personal' => Personalpolicia::getpersonalIdUsuario(session('idusuario'))]);
-        session(['rolusuario' => session('personal')['rol_personal_policias']]);
-        session(['subcircuito' => Personalpolicia::find(session('idusuario'))->subcircuito[0]->nombre_subcircuito_dependencias]);
+        //session(['idusuario' => auth()->id()]);
+        session(['personal' => $personal->getPersonalIdUsuario(auth()->id())]);
+        //session(['rolusuario' => session('personal')['rol_personal_policias']]);
+        session(['rolusuario' => $personal->find(auth()->id())->rol_personal_policias]);
+        session(['subcircuito' => $personal->find(auth()->id())->subcircuito[0]->nombre_subcircuito_dependencias]);
 
         RateLimiter::clear($this->throttleKey());
     }

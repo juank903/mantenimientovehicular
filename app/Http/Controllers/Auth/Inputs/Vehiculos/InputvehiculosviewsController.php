@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class InputvehiculosviewsController extends Controller
 {
     //
-    public function index()
+    public function policiaIndex()
     {
-        return view("inputsViews.vehiculos.index");
+        return view("inputsViews.vehiculos.policia.index-vehiculo");
     }
 }

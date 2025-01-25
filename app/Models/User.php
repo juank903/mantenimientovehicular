@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -46,6 +47,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function personalpolicia(): HasOne
+    {
+        return $this->hasOne(Personalpolicia::class);
+    }
+
+    public function rol()
+    {
+        // Devuelve el rol o un valor predeterminado
+        return $this->personalpolicia ? $this->personalpolicia->rol_personal_policias : 'Rol no asignado'; // Cambia 'Rol no asignado' por lo que desees
     }
 
     protected function getId(string $nombreusuario): int
