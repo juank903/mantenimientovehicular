@@ -11,9 +11,9 @@ class cardinfo extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($items)
     {
-        //
+        $this->items = json_decode($items, true); // Decodifica el JSON a un array
     }
 
     /**

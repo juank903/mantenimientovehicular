@@ -46,7 +46,7 @@ class Personalpolicia extends Model
             ]); */
 
             $policia = new Personalpolicia;
-            $policia->iduser_personal_policias = $request->id;
+            $policia->user_id = $request->id;
             $policia->primernombre_personal_policias = $request->primernombre;
             $policia->segundonombre_personal_policias = $request->segundonombre;
             $policia->primerapellido_personal_policias = $request->primerapellido;
