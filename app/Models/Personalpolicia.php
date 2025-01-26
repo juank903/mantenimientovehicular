@@ -13,11 +13,13 @@ use App\Models\Subcircuitodependencia;
 class Personalpolicia extends Model
 {
     public $timestamps = false;
-    public function vehiculo(){
+    public function vehiculo()
+    {
         return $this->hasOne(Vehiculo::class);
     }
 
-    public function subcircuito(){
+    public function subcircuito()
+    {
         return $this->belongsToMany(Subcircuitodependencia::class);
     }
 
@@ -29,7 +31,8 @@ class Personalpolicia extends Model
     {
         return $this->belongsTo(User::class);
     }
-    protected function guardarpersonal(Request $request): JsonResponse{
+    protected function guardarpersonal(Request $request): JsonResponse
+    {
         try {
             // Validación de los datos de entrada
             /* $request->validate([
@@ -69,12 +72,14 @@ class Personalpolicia extends Model
             return response()->json(['success' => false, 'error' => 'Error al guardar el personal policial.'], 500);
         }
     }
-    protected function getId(string $nombreusuario): int{
+    protected function getId(string $nombreusuario): int
+    {
         $id = self::where("name", $nombreusuario)->first()->id;
         return $id;
     }
 
-    public function getPersonalIdUsuario(string $idusuario) {
+    public function getPersonalIdUsuario(string $idusuario)
+    {
         //dd($idusuario);
         $personal = self::where("user_id", $idusuario)->first();
         return $personal->attributes;
@@ -86,6 +91,63 @@ class Personalpolicia extends Model
 
         if ($personal) {
             $numeroSolicitudes = $personal->solicitudes()->count();
+        } else {
+            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
+        }
+
+        return response()->json([
+            'personal_id' => $personalId,
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+    public function getNumeroSolicitudesAnuladas($personalId)
+    {
+        $personal = self::find($personalId);
+
+        if ($personal) {
+            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
+                $query->where('personalpolicia_id', $personalId);
+            })
+                ->where('solicitudvehiculos_estado', 'Anulada')
+                ->count();
+        } else {
+            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
+        }
+
+        return response()->json([
+            'personal_id' => $personalId,
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+    public function getNumeroSolicitudesPendientes($personalId)
+    {
+        $personal = self::find($personalId);
+
+        if ($personal) {
+            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
+                $query->where('personalpolicia_id', $personalId);
+            })
+                ->where('solicitudvehiculos_estado', 'Pendiente')
+                ->count();
+        } else {
+            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
+        }
+
+        return response()->json([
+            'personal_id' => $personalId,
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+    public function getNumeroSolicitudesAprobadas($personalId)
+    {
+        $personal = self::find($personalId);
+
+        if ($personal) {
+            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
+                $query->where('personalpolicia_id', $personalId);
+            })
+                ->where('solicitudvehiculos_estado', 'Aprobada')
+                ->count();
         } else {
             $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
         }

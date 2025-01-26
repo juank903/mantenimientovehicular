@@ -16,3 +16,6 @@ Route::get('quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQ
 Route::resource('vehiculos', VehiculoController::class);
 Route::get('personal/{id}/solicitudes', [Personalpolicia::class, 'getNumeroSolicitudes']);
 Route::resource('circuito', CircuitoController::class);
+Route::get('/personal/{id}/solicitudes/anuladas', [Personalpolicia::class, 'getNumeroSolicitudesAnuladas']);
+Route::get('/personal/{id}/solicitudes/pendientes', [Personalpolicia::class, 'getNumeroSolicitudesPendientes']);
+Route::get('/personal/{id}/solicitudes/aprobadas', [Personalpolicia::class, 'getNumeroSolicitudesAprobadas']);
