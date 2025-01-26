@@ -27,7 +27,7 @@ class ReportesController extends Controller
         return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
     } */
 
-    public function getQuejasugerenciassubcircuitoFechas(Request $request)
+    public function getQuejasugerenciaSubcircuitoFechas(Request $request)
     {
         $request->validate([
             'fechainicio' => 'required|date',

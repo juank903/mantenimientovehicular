@@ -58,6 +58,10 @@ class LoginRequest extends FormRequest
         session(['rolusuario' => $personal->find(auth()->id())->rol_personal_policias]);
         session(['subcircuito' => $personal->find(auth()->id())->subcircuito[0]->nombre_subcircuito_dependencias]);
 
+
+        //event(new Registered($user));
+        //Auth::loginUsingId(1, remember: true);
+
         RateLimiter::clear($this->throttleKey());
     }
 

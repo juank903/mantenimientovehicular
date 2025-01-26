@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
     Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
-        ->name('register')->middleware('rolpolicia');
+        ->name('register');
     Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
     Route::get('perfil', [ProfileController::class, 'edit'])
         ->name('profile.edit');

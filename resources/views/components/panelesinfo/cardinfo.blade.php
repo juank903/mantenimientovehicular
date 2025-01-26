@@ -10,7 +10,7 @@
 <script>
     $(document).ready(function() {
         $.ajax({
-            url: `/api/personal/{{ session('personal')['id'] }}/solicitudes`,
+            url: `/api/personal/{{ auth()->id() }}/solicitudes`,
             type: 'GET',
             success: function(response) {
                 // Llenar el div con el ID 'dato' con la respuesta
@@ -20,7 +20,7 @@
             },
             error: function(xhr) {
                 const sessionId =
-                "{{ session('personal')['id'] }}"; // Pasando la variable de sesión
+                "{{ auth()->id() }}"; // Pasando la variable de sesión
                 console.log("id:" + sessionId);
                 // Manejo de error en caso de que no se encuentre el personal
                 $('#dato').html('<p>Error: No se encontró el personal.</p>');

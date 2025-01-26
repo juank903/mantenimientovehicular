@@ -10,11 +10,9 @@ use App\Models\Quejasubcircuito;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-//Route::resource('quejasugerencia', QuejasugerenciaController::class);
-
-Route::resource('subcircuitos', SubcircuitoController::class);
-Route::resource('circuito', CircuitoController::class);
+Route::middleware('auth')->group(function () {
+});
+Route::get('quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
 Route::resource('vehiculos', VehiculoController::class);
 Route::get('personal/{id}/solicitudes', [Personalpolicia::class, 'getNumeroSolicitudes']);
-Route::get('quejasugerenciassubcircuitofechas', [ReportesController::class, 'getQuejasugerenciassubcircuitoFechas']);
+Route::resource('circuito', CircuitoController::class);

@@ -11,6 +11,6 @@ class InputquejasviewsController extends Controller
 {
     public function index()
     {
-        return view("inputsViews.quejas.index");
+        return view("inputsViews.quejas.index-quejas");
     }
 }
