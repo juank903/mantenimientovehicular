@@ -6,8 +6,21 @@
         //$menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }
-    if (Auth::user()->rol()  == 'policia') {
+
+    $response = Http::get(url('/api/personal/' . auth()->id() . '/solicitudes/pendientes'));
+
+        // Comprobar si la solicitud fue exitosa
+        if ($response->successful()) {
+            $data = $response->json(); // Decodificar la respuesta JSON
+        } else {
+            $data = []; // Manejar el error o la falla
+        }
+
+    if (Auth::user()->rol()  == 'policia' && $data['numero_solicitudes'] == 0) {
         $menuSolicitudes = ['Pedido vehículo' => 'vehiculos.policia'];
+    }
+    else{
+        $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculo-pendiente'];
     }
 
 @endphp

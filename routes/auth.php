@@ -89,7 +89,9 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas Mantenimientos*/
 
     /*Rutas Reportes*/
-
+    Route::get('mostrarsolicitudvehiculo-pendiente', function () {
+        return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index');
+    })->name('mostrarsolicitudvehiculo-pendiente');
 
     /*Fin Rutas Reportes*/
 

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\ApiSolicitudvehiculoController;
 use App\Http\Controllers\Api\CircuitoController;
+use App\Http\Controllers\Api\SolicitudvehiculoController;
 use App\Http\Controllers\Api\SubcircuitoController;
 use App\Http\Controllers\Api\VehiculoController;
 use App\Http\Controllers\Auth\Reportes\ReportesController;
@@ -14,8 +16,9 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
 Route::resource('vehiculos', VehiculoController::class);
-Route::get('personal/{id}/solicitudes', [Personalpolicia::class, 'getNumeroSolicitudes']);
 Route::resource('circuito', CircuitoController::class);
-Route::get('/personal/{id}/solicitudes/anuladas', [Personalpolicia::class, 'getNumeroSolicitudesAnuladas']);
-Route::get('/personal/{id}/solicitudes/pendientes', [Personalpolicia::class, 'getNumeroSolicitudesPendientes']);
-Route::get('/personal/{id}/solicitudes/aprobadas', [Personalpolicia::class, 'getNumeroSolicitudesAprobadas']);
+Route::get('personal/{id}/solicitudes', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudes']);
+Route::get('/personal/{id}/solicitudes/anuladas', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesAnuladas']);
+Route::get('/personal/{id}/solicitudes/pendientes', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesPendientes']);
+Route::get('/personal/{id}/solicitudes/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesAprobadas']);
+Route::get('/solicitudvehiculo-pendiente/{id}', [ApiSolicitudvehiculoController::class, 'obtenerSolicitudPendiente']);
