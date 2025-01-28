@@ -22,3 +22,4 @@ Route::get('/personal/{id}/solicitudes/anuladas', [ApiSolicitudvehiculoControlle
 Route::get('/personal/{id}/solicitudes/pendientes', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesPendientes']);
 Route::get('/personal/{id}/solicitudes/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesAprobadas']);
 Route::get('/solicitudvehiculo-pendiente/{id}', [ApiSolicitudvehiculoController::class, 'obtenerSolicitudPendiente']);
+Route::put('/solicitud-vehiculo/anular/{id}', [ApiSolicitudvehiculoController::class, 'anularSolicitudVehiculo']);

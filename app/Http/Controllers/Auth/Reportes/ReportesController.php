@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth\Reportes;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quejasugerencia;
+use Auth;
+use Http;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -49,7 +51,17 @@ class ReportesController extends Controller
         ->get();
 
         return response()->json($arrayQuejasugerencias);
+    }
 
-        //return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
+    public function solicitudvehiculopendientePolicia(){
+        $response = Http::get(url('/api/personal/' . auth()->id() . '/solicitudes/pendientes'));
+        $data = $response->successful() ? $response->json() : [];
+        if(Auth::user()->rol() == 'policia' && $data['numero_solicitudes'] == 0){
+            return redirect()->route('dashboard')->with('error','Usted no tiene solicitudes pendientes');
+        }else{
+            $response = Http::get(url('api/solicitudvehiculo-pendiente/' . auth()->id() ));
+            $data = $response->successful() ? $response->json() : [];
+            return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index',compact('data'));
+        }
     }
 }

@@ -3,18 +3,16 @@
         <!--Container-->
         <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
 
-
             <!-- Card -->
             <div id='recipients' class="p-8 mt-6 rounded shadow bg-white">
-
                 <table id="vehiculos" class="stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                     <thead>
                         <tr>
-                            <th data-priority="2">Marca Vehículo</th>
-                            <th data-priority="3">Tipo Vehículo</th>
-                            <th data-priority="4">Modelo Vehículo</th>
-                            <th data-priority="5">Color Vehículo</th>
-                            <th data-priority="1">Placa Vehículo</th>
+                            <th>Marca Vehículo</th>
+                            <th>Tipo Vehículo</th>
+                            <th>Modelo Vehículo</th>
+                            <th>Color Vehículo</th>
+                            <th>Placa Vehículo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -22,7 +20,6 @@
                         <!-- Data will be populated dynamically here -->
                     </tbody>
                 </table>
-
             </div>
             <!-- /Card -->
 
@@ -49,18 +46,14 @@
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
-
-
         <style>
             #vehiculos {
                 background-color: #f9f9f9;
             }
-
             #vehiculos thead th {
                 background-color: #ffffff;
 
             }
-
             #vehiculos tbody tr:hover {
                 background-color: #f1f1f1;
             }
@@ -68,11 +61,6 @@
         <script>
             $(document).ready(function() {
                 $('#vehiculos').DataTable({
-                    /*                     layout: {
-                                            topStart: {
-                                                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
-                                            }
-                                        }, */
                     processing: true,
                     serverSide: true,
                     ajax: {

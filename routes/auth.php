@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\Reportes\ReportesController;
 use App\Http\Controllers\Auth\Solicitudes\SolicitudvehiculoController;
 use App\Http\Controllers\Auth\Vehiculos\VehiculosController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -89,10 +90,11 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas Mantenimientos*/
 
     /*Rutas Reportes*/
-    Route::get('mostrarsolicitudvehiculo-pendiente', function () {
+    /* Route::get('mostrarsolicitudvehiculo-pendiente', function () {
         return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index');
-    })->name('mostrarsolicitudvehiculo-pendiente');
-
+    })->name('mostrarsolicitudvehiculo-pendiente'); */
+    Route::get('mostrarsolicitudvehiculopolicia-pendiente', [ReportesController::class, 'solicitudvehiculopendientePolicia'])
+    ->name('mostrarsolicitudvehiculopolicia-pendiente');
     /*Fin Rutas Reportes*/
 
     /*Rutas Solicitudes*/

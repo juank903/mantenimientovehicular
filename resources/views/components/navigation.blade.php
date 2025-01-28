@@ -20,7 +20,7 @@
         $menuSolicitudes = ['Pedido vehículo' => 'vehiculos.policia'];
     }
     else{
-        $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculo-pendiente'];
+        $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculopolicia-pendiente'];
     }
 
 @endphp
