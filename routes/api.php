@@ -22,12 +22,16 @@ Route::middleware('auth')->group(function () {
 Route::get('quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
 Route::resource('vehiculos', ApiVehiculoController::class);
 Route::resource('circuito', ApiCircuitoController::class);
-Route::get('personal/{id}/solicitudes', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudes']);
-Route::get('/personal/{id}/solicitudes/anuladas', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesAnuladas']);
-Route::get('/personal/{id}/solicitudes/pendientes', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesPendientes']);
-Route::get('/personal/{id}/solicitudes/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesAprobadas']);
-Route::get('/solicitudvehiculo-pendiente/{id}', [ApiSolicitudvehiculoController::class, 'obtenerSolicitudPendiente']);
-Route::put('/solicitud-vehiculo/anular/{id}', [ApiSolicitudvehiculoController::class, 'anularSolicitudVehiculo']);
+
+/*Api Solicitudes hechas por usuario policia*/
+Route::get('/personal/policia/{id}/totalsolicitudesvehiculos', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPolicia']);
+Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasPolicia']);
+Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesPolicia']);
+Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasPolicia']);
+Route::get('/personal/policia/{id}/get/solicitud-pendiente', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoPendientePolicia']);
+Route::put('/personal/policia/{id}/revoke', [ApiSolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia']);
+
+/*Api Información personal policia*/
 Route::get('/provincias/{id}', [ApiProvinciaController::class, 'show']);
-Route::get('/personalpolicia/{id}/detalles', [ApiPersonalpoliciaController::class, 'show']);
+Route::get('/personal/policia/{id}/detalles', [ApiPersonalpoliciaController::class, 'show']);
 Route::get('/subcircuito/{id}/provincia', [ApiSubcircuitoController::class, 'show']);

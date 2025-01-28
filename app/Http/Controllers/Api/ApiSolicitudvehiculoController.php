@@ -40,8 +40,8 @@ class ApiSolicitudvehiculoController extends Controller
     public function show(string $id)
     {
         //
-        $Solicitudvehiculo = Solicitudvehiculo::findOrFail($id);
-        return response()->json($Solicitudvehiculo);
+       /*  $Solicitudvehiculo = Solicitudvehiculo::findOrFail($id);
+        return response()->json($Solicitudvehiculo); */
     }
 
     /**
@@ -67,7 +67,7 @@ class ApiSolicitudvehiculoController extends Controller
     {
         //
     }
-    public function obtenerSolicitudPendiente($personalId): JsonResponse
+    public function getSolicitudVehiculoPendientePolicia($personalId): JsonResponse
     {
         // Buscar el PersonalPolicias por ID
         $personalPolicia = Personalpolicia::findOrFail($personalId);
@@ -81,7 +81,7 @@ class ApiSolicitudvehiculoController extends Controller
         // Devolver las solicitudes pendientes como JSON
         return response()->json($solicitudesPendientes);
     }
-    public function getNumeroSolicitudes($personalId): JsonResponse
+    public function getNumSolicitudesVehiculoPolicia($personalId): JsonResponse
     {
         $personal = Personalpolicia::find($personalId);
 
@@ -96,7 +96,7 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
-    public function getNumeroSolicitudesAnuladas($personalId): JsonResponse
+    public function getNumSolicitudesVehiculoAnuladasPolicia($personalId): JsonResponse
     {
         $personal = Personalpolicia::find($personalId);
 
@@ -115,7 +115,7 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
-    public function getNumeroSolicitudesPendientes($personalId): JsonResponse
+    public function getNumSolicitudesVehiculoPendientesPolicia($personalId): JsonResponse
     {
         $personal = Personalpolicia::find($personalId);
 
@@ -134,7 +134,7 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
-    public function getNumeroSolicitudesAprobadas($personalId): JsonResponse
+    public function getNumSolicitudesVehiculoAprobadasPolicia($personalId): JsonResponse
     {
         $personal = Personalpolicia::find($personalId);
 
@@ -153,7 +153,7 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
-    public function anularSolicitudVehiculo($personalId)
+    public function revokeSolicitudVehiculoPolicia($personalId)
     {
 
         $personal = Personalpolicia::find($personalId);

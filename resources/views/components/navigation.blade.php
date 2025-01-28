@@ -7,7 +7,7 @@
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }
 
-    $response = Http::get(url('/api/personal/' . auth()->id() . '/solicitudes/pendientes'));
+    $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
 
         // Comprobar si la solicitud fue exitosa
         if ($response->successful()) {
