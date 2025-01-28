@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ApiPersonalpoliciaController;
+use App\Http\Controllers\Api\ApiProvinciaController;
 use App\Http\Controllers\Api\ApiSolicitudvehiculoController;
 use App\Http\Controllers\Api\CircuitoController;
 use App\Http\Controllers\Api\SolicitudvehiculoController;
@@ -23,3 +25,7 @@ Route::get('/personal/{id}/solicitudes/pendientes', [ApiSolicitudvehiculoControl
 Route::get('/personal/{id}/solicitudes/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumeroSolicitudesAprobadas']);
 Route::get('/solicitudvehiculo-pendiente/{id}', [ApiSolicitudvehiculoController::class, 'obtenerSolicitudPendiente']);
 Route::put('/solicitud-vehiculo/anular/{id}', [ApiSolicitudvehiculoController::class, 'anularSolicitudVehiculo']);
+Route::get('/provincias/{id}', [ApiProvinciaController::class, 'show']);
+Route::get('/personalpolicia/{id}/detalles', [ApiPersonalpoliciaController::class, 'show']);
+//este es de prueba para tener todo el detalle de un subcircuito a provincia
+Route::get('/subcircuito/{id}/provincia', [SubcircuitoController::class, 'show']);
