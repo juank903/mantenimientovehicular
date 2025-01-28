@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Subcircuitodependencia;
 use Illuminate\Http\Request;
 
-class SubcircuitoController extends Controller
+class ApiSubcircuitoController extends Controller
 {
     //
     public function index()

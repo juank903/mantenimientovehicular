@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Circuitodependencia;
 use Illuminate\Http\Request;
 
-class CircuitoController extends Controller
+class ApiCircuitoController extends Controller
 {
     /**
      * Display a listing of the resource.

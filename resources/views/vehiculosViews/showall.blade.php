@@ -8,11 +8,11 @@
                 <table id="vehiculos" class="stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                     <thead>
                         <tr>
-                            <th>Marca Vehículo</th>
-                            <th>Tipo Vehículo</th>
-                            <th>Modelo Vehículo</th>
-                            <th>Color Vehículo</th>
-                            <th>Placa Vehículo</th>
+                            <th data-idx="0">Marca Vehículo</th>
+                            <th data-idx="1">Tipo Vehículo</th>
+                            <th data-idx="2">Modelo Vehículo</th>
+                            <th data-idx="3">Color Vehículo</th>
+                            <th data-idx="4">Placa Vehículo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -60,7 +60,7 @@
         </style>
         <script>
             $(document).ready(function() {
-                $('#vehiculos').DataTable({
+                table = $('#vehiculos').DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: {
@@ -129,7 +129,7 @@
                     pageLength: 0, // Establece el valor por defecto
                     lengthMenu: [0, 5, 10, 25, 50, 100], // Opciones de longitud de página
                     order: {
-                        idx: 1,
+                        idx: 0,
                         dir: 'asc'
                     }
                 });
@@ -148,6 +148,9 @@
                 $('#nextPageButton').on('click', function() {
                     loadNextPage(); // Llama a la función para cargar la siguiente página
                 });
+                table.columns().every(function(index) {
+    console.log('Índice de columna: ' + index + ' - Nombre: ' + this.header().innerHTML);
+});
             });
         </script>
     </x-app-layout>
