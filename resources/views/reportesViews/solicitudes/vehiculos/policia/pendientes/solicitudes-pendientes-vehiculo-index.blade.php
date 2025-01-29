@@ -58,11 +58,10 @@
                             {{ $data[0]['solicitudvehiculos_tipo'] }}</dd>
                     </div>
                 </dl>
-                <form method="POST" class="relative flex items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200" action="{{ url("/api/solicitud-vehiculo/anular/" . auth()->id() ) }}">
+                <form method="POST" class="relative flex items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200" action="{{ route("anularsolicitudvehiculopolicia-pendiente" , auth()->id()) }}">
                     @method('PUT')
                     @csrf
                     <button type="submit">
-                    <!-- Arka Plan Puls Etkisi -->
                     <span class="relative z-10">Anular Solicitud</span>
                     </button>
                 </form>

@@ -13,11 +13,8 @@ use App\Http\Controllers\Auth\Reportes\ReportesController;
 use App\Http\Controllers\Auth\Solicitudes\SolicitudvehiculoController;
 use App\Http\Controllers\Auth\Vehiculos\VehiculosController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-
 use App\Http\Controllers\Auth\Personal\PersonalController;
-
 use App\Http\Controllers\Auth\ProfileController;
-
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -74,8 +71,8 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas personal policial*/
 
     /*Rutas Vehículos*/
-    Route::get('vehiculos.policia.index', [InputvehiculosviewsController::class, 'policiaIndex'])
-    ->name('vehiculos.policia');
+    /* Route::get('solicitarvehiculo.policia.index', [InputvehiculosviewsController::class, 'solicitudvehiculoPoliciaIndex'])
+    ->name('solicitarvehiculo.policia'); */
 
     Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
     ->name('guardarvehiculo');
@@ -98,9 +95,12 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas Reportes*/
 
     /*Rutas Solicitudes*/
-    Route::get('solicitarvehiculo.index', function () {
-        return view('inputsViews.vehiculos.policia.index-vehiculo');
-    })->name('solicitudvehiculo.index');
+    Route::get('solicitarvehiculo.policia.index', function () {
+        return view("inputsViews.solicitudes.vehiculos.policia.solicitudvehiculopolicia-index");
+    })->name('solicitarvehiculo.policia');
+
+    Route::put('/personal/policia/{id}/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
+    ->name('anularsolicitudvehiculopolicia-pendiente');
 
     Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
     ->name('guardarsolicitudvehiculo');

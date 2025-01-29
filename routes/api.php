@@ -29,7 +29,7 @@ Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/anuladas', [ApiSoli
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesPolicia']);
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasPolicia']);
 Route::get('/personal/policia/{id}/get/solicitud-pendiente', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoPendientePolicia']);
-Route::put('/personal/policia/{id}/revoke', [ApiSolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia']);
+Route::resource('/solicitudesvehiculos', ApiSolicitudvehiculoController::class);
 
 /*Api Información personal policia*/
 Route::get('/provincias/{id}', [ApiProvinciaController::class, 'show']);

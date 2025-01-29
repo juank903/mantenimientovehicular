@@ -16,6 +16,8 @@ class ApiSolicitudvehiculoController extends Controller
     public function index()
     {
         //
+        $solicitudesvehiculos = Solicitudvehiculo::with('personal')->get();
+        return response()->json($solicitudesvehiculos);
     }
 
     /**
@@ -40,7 +42,7 @@ class ApiSolicitudvehiculoController extends Controller
     public function show(string $id)
     {
         //
-       /*  $Solicitudvehiculo = Solicitudvehiculo::findOrFail($id);
+        /* $Solicitudvehiculo = Solicitudvehiculo::findOrFail($id);
         return response()->json($Solicitudvehiculo); */
     }
 
@@ -152,31 +154,5 @@ class ApiSolicitudvehiculoController extends Controller
             'personal_id' => $personalId,
             'numero_solicitudes' => $numeroSolicitudes
         ]);
-    }
-    public function revokeSolicitudVehiculoPolicia($personalId)
-    {
-
-        $personal = Personalpolicia::find($personalId);
-
-        if ($personal) {
-            // Obtener las solicitudes de vehículos del usuario dado
-            $solicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Pendiente')
-                ->get();
-
-            if ($solicitudes->isEmpty()) {
-                return response()->json(['error' => 'No hay solicitudes pendientes para anular.'], 404);
-            }
-            // Cambiar el estado a "anulada"
-            foreach ($solicitudes as $solicitud) {
-                $solicitud->solicitudvehiculos_estado = 'Anulada';
-                $solicitud->save();
-            }
-            return response()->json(['mensaje' => 'Solicitudes anuladas correctamente.']);
-        } else {
-            return response()->json(['error' => 'No existe el Personal Policial.'], 404);
-        }
     }
 }
