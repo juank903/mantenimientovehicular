@@ -43,7 +43,7 @@ class ApiProvinciaController extends Controller
 
         // Verificar si la provincia existe
         if (!$provincia) {
-            return response()->json(['message' => 'Provincia no encontrada'], 404);
+            return response()->json(['error' => 'Provincia no encontrada'], 404);
         }
 
         // Devolver la provincia y sus relaciones en formato JSON

@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
 });
-Route::get('quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
-Route::resource('vehiculos', ApiVehiculoController::class);
-Route::resource('circuito', ApiCircuitoController::class);
+Route::get('/quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
+Route::resource('/vehiculos', ApiVehiculoController::class);
+Route::resource('/circuito', ApiCircuitoController::class);
 
 /*Api Solicitudes hechas por usuario policia*/
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPolicia']);
@@ -35,3 +35,4 @@ Route::resource('/solicitudesvehiculos', ApiSolicitudvehiculoController::class);
 Route::get('/provincias/{id}', [ApiProvinciaController::class, 'show']);
 Route::get('/personal/policia/{id}/detalles', [ApiPersonalpoliciaController::class, 'show']);
 Route::get('/subcircuito/{id}/provincia', [ApiSubcircuitoController::class, 'show']);
+Route::resource('/personal', ApiPersonalpoliciaController::class);

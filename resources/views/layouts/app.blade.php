@@ -18,6 +18,43 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
+    @if (Request::is('mostrartodopersonal') || Request::is('mostrartodovehiculos')  )
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
+        <!-- DataTables Buttons CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+        <!-- DataTables Buttons JS -->
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+        <!-- JSZip for Excel export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <!-- pdfmake for PDF export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+
+        <style>
+            #vehiculos {
+                background-color: #f9f9f9;
+            }
+
+            #vehiculos thead th {
+                background-color: #ffffff;
+
+            }
+
+            #vehiculos tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+        </style>
+    @endif
+
 </head>
 
 <body class="font-sans antialiased bg-gray-300">
