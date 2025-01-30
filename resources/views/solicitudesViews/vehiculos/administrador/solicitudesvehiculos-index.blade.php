@@ -1,19 +1,28 @@
 <x-app-layout>
 
     <!--Container-->
-    <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
+    <div class="container flex w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
 
         <!-- Card -->
         <div id='recipients' class="p-8 mt-6 rounded shadow bg-white">
-            <table id="vehiculos" class="stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
+            <table id="solicitudesvehiculos" class="stripe hover"
+                style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                 <thead>
                     <tr>
-                        <th data-idx="0">Marca Vehículo</th>
-                        <th data-idx="1">Tipo Vehículo</th>
-                        <th data-idx="2">Modelo Vehículo</th>
-                        <th data-idx="3">Color Vehículo</th>
-                        <th data-idx="4">Placa Vehículo</th>
-                        <th>Acciones</th>
+                        <th rowspan="2">Solicitud No.</th>
+                        <th rowspan="2">Fecha de creación</th>
+                        <th rowspan="2">Fecha para requerimiento</th>
+                        <th colspan="5">Usuario</th>
+                        <th rowspan="2">Vehículo solicitado</th>
+                        <th rowspan="2">Tipo solicitud</th>
+                        <th rowspan="2">Acciones</th>
+                    </tr>
+                    <tr>
+                        <th>Grado</th>
+                        <th>Apellido paterno</th>
+                        <th>Apellido materno</th>
+                        <th>Primer nombre</th>
+                        <th>Segundo nombre</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,131 +35,97 @@
     </div>
     <!-- /Container -->
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
-    <!-- DataTables Buttons CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
-    <!-- DataTables Buttons JS -->
-    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
-    <!-- JSZip for Excel export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- pdfmake for PDF export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
-
-    <style>
-        #vehiculos {
-            background-color: #f9f9f9;
-        }
-        #vehiculos thead th {
-            background-color: #ffffff;
-
-        }
-        #vehiculos tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
     <script>
         $(document).ready(function() {
-            table = $('#vehiculos').DataTable({
+            table = $('#solicitudesvehiculos').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ url('api/vehiculos') }}',
+                    url: '{{ url('/api/solicitudesvehiculos') }}',
                     type: 'GET',
                     dataSrc: function(json) {
-                        console.log(json); // Ver la estructura de los datos
-                        return json.data; // Retornar solo los datos de los vehículos
+                        return json.data || json.vehiculos; // Asegura obtener los datos correctamente
                     },
                     data: function(d) {
-                        // Aquí puedes agregar cualquier dato adicional que necesites enviar
-                        d.perPage = d.length ||
-                            0; // Captura el valor seleccionado de perPage
+                        d.perPage = d.length || 10; // Captura el valor de perPage
                         d.page = d.start / d.length + 1; // Calcula la página actual
-                        // Si tienes un campo de búsqueda
-                        d.search = {
-                            value: d.search.value || ' '
-                        };
-                        console.log(d); // Ver los parámetros enviados
+                        d.search = { value: d.search.value || '' };
                     }
                 },
-                columns: [{
-                        data: 'marca_vehiculos'
+                columns: [
+                    { data: 'id' },
+                    {
+                        data: 'created_at',
+                        render: function(data, type, row) {
+                            if (type === "display" || type === "filter") {
+                                return new Date(data).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: '2-digit' }).replace('.', '');
+                            }
+                            return data;
+                        }
                     },
                     {
-                        data: 'tipo_vehiculos'
+                        data: 'solicitudvehiculos_fecharequerimiento',
+                        render: function(data, type, row) {
+                            if (type === "display" || type === "filter") {
+                                return new Date(data).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: '2-digit' }).replace('.', '');
+                            }
+                            return data;
+                        }
                     },
+                    { data: 'personal[0].rango_personal_policias' },
+                    { data: 'personal[0].primerapellido_personal_policias' },
+                    { data: 'personal[0].segundoapellido_personal_policias' },
+                    { data: 'personal[0].primernombre_personal_policias' },
+                    { data: 'personal[0].segundonombre_personal_policias' },
+                    { data: 'solicitudvehiculos_tipo' },
                     {
-                        data: 'modelo_vehiculos'
-                    },
-                    {
-                        data: 'color_vehiculos'
-                    },
-                    {
-                        data: 'placa_vehiculos'
+                        data: 'solicitudvehiculos_estado',
+                        render: function(data, type, row) {
+                            let colorClass = data === "Pendiente" ? "bg-orange-300 text-orange-700" :
+                                             data === "Anulada" ? "bg-red-300 text-red-700" :
+                                             "bg-green-300 text-green-700";
+                            return `<span class="text-center flex font-bold ${colorClass}">${data}</span>`;
+                        }
                     },
                     {
                         data: null,
                         render: function(data, type, row) {
                             return `
-                    <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                        <x-show-button />
-                        <x-edit-button />
-                        <x-delete-button />
-                    </div>`;
+                                <div class="flex justify-center space-x-4 align-middle cursor-pointer">
+                                    <x-show-button />
+                                    <x-edit-button />
+                                    <x-delete-button />
+                                </div>`;
                         },
                         orderable: false
                     }
                 ],
+                order: [[9, 'asc']], // Asegura que se ordena por la primera columna
                 layout: {
                     topStart: {
                         buttons: ['pageLength', 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print']
                     }
                 },
                 language: {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "Filtre los datos para visualizar la tabla",
-                    "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
-                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
-                    "sInfoPostFix": "",
-                    // Otros mensajes de idioma
+                    sProcessing: "Procesando...",
+                    sLengthMenu: "Mostrar _MENU_ registros",
+                    sZeroRecords: "Filtre los datos para visualizar la tabla",
+                    sInfo: "Mostrando de _START_ a _END_ de _TOTAL_ registros",
+                    sInfoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    sInfoFiltered: "(filtrado de _MAX_ registros en total)"
                 },
-                // Configura la paginación para que use los valores de `currentPage` y `perPage` de la API
-                pageLength: 0, // Establece el valor por defecto
-                lengthMenu: [0, 5, 10, 25, 50, 100], // Opciones de longitud de página
-                order: {
-                    idx: 0,
-                    dir: 'asc'
-                }
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100]
             });
 
-            // Función para cargar la siguiente página
-            function loadNextPage() {
-                var info = table.page.info(); // Obtiene información sobre la página actual
-                if (info.page < info.pages - 1) { // Verifica si no es la última página
-                    table.page(info.page + 1).draw(false); // Cambia a la siguiente página
+            $('#nextPageButton').on('click', function() {
+                let info = table.page.info();
+                if (info.page < info.pages - 1) {
+                    table.page(info.page + 1).draw(false);
                 } else {
                     console.log("Ya estás en la última página.");
                 }
-            }
-
-            // Llama a la función cuando necesites cargar la siguiente página
-            $('#nextPageButton').on('click', function() {
-                loadNextPage(); // Llama a la función para cargar la siguiente página
             });
-            table.columns().every(function(index) {
-console.log('Índice de columna: ' + index + ' - Nombre: ' + this.header().innerHTML);
-});
         });
     </script>
 </x-app-layout>

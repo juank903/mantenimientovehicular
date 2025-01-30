@@ -3,6 +3,7 @@
         $menuPersonal = ['Ingresar personal' => 'register', 'Listar personal' => 'mostrartodopersonal'];
         $menuVehiculo = ['Listar vehículos' => 'mostrartodovehiculos'];
         //$menuVehiculo = ['Ingresar vehículo' => 'vehiculos.index', 'Listar vehículos' => 'mostrartodovehiculos'];
+        $menuSolicitudes = ['Listado Solicitudes Vehículos' => 'mostrartodasolicitudesvehiculos'];
         //$menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }
@@ -19,7 +20,7 @@
     if (Auth::user()->rol()  == 'policia' && $data['numero_solicitudes'] == 0) {
         $menuSolicitudes = ['Pedido vehículo' => 'solicitarvehiculo.policia'];
     }
-    else{
+    else if(Auth::user()->rol()  == 'policia'){
         $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculopolicia-pendiente'];
     }
 
@@ -47,12 +48,13 @@
                         <x-navigation.navlinkgroup class="mt-4" :items="$menuVehiculo" :active="request()->routeIs('vehiculo')">
                             {{ __('Vehículos') }}
                         </x-navigation.navlinkgroup>
+                        <x-navigation.navlinkgroup class="mt-4" :items="$menuSolicitudes">
+                            {{ __('Solicitudes') }}
+                        </x-navigation.navlinkgroup>
                         {{-- <x-navigation.navlink :href="route('dependencia')" :active="request()->routeIs('dependencia')">
                             {{ __('Dependencias') }}
                         </x-navigation.navlink>
-                        <x-navigation.navlinkgroup class="mt-4" :items="$menuSolicitudes">
-                            {{ __('Solicitudes') }}
-                        </x-navigation.navlinkgroup> --}}
+                         --}}
                         {{-- <x-navigation.navlinkgroup class="mt-4" :items="$menuReportes">
                             {{ __('Reportes') }}
                         </x-navigation.navlinkgroup> --}}
