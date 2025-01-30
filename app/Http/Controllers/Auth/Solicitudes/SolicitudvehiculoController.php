@@ -32,7 +32,7 @@ class SolicitudvehiculoController extends Controller
             return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['error']);
         }
     }
-    public function revokeSolicitudVehiculoPolicia($personalId): RedirectResponse
+    public function revokeSolicitudVehiculoPolicia($personalId): RedirectResponse | JsonResponse
     {
 
         $personal = Personalpolicia::find($personalId);
@@ -46,7 +46,8 @@ class SolicitudvehiculoController extends Controller
                 ->get();
 
             if ($solicitudes->isEmpty()) {
-                return response()->json(['error' => 'No hay solicitudes pendientes para anular.'], 404);
+                return redirect()->intended(route('dashboard', absolute: false))->with('error', 'No hay solicitudes pendientes para anular.');
+                //return response()->json(['error' => 'No hay solicitudes pendientes para anular.'], 404);
             }
             // Cambiar el estado a "anulada"
             foreach ($solicitudes as $solicitud) {

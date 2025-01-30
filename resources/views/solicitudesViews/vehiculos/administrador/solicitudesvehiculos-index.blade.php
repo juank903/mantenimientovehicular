@@ -49,16 +49,23 @@
                     data: function(d) {
                         d.perPage = d.length || 10; // Captura el valor de perPage
                         d.page = d.start / d.length + 1; // Calcula la página actual
-                        d.search = { value: d.search.value || '' };
+                        d.search = {
+                            value: d.search.value || ''
+                        };
                     }
                 },
-                columns: [
-                    { data: 'id' },
+                columns: [{
+                        data: 'id'
+                    },
                     {
                         data: 'created_at',
                         render: function(data, type, row) {
                             if (type === "display" || type === "filter") {
-                                return new Date(data).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: '2-digit' }).replace('.', '');
+                                return new Date(data).toLocaleDateString('es-ES', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: '2-digit'
+                                }).replace('.', '');
                             }
                             return data;
                         }
@@ -67,40 +74,67 @@
                         data: 'solicitudvehiculos_fecharequerimiento',
                         render: function(data, type, row) {
                             if (type === "display" || type === "filter") {
-                                return new Date(data).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: '2-digit' }).replace('.', '');
+                                return new Date(data).toLocaleDateString('es-ES', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: '2-digit'
+                                }).replace('.', '');
                             }
                             return data;
                         }
                     },
-                    { data: 'personal[0].rango_personal_policias' },
-                    { data: 'personal[0].primerapellido_personal_policias' },
-                    { data: 'personal[0].segundoapellido_personal_policias' },
-                    { data: 'personal[0].primernombre_personal_policias' },
-                    { data: 'personal[0].segundonombre_personal_policias' },
-                    { data: 'solicitudvehiculos_tipo' },
+                    {
+                        data: 'personal[0].rango_personal_policias'
+                    },
+                    {
+                        data: 'personal[0].primerapellido_personal_policias'
+                    },
+                    {
+                        data: 'personal[0].segundoapellido_personal_policias'
+                    },
+                    {
+                        data: 'personal[0].primernombre_personal_policias'
+                    },
+                    {
+                        data: 'personal[0].segundonombre_personal_policias'
+                    },
+                    {
+                        data: 'solicitudvehiculos_tipo'
+                    },
                     {
                         data: 'solicitudvehiculos_estado',
                         render: function(data, type, row) {
-                            let colorClass = data === "Pendiente" ? "bg-orange-300 text-orange-700" :
-                                             data === "Anulada" ? "bg-red-300 text-red-700" :
-                                             "bg-green-300 text-green-700";
+                            let colorClass = data === "Pendiente" ?
+                                "bg-orange-300 text-orange-700" :
+                                data === "Anulada" ? "bg-red-300 text-red-700" :
+                                "bg-green-300 text-green-700";
                             return `<span class="text-center flex font-bold ${colorClass}">${data}</span>`;
                         }
                     },
                     {
                         data: null,
                         render: function(data, type, row) {
-                            return `
+                            var id = data.personal[0].user_id;
+                            var estado = data.solicitudvehiculos_estado; // Obtener el estado
+
+                            console.log('averiguar: ' + id + ', estado: ' + estado);
+
+                            // Mostrar el botón solo si el estado es "Pendiente"
+                            if (estado === "Pendiente") {
+                                return `
                                 <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                                    <x-show-button />
-                                    <x-edit-button />
-                                    <x-delete-button />
-                                </div>`;
+                                    <x-show-button href="{{ route('mostrarsolicitudvehiculopoliciadministrador-pendiente', ['id' => '__ID__']) }}" />
+                                </div>`.replace('__ID__', id);
+                            } else {
+                                return ''; // No mostrar nada si el estado no es "Pendiente"
+                            }
                         },
                         orderable: false
                     }
                 ],
-                order: [[9, 'asc']], // Asegura que se ordena por la primera columna
+                order: [
+                    [9, 'asc']
+                ], // Asegura que se ordena por la primera columna
                 layout: {
                     topStart: {
                         buttons: ['pageLength', 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print']

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Quejasugerencia;
 use Auth;
 use Http;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -53,13 +54,27 @@ class ReportesController extends Controller
         return response()->json($arrayQuejasugerencias);
     }
 
-    public function solicitudvehiculopendientePolicia(){
+    public function solicitudvehiculopendientePolicialogeado(){
         $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
         $data = $response->successful() ? $response->json() : [];
         if(Auth::user()->rol() == 'policia' && $data['numero_solicitudes'] == 0){
             return redirect()->route('dashboard')->with('error','Usted no tiene solicitudes pendientes');
         }else{
             $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/get/solicitud-pendiente'));
+            $data = $response->successful() ? $response->json() : [];
+
+            return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index',compact('data'));
+        }
+    }
+    public function solicitudvehiculopendientePoliciadministrador($id){
+        //dd($request);
+        $response = Http::get(url('/api/personal/policia/' . $id . '/totalsolicitudesvehiculos/pendientes'));
+        $data = $response->successful() ? $response->json() : [];
+        //dd(Auth::user()->rol());
+        if((Auth::user()->rol() == 'administrador' || Auth::user()->rol() == 'auxiliar' || Auth::user()->rol() == 'gerencia') && $data['numero_solicitudes'] == 0){
+            return redirect()->route('dashboard')->with('error','El policia no tiene solicitudes pendientes');
+        }else if (Auth::user()->rol() == 'administrador' || Auth::user()->rol() == 'auxiliar' || Auth::user()->rol() == 'gerencia') {
+            $response = Http::get(url('/api/personal/policia/' . $id . '/get/solicitud-pendiente'));
             $data = $response->successful() ? $response->json() : [];
 
             return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index',compact('data'));

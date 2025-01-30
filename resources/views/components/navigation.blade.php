@@ -21,7 +21,7 @@
         $menuSolicitudes = ['Pedido vehículo' => 'solicitarvehiculo.policia'];
     }
     else if(Auth::user()->rol()  == 'policia'){
-        $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculopolicia-pendiente'];
+        $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculopolicialogeado-pendiente'];
     }
 
 @endphp
