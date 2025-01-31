@@ -4,6 +4,7 @@
     //$array = json_decode($data, TRUE);
     //print_r($array);
     $id = $data['personal']['user_id'];
+    $idSubcircuito = $data['personal']['subcircuito'][0]['id'];
     $apellidoPaterno = $data['personal']['primerapellido_personal_policias'];
     $apellidoMaterno = $data['personal']['segundoapellido_personal_policias'];
     $primerNombre = $data['personal']['primernombre_personal_policias'];
@@ -54,7 +55,7 @@
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">
                     Esta es la información de la solicitud que usted tiene pendiente hasta el momento, puede
                     anularla si
-                    desea.
+                    desea. {{ $idSubcircuito }} -- {{ $tipoVehiculoSolicitado }}
                 </p>
             </div>
             <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
@@ -120,7 +121,7 @@
                     </div>
                 </dl>
 
-                @if (Auth::user()->rol() == 'policia')
+                @if (Auth::user()->rol() == 'policia' || Auth::user()->rol() == 'administrador' )
                     <button onclick="openModal()"
                         class="w-full items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200">
                         Anular Solicitud
@@ -150,6 +151,11 @@
                         <input type="checkbox" name="motivo" value="no_requiere" class="mr-2"> Ya no requiere el
                         vehículo
                     </label>
+                    @if (Auth::user()->rol() == 'administrador' )
+                    <label class="flex items-center mt-2">
+                        <input type="checkbox" name="motivo" value="no_hay_vehiculos_disponibles" class="mr-2"> No hay vehículos disponibles
+                    </label>
+                    @endif
 
                 </div>
                 <input type="hidden" name="id" value="{{ $id }}">
@@ -161,6 +167,72 @@
             </form>
         </div>
     </div>
+    @if (Auth::user()->rol() == 'administrador' )
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#btnConsultarVehiculos').click(function() {
+                // Obtener los valores de las variables
+                let idSubcircuito = {{ $idSubcircuito }};
+                let tipoVehiculo = '{{ $tipoVehiculoSolicitado }}'; // Se pasa como string correctamente
 
+                // Codificar las variables para la URL
+                idSubcircuito = encodeURIComponent(idSubcircuito);
+                tipoVehiculo = encodeURIComponent(tipoVehiculo);
 
+                // Construir la URL completa
+                let urlCompleta = '/api/vehiculos/subcircuito/' + idSubcircuito + '/tipo/' + tipoVehiculo;
+
+                // Realizar la solicitud AJAX
+                $.ajax({
+                    url: urlCompleta,
+                    method: 'GET',
+                    success: function(data) {
+                        let select = $('#selectMarca');
+                        select.empty();
+                        select.append('<option value="">Seleccione una marca</option>');
+
+                        data.forEach(vehiculo => {
+                            select.append(
+                                `<option value="${vehiculo.id}" data-vehiculo='${JSON.stringify(vehiculo)}'>${vehiculo.marca_vehiculos}</option>`
+                            );
+                        });
+
+                        $('#vehiculoContainer').removeClass('hidden');
+                    }
+                });
+            });
+
+            $('#selectMarca').change(function() {
+                let vehiculo = $(this).find(':selected').data('vehiculo');
+
+                if (vehiculo) {
+                    $('#placa').text(vehiculo.placa_vehiculos);
+                    $('#parqueadero').text(vehiculo.parqueaderos[0].parqueaderos_nombre);
+                    $('#responsable').text(vehiculo.parqueaderos[0].parqueaderos_responsable);
+                    $('#espacio').text(vehiculo.parqueaderos[0].espacios[0].espacioparqueaderos_nombre);
+                    $('#detalleVehiculo').removeClass('hidden');
+                } else {
+                    $('#detalleVehiculo').addClass('hidden');
+                }
+            });
+        });
+    </script>
+
+    <div class="container mx-auto px-4 mt-10">
+        <button id="btnConsultarVehiculos" class="bg-blue-500 text-white px-4 py-2 rounded">Consultar Vehículos</button>
+
+        <div id="vehiculoContainer" class="hidden mt-4">
+            <label for="selectMarca" class="block text-sm font-medium text-gray-700">Seleccione una marca:</label>
+            <select id="selectMarca" class="border-gray-300 rounded mt-1 p-2 w-full"></select>
+        </div>
+
+        <div id="detalleVehiculo" class=" mt-4 p-4 border rounded bg-gray-100">
+            <p><strong>Placa:</strong> <span id="placa"></span></p>
+            <p><strong>Parqueadero:</strong> <span id="parqueadero"></span></p>
+            <p><strong>Responsable:</strong> <span id="responsable"></span></p>
+            <p><strong>Espacio:</strong> <span id="espacio"></span></p>
+        </div>
+    </div>
+    @endif
 </x-app-layout>
