@@ -91,9 +91,9 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas Reportes*/
 
     /*Rutas Solicitudes*/
-    Route::get('mostrartodasolicitudesvehiculos', function () {
+    Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
         return view('solicitudesViews.vehiculos.administrador.solicitudesvehiculos-index');
-    })->name('mostrartodasolicitudesvehiculos');
+    })->name('mostrartodasolicitudesvehiculos-pendientes');
 
     Route::get('solicitarvehiculo.policia.index', [SolicitudvehiculoController::class, 'solicitudvehiculopendientePolicialogeado'])
     ->name('solicitarvehiculo.policia');

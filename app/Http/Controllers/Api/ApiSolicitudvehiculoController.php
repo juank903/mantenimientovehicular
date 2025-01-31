@@ -242,4 +242,31 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
+    public function getNumSolicitudesVehiculoPendientesTotal(): JsonResponse
+    {
+        // Contar todas las solicitudes en estado 'Pendiente'
+        $numeroSolicitudes = Solicitudvehiculo::where('solicitudvehiculos_estado', 'Pendiente')->count();
+
+        return response()->json([
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+    public function getNumSolicitudesVehiculoAnuladasTotal(): JsonResponse
+    {
+        // Contar todas las solicitudes en estado 'Pendiente'
+        $numeroSolicitudes = Solicitudvehiculo::where('solicitudvehiculos_estado', 'Anulada')->count();
+
+        return response()->json([
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+    public function getNumSolicitudesVehiculoAprobadasTotal(): JsonResponse
+    {
+        // Contar todas las solicitudes en estado 'Pendiente'
+        $numeroSolicitudes = Solicitudvehiculo::where('solicitudvehiculos_estado', 'Aprobada')->count();
+
+        return response()->json([
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
 }

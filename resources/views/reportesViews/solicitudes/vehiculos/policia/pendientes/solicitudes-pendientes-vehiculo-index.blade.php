@@ -44,7 +44,7 @@
             @if (Auth::user()->rol() == 'policia')
                 <x-navigation.botonregresar href="{{ route('dashboard') }}" />
             @elseif (Auth::user()->rol() == 'administrador')
-                <x-navigation.botonregresar href="{{ route('mostrartodasolicitudesvehiculos') }}" />
+                <x-navigation.botonregresar href="{{ route('mostrartodasolicitudesvehiculos-pendientes') }}" />
             @endif
 
 

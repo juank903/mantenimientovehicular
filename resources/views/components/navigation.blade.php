@@ -3,7 +3,7 @@
         $menuPersonal = ['Ingresar personal' => 'register', 'Listar personal' => 'mostrartodopersonal'];
         $menuVehiculo = ['Listar vehículos' => 'mostrartodovehiculos'];
         //$menuVehiculo = ['Ingresar vehículo' => 'vehiculos.index', 'Listar vehículos' => 'mostrartodovehiculos'];
-        $menuSolicitudes = ['Listado Solicitudes Vehículos' => 'mostrartodasolicitudesvehiculos'];
+        $menuSolicitudes = ['Solicitudes Pendientes Vehículos' => 'mostrartodasolicitudesvehiculos-pendientes'];
         //$menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
         //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
     }

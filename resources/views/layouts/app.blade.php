@@ -18,7 +18,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
-    @if (Request::is('mostrartodopersonal') || Request::is('mostrartodovehiculos') || Request::is('mostrartodasolicitudesvehiculos') )
+    @if (Request::is('mostrartodopersonal') || Request::is('mostrartodovehiculos') || Request::is('mostrartodasolicitudesvehiculos/pendientes') )
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
         <!-- DataTables Buttons CSS -->
