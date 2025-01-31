@@ -71,9 +71,6 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas personal policial*/
 
     /*Rutas Vehículos*/
-    /* Route::get('solicitarvehiculo.policia.index', [InputvehiculosviewsController::class, 'solicitudvehiculoPoliciaIndex'])
-    ->name('solicitarvehiculo.policia'); */
-
     Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
     ->name('guardarvehiculo');
 
@@ -87,9 +84,9 @@ Route::middleware('auth')->group(function () {
     /*Fin Rutas Mantenimientos*/
 
     /*Rutas Reportes*/
-    Route::get('mostrarsolicitudvehiculopolicialogeado-pendiente', [ReportesController::class, 'solicitudvehiculopendientePolicialogeado'])
+    Route::get('mostrarsolicitudvehiculopolicialogeado-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePolicialogeado'])
     ->name('mostrarsolicitudvehiculopolicialogeado-pendiente');
-    Route::get('mostrarsolicitudvehiculopolicia/{id}/administrador-pendiente', [ReportesController::class, 'solicitudvehiculopendientePoliciadministrador'])
+    Route::get('mostrarsolicitudvehiculopolicia/{id}/administrador-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePoliciadministrador'])
     ->name('mostrarsolicitudvehiculopoliciadministrador-pendiente');
     /*Fin Rutas Reportes*/
 
@@ -97,12 +94,16 @@ Route::middleware('auth')->group(function () {
     Route::get('mostrartodasolicitudesvehiculos', function () {
         return view('solicitudesViews.vehiculos.administrador.solicitudesvehiculos-index');
     })->name('mostrartodasolicitudesvehiculos');
-    Route::get('solicitarvehiculo.policia.index', function () {
+
+    Route::get('solicitarvehiculo.policia.index', [SolicitudvehiculoController::class, 'solicitudvehiculopendientePolicialogeado'])
+    ->name('solicitarvehiculo.policia');
+
+    /* Route::get('solicitarvehiculo.policia.index', function () {
         return view("inputsViews.solicitudes.vehiculos.policia.solicitudvehiculopolicia-index");
-    })->name('solicitarvehiculo.policia');
+    })->name('solicitarvehiculo.policia'); */
 
        /*Solicitudes acciones solicitudes */
-        Route::put('/personal/policia/{id}/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
+        Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
         ->name('anularsolicitudvehiculopolicia-pendiente');
 
         Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])

@@ -36,3 +36,5 @@ Route::get('/provincias/{id}', [ApiProvinciaController::class, 'show']);
 Route::get('/personal/policia/{id}/detalles', [ApiPersonalpoliciaController::class, 'show']);
 Route::get('/subcircuito/{id}/provincia', [ApiSubcircuitoController::class, 'show']);
 Route::resource('/personal', ApiPersonalpoliciaController::class);
+
+Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);

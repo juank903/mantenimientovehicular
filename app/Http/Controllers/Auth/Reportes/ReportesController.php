@@ -54,7 +54,7 @@ class ReportesController extends Controller
         return response()->json($arrayQuejasugerencias);
     }
 
-    public function solicitudvehiculopendientePolicialogeado(){
+    public function getSolicitudvehiculopendientePolicialogeado(){
         $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
         $data = $response->successful() ? $response->json() : [];
         if(Auth::user()->rol() == 'policia' && $data['numero_solicitudes'] == 0){
@@ -66,7 +66,7 @@ class ReportesController extends Controller
             return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index',compact('data'));
         }
     }
-    public function solicitudvehiculopendientePoliciadministrador($id){
+    public function getSolicitudvehiculopendientePoliciadministrador($id){
         //dd($request);
         $response = Http::get(url('/api/personal/policia/' . $id . '/totalsolicitudesvehiculos/pendientes'));
         $data = $response->successful() ? $response->json() : [];

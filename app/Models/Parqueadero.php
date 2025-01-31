@@ -16,4 +16,8 @@ class Parqueadero extends Model
     public function subcircuitos() {
         return $this->belongsToMany(Subcircuitodependencia::class);
     }
+    public function espacios()
+    {
+        return $this->belongsToMany(Espacioparqueadero::class);
+    }
 }

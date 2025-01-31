@@ -71,7 +71,7 @@
                         }
                     },
                     {
-                        data: 'solicitudvehiculos_fecharequerimiento',
+                        data: 'solicitudvehiculos_fecharequerimientodesde',
                         render: function(data, type, row) {
                             if (type === "display" || type === "filter") {
                                 return new Date(data).toLocaleDateString('es-ES', {

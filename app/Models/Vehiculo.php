@@ -22,6 +22,10 @@ class Vehiculo extends Model
     public function parqueaderos() {
         return $this->belongsToMany(Parqueadero::class);
     }
+    public function subcircuito()
+    {
+        return $this->belongsToMany(Subcircuitodependencia::class);
+    }
     protected function guardarvehiculo(Request $request): JsonResponse{
         try {
             // Validar los datos del request aquí si es necesario

@@ -13,18 +13,35 @@ class Solicitudvehiculo extends Model
     {
         return $this->belongsToMany(Personalpolicia::class);
     }
+    public function historialsolicitudvehiculo()
+    {
+        return $this->hasOne(HistorialSolicitudVehiculo::class);
+    }
 
     protected function crearsolicitudvehiculo($request): JsonResponse
     {
 
         try {
-            $fechaRequerimiento = $request->input('fecharequerimiento');
-            $fechaRequerimiento = Carbon::createFromFormat('Y-m-d', $fechaRequerimiento); // Fecha de inicio
+
+            $fechaRequerimientodesde = $request->input('fecharequerimientodesde');
+            $horaRequerimientodesde = $request->input('horarequerimientodesde');
+            $fechaRequerimientohasta = $request->input('fecharequerimientohasta');
+            $horaRequerimientohasta = $request->input('horarequerimientohasta');
+            //dd($fechaRequerimientodesde);
+            // Combinar fecha y hora para formar un timestamp
+            /* $fechahoraDesde = $fechaRequerimientodesde . ' ' . $horaRequerimientodesde;
+            $fechahoraHasta = $fechaRequerimientohasta . ' ' . $horaRequerimientohasta; */
+            // Crear los timestamps usando Carbon
+            $timestampDesde = Carbon::createFromFormat('Y-m-d', $fechaRequerimientodesde);
+            $timestampHasta = Carbon::createFromFormat('Y-m-d', $fechaRequerimientohasta);
+
+
             $solicitudvehiculo = new Solicitudvehiculo();
             $solicitudvehiculo->solicitudvehiculos_detalle = $request->detalle;
             $solicitudvehiculo->solicitudvehiculos_tipo = $request->tipo;
-            $solicitudvehiculo->solicitudvehiculos_prioridad = $request->prioridad;
-            $solicitudvehiculo->solicitudvehiculos_fecharequerimiento = $fechaRequerimiento;
+            $solicitudvehiculo->solicitudvehiculos_jornada = $request->jornada;
+            $solicitudvehiculo->solicitudvehiculos_fecharequerimientodesde = $timestampDesde;
+            $solicitudvehiculo->solicitudvehiculos_fecharequerimientohasta = $timestampHasta;
             $solicitudvehiculo->save();
 
             return response()->json([
@@ -35,7 +52,7 @@ class Solicitudvehiculo extends Model
             ], 201);
 
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => 'Error al registrar la solicitud.'], 500);
+            return response()->json(['success' => false, 'error' => 'Error 1 al registrar la solicitud.'], 500);
         }
     }
 
@@ -59,6 +76,8 @@ class Solicitudvehiculo extends Model
 
             return response()->json([
                 'success' => true,
+                'personalpolicia_id' => $request->id,
+                'solicitudvehiculo_id' => $solicitudVehiculo->id,
                 'mensaje' => 'Solicitud de vehículo añadida con éxito',
             ], 201);
 
