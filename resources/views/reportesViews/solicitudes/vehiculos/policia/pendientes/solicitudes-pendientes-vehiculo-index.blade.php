@@ -14,16 +14,15 @@
     $provincia =
         $data['personal']['subcircuito'][0]['circuito']['distrito']['provincia']['nombre_provincia_dependencias']; // "Azuay"
     $fechaElaboracionSolicitud = $data['solicitud_pendiente'][0]['created_at'];
-    $fechaElaboracionSolicitud = new DateTime($fechaElaboracionSolicitud );
+    $fechaElaboracionSolicitud = new DateTime($fechaElaboracionSolicitud);
     $fechaElaboracionSolicitud = $fechaElaboracionSolicitud->format('j F Y');
     $estadoSolicitud = $data['solicitud_pendiente'][0]['solicitudvehiculos_estado'];
     $detalleSolicitud = $data['solicitud_pendiente'][0]['solicitudvehiculos_detalle'];
     $fechaRequerimientoVehiculo = $data['solicitud_pendiente'][0]['solicitudvehiculos_fecharequerimiento'];
-    $fechaRequerimientoVehiculo = new DateTime($fechaRequerimientoVehiculo );
+    $fechaRequerimientoVehiculo = new DateTime($fechaRequerimientoVehiculo);
     $fechaRequerimientoVehiculo = $fechaRequerimientoVehiculo->format('j F Y');
 
     $tipoVehiculoSolicitado = $data['solicitud_pendiente'][0]['solicitudvehiculos_tipo'];
-
 
 @endphp
 
@@ -31,7 +30,13 @@
     <!--Container-->
     <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
         <div class="bg-white overflow-hidden shadow rounded-lg border">
-            <x-navigation.botonregresar href="{{ route('dashboard') }}" />
+            @if (Auth::user()->rol() == 'policia')
+                <x-navigation.botonregresar href="{{ route('dashboard') }}" />
+            @elseif (Auth::user()->rol() == 'administrador')
+                <x-navigation.botonregresar href="{{ route('mostrartodasolicitudesvehiculos') }}" />
+            @endif
+
+
             <div class="px-4 py-1 sm:px-6">
                 <h2 class="text-xl leading-8 font-medium text-gray-900">
                     Solicitud Vehicular {{ $estadoSolicitud }}<br />
@@ -96,15 +101,20 @@
                             {{ $tipoVehiculoSolicitado }}</dd>
                     </div>
                 </dl>
-                <form method="POST"
-                    class="relative flex items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200"
-                    action="{{ route('anularsolicitudvehiculopolicia-pendiente', auth()->id()) }}">
-                    @method('PUT')
-                    @csrf
-                    <button type="submit">
-                        <span class="relative z-10">Anular Solicitud</span>
-                    </button>
-                </form>
+
+                @if (Auth::user()->rol() == 'policia')
+                    <form method="POST"
+                        class="relative flex items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200"
+                        action="{{ route('anularsolicitudvehiculopolicia-pendiente', auth()->id()) }}">
+                        @method('PUT')
+                        @csrf
+                        <button type="submit">
+                            <span class="relative z-10">Anular Solicitud</span>
+                        </button>
+                    </form>
+                @elseif (Auth::user()->rol() == 'administrador')
+                @endif
+
             </div>
         </div>
 
