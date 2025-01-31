@@ -22,7 +22,7 @@ class ApiSubcircuitoController extends Controller
         ->find($id);
         // Verificar si el Subcircuito existe
         if (!$subcircuito) {
-            return response()->json(['message' => 'Subcircuito no encontrado'], 404);
+            return response()->json(['mensaje' => 'Subcircuito no encontrado'], 404);
         }
 
         // Devolver la provincia en formato JSON
