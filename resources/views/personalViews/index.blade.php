@@ -1,29 +1,19 @@
 <x-app-layout>
 
-    <!--Container-->
-    <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
-
-        <!--Card-->
-        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-
-            <table id="personal" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                <thead>
-                    <tr>
-                        <th class="w-1/6" >Rango</th>
-                        <th class="w-1/6" >Apellido Paterno</th>
-                        <th class="w-1/6" >Apellido Materno</th>
-                        <th class="w-1/6" >Primer Nombre</th>
-                        <th class="w-1/6" >Segundo Nombre</th>
-                        <th class="w-1/6">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <!--/Card-->
-    </div>
-    <!--/container-->
+    <table id="personal" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+        <thead>
+            <tr>
+                <th class="w-1/6">Rango</th>
+                <th class="w-1/6">Apellido Paterno</th>
+                <th class="w-1/6">Apellido Materno</th>
+                <th class="w-1/6">Primer Nombre</th>
+                <th class="w-1/6">Segundo Nombre</th>
+                <th class="w-1/6">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <script>
         $(document).ready(function() {
@@ -115,7 +105,7 @@
             $('#nextPageButton').on('click', function() {
                 loadNextPage(); // Llama a la función para cargar la siguiente página
             });
-/*             table.columns().every(function(index) {
+            /*table.columns().every(function(index) {
                 console.log('Índice de columna: ' + index + ' - Nombre: ' + this.header().innerHTML);
             }); */
         });

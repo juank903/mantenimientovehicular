@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Vehiculos;
+namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;

@@ -1,4 +1,4 @@
-@php
+{{-- @php
         //valores para los select
         $rangosarray = ["Capitan", "Teniente", "Subteniente", "Sargento Primero", "Sargento Segundo", "Cabo Primero", "Cabo Segundo"];
         $rolesarray = ["administrador", "auxiliar", "gerencia", "policia"];
@@ -113,7 +113,7 @@
                         {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         href="{{ route('login') }}">
                                         {{ __('Already registered?') }}
-                                    </a> --}}
+                                    </a>
 
                         <x-primary-button class="mt-4">
                             {{ __('Registrar') }}
@@ -129,3 +129,4 @@
     </div>
 
 </x-app-layout>
+ --}}

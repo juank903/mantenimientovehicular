@@ -18,7 +18,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
-    @if (Request::is('mostrartodopersonal') || Request::is('mostrartodovehiculos') || Request::is('mostrartodasolicitudesvehiculos/pendientes') )
+    @if (
+        Request::is('mostrartodopersonal') ||
+        Request::is('mostrartodovehiculos') ||
+        Request::is('mostrartodasolicitudesvehiculos/pendientes')
+        )
+
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
         <!-- DataTables Buttons CSS -->
@@ -46,7 +51,6 @@
 
             #vehiculos thead th {
                 background-color: #ffffff;
-
             }
 
             #vehiculos tbody tr:hover {
@@ -54,15 +58,19 @@
             }
         </style>
     @endif
+    @if ( Request::is('dashboard'))
+        <script src="https://cdnjs.com/libraries/Chart.js"></script>
+    @endif
 
 </head>
 
 <body class="font-sans antialiased bg-gray-300">
-
-    <x-navigation />
-    <!-- Page Content -->
-    {{ $slot }}
-
+    <x-navigation.navegacion :menuItems="$menuItems" />
+    <div class="container w-full md:w-4/5 xl:w-3/5 mx-auto px-2 mt-5 z-0 text-sm">
+        <div id='recipients' class="p-5 rounded-2xl shadow bg-white">
+            {{ $slot }}
+        </div>
+    </div>
 </body>
 
 </html>

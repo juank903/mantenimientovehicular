@@ -21,7 +21,37 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        //valores para los select
+        $rangosarray = [
+            'Capitan',
+            'Teniente',
+            'Subteniente',
+            'Sargento Primero',
+            'Sargento Segundo',
+            'Cabo Primero',
+            'Cabo Segundo',
+        ];
+        $rolesarray = [
+            'administrador',
+            'auxiliar',
+            'gerencia',
+            'policia'
+        ];
+        $conductorarray = [
+            'no',
+            'si'
+        ];
+        $tiposangrearray = [
+            'O+',
+            'O-',
+            'A+',
+            'A-',
+            'B+',
+            'B-',
+            'AB+',
+            'AB-'
+        ];
+        return view('personalViews.create', compact('rangosarray', 'rolesarray', 'conductorarray', 'tiposangrearray'));
     }
 
     /**
@@ -47,19 +77,18 @@ class RegisteredUserController extends Controller
         //event(new Registered($user));
         //Auth::login($user);
 
-        $request["id"]=User::getId($request->name);
+        $request["id"] = User::getId($request->name);
         $response = Personalpolicia::guardarpersonal($request);
         $data = json_decode($response->getContent(), true);
-        if($data['success']){
-            return redirect()->intended(route('dashboard', absolute: false))->with('mensaje',$data['mensaje']);
-        }
-        else {
+        if ($data['success']) {
+            return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);
+        } else {
             $response = User::eliminarultimousuarioagreado();
             $data = json_decode($response->getContent(), true);
-            if ($data['success']){
-                return redirect()->intended(route('dashboard', absolute: false))->with('error',$data['mensaje']);
-            }else{
-                return redirect()->intended(route('dashboard', absolute: false))->with('error',$data['mensaje']);
+            if ($data['success']) {
+                return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['mensaje']);
+            } else {
+                return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['mensaje']);
             }
 
         }

@@ -1,6 +1,4 @@
 @php
-    //dd($data);
-    // Datos extraídos de la solicitud
     $datosTipoVehiculo = ['Moto', 'Auto', 'Camioneta'];
     $datosJornada = ['Ordinaria', 'Extraordinaria'];
     $id = $data['id'];

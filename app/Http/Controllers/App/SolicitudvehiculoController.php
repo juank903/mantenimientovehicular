@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Solicitudes;
+namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\Historialsolicitudvehiculo;
-use App\Models\Personalpolicia;
 use App\Models\Solicitudvehiculo;
 use Auth;
 use Http;
@@ -17,16 +16,15 @@ class SolicitudvehiculoController extends Controller
     //
     public function guardarsolicitudvehiculo(Request $request)
     {
-        //dd($request);
         $response = Solicitudvehiculo::crearsolicitudvehiculo($request);
         $data = json_decode($response->getContent(), true);
 
         if ($data['success']) {
             $response = Solicitudvehiculo::actualizarintegridadId($request, $data['idSolicitud']);
             $data = json_decode($response->getContent(), true);
+
             if ($data['success']) {
-                //dd($data);
-                $response = Historialsolicitudvehiculo::guardarHistorialInicial($data['personalpolicia_id'], $data['solicitudvehiculo_id']);
+                $response = HistorialsolicitudvehiculoController::guardarHistorialInicial($data['personalpolicia_id'], $data['solicitudvehiculo_id']);
                 $data = json_decode($response->getContent(), true);
                 if ($data['success']) {
                     return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);
@@ -44,8 +42,6 @@ class SolicitudvehiculoController extends Controller
     }
     public function revokeSolicitudVehiculoPolicia(Request $request): RedirectResponse|JsonResponse
     {
-        //dd($request->all()); // Verifica qué datos están llegando realmente
-
         // Obtener el ID del personal desde el request
         $personalId = $request->input('id');
 
@@ -66,12 +62,10 @@ class SolicitudvehiculoController extends Controller
                 $solicitud->solicitudvehiculos_estado = 'Anulada';
                 $solicitud->save();
                 $motivo = $request->motivo;
-                //dd($request->all());
-                $response = Historialsolicitudvehiculo::guardarHistorialModificado($personalId, $solicitud->id, $motivo);
-                if($response){
+                $response = HistorialsolicitudvehiculoController::guardarHistorialModificado($personalId, $solicitud->id, $motivo);
+                if ($response) {
                     return redirect()->route('dashboard')->with('mensaje', 'Solicitud anulada y registrada');
-                }
-                else{
+                } else {
                     $solicitud->solicitudvehiculos_estado = 'Pendiente';
                     $solicitud->save();
                     return redirect()->route('dashboard')->with('error', 'No se pudo anular la solicitud.');

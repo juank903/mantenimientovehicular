@@ -4,16 +4,14 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\Inputs\Vehiculos\InputvehiculosviewsController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\Reportes\ReportesController;
-use App\Http\Controllers\Auth\Solicitudes\SolicitudvehiculoController;
-use App\Http\Controllers\Auth\Vehiculos\VehiculosController;
+use App\Http\Controllers\App\ReportesController;
+use App\Http\Controllers\App\SolicitudvehiculoController;
+use App\Http\Controllers\App\VehiculosController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Auth\Personal\PersonalController;
 use App\Http\Controllers\Auth\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,8 +52,10 @@ Route::middleware('auth')->group(function () {
         ->name('password.update');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+    /* Personal */
     Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
         ->name('register');
+    /*Fin Personal */
     Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
     Route::get('perfil', [ProfileController::class, 'edit'])
         ->name('profile.edit');
@@ -66,16 +66,19 @@ Route::middleware('auth')->group(function () {
     /* fin rutas por defecto*/
 
     /*Rutas personal policial */
-    Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
-        ->name('mostrartodopersonal');
+    /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
+        ->name('mostrartodopersonal'); */
+        Route::get('mostrartodopersonal', function () {
+            return view('personalViews.index');
+        })->name('mostrartodopersonal');
     /*Fin Rutas personal policial*/
 
     /*Rutas Vehículos*/
     Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
-    ->name('guardarvehiculo');
+        ->name('guardarvehiculo');
 
     Route::get('mostrartodovehiculos', function () {
-        return view('vehiculosViews.showall');
+        return view('vehiculosViews.index');
     })->name('mostrartodovehiculos');
     /*Fin Rutas Vehículos*/
 
@@ -85,9 +88,9 @@ Route::middleware('auth')->group(function () {
 
     /*Rutas Reportes*/
     Route::get('mostrarsolicitudvehiculopolicialogeado-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePolicialogeado'])
-    ->name('mostrarsolicitudvehiculopolicialogeado-pendiente');
+        ->name('mostrarsolicitudvehiculopolicialogeado-pendiente');
     Route::get('mostrarsolicitudvehiculopolicia/{id}/administrador-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePoliciadministrador'])
-    ->name('mostrarsolicitudvehiculopoliciadministrador-pendiente');
+        ->name('mostrarsolicitudvehiculopoliciadministrador-pendiente');
     /*Fin Rutas Reportes*/
 
     /*Rutas Solicitudes*/
@@ -96,17 +99,17 @@ Route::middleware('auth')->group(function () {
     })->name('mostrartodasolicitudesvehiculos-pendientes');
 
     Route::get('solicitarvehiculo.policia.index', [SolicitudvehiculoController::class, 'solicitudvehiculopendientePolicialogeado'])
-    ->name('solicitarvehiculo.policia');
+        ->name('solicitarvehiculo.policia');
 
     /* Route::get('solicitarvehiculo.policia.index', function () {
         return view("inputsViews.solicitudes.vehiculos.policia.solicitudvehiculopolicia-index");
     })->name('solicitarvehiculo.policia'); */
 
-       /*Solicitudes acciones solicitudes */
-        Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
+    /*Solicitudes acciones solicitudes */
+    Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
         ->name('anularsolicitudvehiculopolicia-pendiente');
 
-        Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
+    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
         ->name('guardarsolicitudvehiculo');
     /*Fin Rutas Solicitudes*/
 

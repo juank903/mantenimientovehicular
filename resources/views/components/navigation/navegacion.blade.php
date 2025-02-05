@@ -1,32 +1,5 @@
-@php
-    if (Auth::user()->rol() == 'administrador') {
-        $menuPersonal = ['Ingresar personal' => 'register', 'Listar personal' => 'mostrartodopersonal'];
-        $menuVehiculo = ['Listar vehículos' => 'mostrartodovehiculos'];
-        //$menuVehiculo = ['Ingresar vehículo' => 'vehiculos.index', 'Listar vehículos' => 'mostrartodovehiculos'];
-        $menuSolicitudes = ['Solicitudes Pendientes Vehículos' => 'mostrartodasolicitudesvehiculos-pendientes'];
-        //$menuSolicitudes = ['Pedido mantenimiento' => 'pedidomantenimiento/{5}'];
-        //$menuReportes = ['Listado quejas y sugerencias' => 'formularioquejasugerencias'];
-    }
+@props(['menuItems' => []])
 
-    $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
-
-        // Comprobar si la solicitud fue exitosa
-        if ($response->successful()) {
-            $data = $response->json(); // Decodificar la respuesta JSON
-        } else {
-            $data = []; // Manejar el error o la falla
-        }
-
-    if (Auth::user()->rol()  == 'policia' && $data['numero_solicitudes'] == 0) {
-        $menuSolicitudes = ['Pedido vehículo' => 'solicitarvehiculo.policia'];
-    }
-    else if(Auth::user()->rol()  == 'policia'){
-        $menuSolicitudes = ['Solicitud pendiente' => 'mostrarsolicitudvehiculopolicialogeado-pendiente'];
-    }
-
-@endphp
-@if (Auth::user()->rol() == 'policia')
-@endif
 <nav x-data="{ open: false }" class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 shadow-md w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,45 +9,20 @@
                 <div class="py-6">
                     <x-logopoliciah />
                 </div>
-                @if (Auth::user()->rol() == 'administrador')
-                    <!-- Navigation Links -->
-                    <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
-                        <x-navigation.navlink :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-navigation.navlink>
-                        <x-navigation.navlinkgroup class="mt-4" :items="$menuPersonal" :active="request()->routeIs('personal')">
-                            {{ __('Personal') }}
-                        </x-navigation.navlinkgroup>
-                        <x-navigation.navlinkgroup class="mt-4" :items="$menuVehiculo" :active="request()->routeIs('vehiculo')">
-                            {{ __('Vehículos') }}
-                        </x-navigation.navlinkgroup>
-                        <x-navigation.navlinkgroup class="mt-4" :items="$menuSolicitudes">
-                            {{ __('Solicitudes') }}
-                        </x-navigation.navlinkgroup>
-                        {{-- <x-navigation.navlink :href="route('dependencia')" :active="request()->routeIs('dependencia')">
-                            {{ __('Dependencias') }}
-                        </x-navigation.navlink>
-                         --}}
-                        {{-- <x-navigation.navlinkgroup class="mt-4" :items="$menuReportes">
-                            {{ __('Reportes') }}
-                        </x-navigation.navlinkgroup> --}}
-                    </div>
-                @endif
+                <!-- Navigation Links -->
+                <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
 
-                @if (Auth::user()->rol() == 'policia')
-                    <!-- Navigation Links -->
-                    <div class="hidden space-x-5 sm:-my-px sm:ms-10 sm:flex">
-                        <x-navigation.navlink :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-navigation.navlink>
-                        <x-navigation.navlinkgroup class="mt-4" :items="$menuSolicitudes">
-                            {{ __('Solicitudes') }}
+                    <x-navigation.navlink :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-navigation.navlink>
+
+                    @foreach ($menuItems as $menu)
+                        <x-navigation.navlinkgroup :items="$menu['items']" :active="request()->routeIs($menu['route'])">
+                            {{ __($menu['name']) }}
                         </x-navigation.navlinkgroup>
+                    @endforeach
 
-                    </div>
-                @endif
-
-
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -105,7 +53,6 @@
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
@@ -148,7 +95,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <div class="text-sm px-4">su rol es: {{ Auth::user()->rol()}}</div>
+                <div class="text-sm px-4">su rol es: {{ Auth::user()->rol() }}</div>
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Perfil') }}
                 </x-responsive-nav-link>

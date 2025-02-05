@@ -1,21 +1,18 @@
 <x-app-layout>
-    <div class="container w-full md:w-4/5 xl:w-3/5 mx-auto px-2 mt-10 z-0 text-sm">
-        <div id='recipients' class="p-8 mt-6 rounded shadow bg-white">
-            <table id="vehiculos" class="stripe hover w-full">
-                <thead>
-                    <tr>
-                        <th>Marca Vehículo</th>
-                        <th>Tipo Vehículo</th>
-                        <th>Modelo Vehículo</th>
-                        <th>Placa Vehículo</th>
-                        <th>Parqueaderos y Subcircuitos</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
+
+    <table id="vehiculos" class="stripe hover w-full">
+        <thead>
+            <tr>
+                <th>Marca Vehículo</th>
+                <th>Tipo Vehículo</th>
+                <th>Modelo Vehículo</th>
+                <th>Placa Vehículo</th>
+                <th>Parqueaderos y Subcircuitos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
     <script>
         $(document).ready(function() {
