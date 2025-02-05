@@ -31,23 +31,10 @@ class Personalpolicia extends Model
     {
         return $this->belongsTo(User::class);
     }
-    protected function guardarpersonal(Request $request): JsonResponse
+/*     protected function guardarpersonal(Request $request): JsonResponse
     {
         try {
             // Validación de los datos de entrada
-            /* $request->validate([
-                'id' => 'required|integer',
-                'primernombre' => 'required|string|max:255',
-                'segundonombre' => 'nullable|string|max:255',
-                'primerapellido' => 'required|string|max:255',
-                'segundoapellido' => 'nullable|string|max:255',
-                'cedula' => 'required|string|max:20|unique:personalpolicias,cedula_personal_policias',
-                'sangre' => 'required|string|max:10',
-                'conductor' => 'required|boolean',
-                'rango' => 'required|string|max:50',
-                'rol' => 'required|string|max:50',
-            ]); */
-
             $policia = new Personalpolicia;
             $policia->user_id = $request->id;
             $policia->primernombre_personal_policias = $request->primernombre;
@@ -80,8 +67,7 @@ class Personalpolicia extends Model
 
     public function getPersonalIdUsuario(string $idusuario)
     {
-        //dd($idusuario);
         $personal = self::where("user_id", $idusuario)->first();
         return $personal->attributes;
-    }
+    } */
 }

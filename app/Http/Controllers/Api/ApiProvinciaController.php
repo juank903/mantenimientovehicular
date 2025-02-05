@@ -12,9 +12,10 @@ class ApiProvinciaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $provincias = Provinciadependencia::with('distritos.circuitos.subcircuitos')->get();
+        return response()->json($provincias);
     }
 
     /**

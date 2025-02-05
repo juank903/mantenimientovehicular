@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Controllers\App\PersonalController;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +54,7 @@ class LoginRequest extends FormRequest
         $personal = new Personalpolicia();
 
         //session(['idusuario' => auth()->id()]);
-        session(['personal' => $personal->getPersonalIdUsuario(auth()->id())]);
+        session(['personal' => PersonalController::getPersonalIdUsuario(auth()->id())]);
         //session(['rolusuario' => session('personal')['rol_personal_policias']]);
         session(['rolusuario' => $personal->find(auth()->id())->rol_personal_policias]);
         session(['subcircuito' => $personal->find(auth()->id())->subcircuito[0]->nombre_subcircuito_dependencias]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\App\PersonalController;
 use App\Http\Controllers\Controller;
 use App\Models\Personalpolicia;
 use App\Models\User;
@@ -78,7 +79,7 @@ class RegisteredUserController extends Controller
         //Auth::login($user);
 
         $request["id"] = User::getId($request->name);
-        $response = Personalpolicia::guardarpersonal($request);
+        $response = PersonalController::guardarpersonal($request);
         $data = json_decode($response->getContent(), true);
         if ($data['success']) {
             return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);

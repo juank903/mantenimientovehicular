@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Quejas;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quejasugerencia;
@@ -10,6 +10,11 @@ use View;
 
 class QuejasugerenciasController extends Controller
 {
+    public function index()
+    {
+        $datosTipo = ['Reclamo', 'Sugerencia'];
+        return view("quejasViews.index", compact('datosTipo'));
+    }
     public function guardarquejasugerencia(Request $request)
     {
         $response = Quejasugerencia::crearquejasugerencia($request);
