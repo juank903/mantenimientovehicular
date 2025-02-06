@@ -42,6 +42,10 @@ class RegisteredUserController extends Controller
             'no',
             'si'
         ];
+        $generoarray = [
+            'Masculino',
+            'Femenino'
+        ];
         $tiposangrearray = [
             'O+',
             'O-',
@@ -52,7 +56,7 @@ class RegisteredUserController extends Controller
             'AB+',
             'AB-'
         ];
-        return view('personalViews.create', compact('rangosarray', 'rolesarray', 'conductorarray', 'tiposangrearray'));
+        return view('personalViews.create', compact('rangosarray', 'rolesarray', 'conductorarray', 'tiposangrearray', 'generoarray'));
     }
 
     /**

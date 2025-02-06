@@ -82,7 +82,7 @@
                         .value);
                     circuitoSelect.innerHTML = '<option value="">Seleccione un Circuito</option>';
                     subcircuitoSelect.innerHTML =
-                        '<option value="">Seleccione un subcircuito</option>';
+                        '<option value="">Seleccione un Subcircuito</option>';
 
                     if (selectedDistrito) {
                         selectedDistrito.circuitos.forEach(circuito => {

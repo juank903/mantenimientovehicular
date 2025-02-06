@@ -56,19 +56,27 @@
                 </div>
             </div>
 
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-input-label for="email" :value="__('Email')" />
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                    required autocomplete="username" />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
-            </div>
             <x-dependencias />
         </div>
 
 
         <div class="w-full md:w-1/2 p-4">
-            <div>
+            <div class="flex gap-4">
+                <!-- Email Address -->
+                <div class="w-1/2">
+                    <x-input-label for="email" :value="__('Email')" />
+                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                        required autocomplete="username" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
+                <!-- Genero -->
+                <div class="w-1/2">
+                    <x-input-label for="genero" :value="__('Género')" />
+                    <x-select name="rol" :items="$generoarray" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
+            </div>
+            <div class="mt-4">
                 <x-input-label for="rol" :value="__('Seleccione Rol del sistema')" />
                 <x-select name="rol" :items="$rolesarray" :indice="3" />
             </div>
