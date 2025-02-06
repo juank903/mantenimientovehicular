@@ -44,22 +44,9 @@
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
 
-        <style>
-            #vehiculos {
-                background-color: #f9f9f9;
-            }
-
-            #vehiculos thead th {
-                background-color: #ffffff;
-            }
-
-            #vehiculos tbody tr:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
     @endif
-    @if ( Request::is('dashboard'))
-        <script src="https://cdnjs.com/libraries/Chart.js"></script>
+    @if ( Route::is('gerencia.dashboard'))
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @endif
 
 </head>
