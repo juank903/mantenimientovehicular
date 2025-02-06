@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\App\DashboardAdministradorController;
+use App\Http\Controllers\App\DashboardAuxiliarController;
+use App\Http\Controllers\App\DashboardGerenciaController;
 use App\Http\Controllers\App\DashboardPoliciaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
@@ -38,16 +41,21 @@ Route::middleware('auth')->group(function () {
     /*Rutas por defecto*/
     Route::get('dashboard', function () {
         return view('auth.dashboard');
-    })->name('dashboard')->middleware('redirectDashboardPolicia');
+    })->name('dashboard')
+    ->middleware(
+        'redirectDashboardAdministrador',
+                    'redirectDashboardGerencia',
+                    'redirectDashboardAuxiliar',
+                    'redirectDashboardPolicia');
 
         /*Rutas dashboards*/
         Route::get('/policia/dashboard', [DashboardPoliciaController::class, 'index'])
             ->name('policia.dashboard');
-        Route::get('/administrador/dashboard', [DashboardPoliciaController::class, 'index'])
+        Route::get('/administrador/dashboard', [DashboardAdministradorController::class, 'index'])
             ->name('administrador.dashboard');
-        Route::get('/auxiliar/dashboard', [DashboardPoliciaController::class, 'index'])
+        Route::get('/auxiliar/dashboard', [DashboardAuxiliarController::class, 'index'])
             ->name('auxiliar.dashboard');
-        Route::get('/gerencia/dashboard', [DashboardPoliciaController::class, 'index'])
+        Route::get('/gerencia/dashboard', [DashboardGerenciaController::class, 'index'])
             ->name('gerencia.dashboard');
 
 

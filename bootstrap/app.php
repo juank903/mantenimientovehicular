@@ -15,7 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
         //$middleware->append(\App\Http\Middleware\RoleMiddleware::class);
-            'redirectDashboardPolicia' => \App\Http\Middleware\RedirectDashboardIfPolicia::class
+            'redirectDashboardPolicia' => \App\Http\Middleware\RedirectDashboardIfPolicia::class,
+            'redirectDashboardAdministrador' => \App\Http\Middleware\RedirectDashboardIfAdministrador::class,
+            'redirectDashboardAuxiliar' => \App\Http\Middleware\RedirectDashboardIfAuxiliar::class,
+            'redirectDashboardGerencia' => \App\Http\Middleware\RedirectDashboardIfGerencia::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
