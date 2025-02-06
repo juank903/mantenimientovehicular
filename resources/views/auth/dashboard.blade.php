@@ -2,7 +2,7 @@
     @if (session('mensaje') || session('error'))
         @include('components.mensajemodalexito')
     @endif
-    <div
+    {{-- <div
         class="flex flex-row space-x-4 overflow-x-auto md:w-4/5 xl:w-3/5 mx-auto px-2 z-0 text-sm">
         @if (Auth::user()->rol() == 'policia')
             <!-- Columna 1 -->
@@ -25,7 +25,7 @@
                         <li> {{ $key }} {{ $dato }} </li>
                     @endforeach
                 </ul>
-            </div> --}}
+            </div>
         @endif
         @if (Auth::user()->rol() == 'administrador' || Auth::user()->rol() == 'gerencia')
             <!-- Columna 1 -->
@@ -49,7 +49,7 @@
                         <li> {{ $key }} {{ $dato }} </li>
                     @endforeach
                 </ul>
-            </div> --}}
+            </div>
         @endif
-    </div>
+    </div> --}}
 </x-app-layout>

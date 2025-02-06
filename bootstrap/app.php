@@ -15,8 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
         //$middleware->append(\App\Http\Middleware\RoleMiddleware::class);
-            'rolpolicia' => \App\Http\Middleware\RolPoliciaMiddelware::class,
-            'roladministrador' => \App\Http\Middleware\RolPoliciaMiddelware::class,
+            'redirectDashboardPolicia' => \App\Http\Middleware\RedirectDashboardIfPolicia::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

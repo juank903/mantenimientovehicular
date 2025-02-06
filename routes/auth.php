@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\DashboardPoliciaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -21,6 +22,7 @@ Route::middleware('guest')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
@@ -36,41 +38,53 @@ Route::middleware('auth')->group(function () {
     /*Rutas por defecto*/
     Route::get('dashboard', function () {
         return view('auth.dashboard');
-    })->name('dashboard');
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-    Route::put('password', [PasswordController::class, 'update'])
-        ->name('password.update');
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+    })->name('dashboard')->middleware('redirectDashboardPolicia');
+
+        /*Rutas dashboards*/
+        Route::get('/policia/dashboard', [DashboardPoliciaController::class, 'index'])
+            ->name('policia.dashboard');
+        Route::get('/administrador/dashboard', [DashboardPoliciaController::class, 'index'])
+            ->name('administrador.dashboard');
+        Route::get('/auxiliar/dashboard', [DashboardPoliciaController::class, 'index'])
+            ->name('auxiliar.dashboard');
+        Route::get('/gerencia/dashboard', [DashboardPoliciaController::class, 'index'])
+            ->name('gerencia.dashboard');
+
+
+        Route::get('verify-email', EmailVerificationPromptController::class)
+            ->name('verification.notice');
+        Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+            ->middleware(['signed', 'throttle:6,1'])
+            ->name('verification.verify');
+        Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+            ->middleware('throttle:6,1')
+            ->name('verification.send');
+        Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
+            ->name('password.confirm');
+        Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+        Route::put('password', [PasswordController::class, 'update'])
+            ->name('password.update');
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
+
     /* Personal */
-    Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
-        ->name('register');
-    /*Fin Personal */
-    Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
-    Route::get('perfil', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-    Route::patch('perfil', [ProfileController::class, 'update'])
-        ->name('profile.update');
-    Route::delete('perfil', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+        Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
+            ->name('register');
+        Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
+        Route::get('perfil', [ProfileController::class, 'edit'])
+            ->name('profile.edit');
+        Route::patch('perfil', [ProfileController::class, 'update'])
+            ->name('profile.update');
+        Route::delete('perfil', [ProfileController::class, 'destroy'])
+            ->name('profile.destroy');
     /* fin rutas por defecto*/
 
     /*Rutas personal policial */
     /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
         ->name('mostrartodopersonal'); */
-        Route::get('mostrartodopersonal', function () {
-            return view('personalViews.index');
-        })->name('mostrartodopersonal');
+    Route::get('mostrartodopersonal', function () {
+        return view('personalViews.index');
+    })->name('mostrartodopersonal');
     /*Fin Rutas personal policial*/
 
     /*Rutas Vehículos*/

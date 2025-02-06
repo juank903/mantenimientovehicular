@@ -16,23 +16,47 @@ class AppLayout extends Component
     public function __construct()
     {
         //
-        $this->menuItems = [
-            [
-                'name' => 'Personal',
-                'items' => [
-                    'Ingresar personal' => 'register',
-                    'Listar personal' => 'mostrartodopersonal',
+        $rol = Auth::user()->rol();
+
+        $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
+
+        $data = $response->successful() ? $response->json() : ['numero_solicitudes' => 0];
+
+        //dd ($data);
+
+        $this->menuItems = match (true) {
+            $rol == "administrador" => [
+                [
+                    'name' => 'Personal',
+                    'items' => [
+                        'Ingresar personal' => 'register',
+                        'Listar personal' => 'mostrartodopersonal',
+                    ],
+                    'route' => 'personal',
                 ],
-                'route' => 'personal',
-            ],
-            [
-                'name' => 'Vehículos',
-                'items' => [
-                    'Listar vehículos' => 'mostrartodovehiculos',
+                [
+                    'name' => 'Vehículos',
+                    'items' => [
+                        'Listar vehículos' => 'mostrartodovehiculos',
+                    ],
+                    'route' => 'vehiculo',
                 ],
-                'route' => 'vehiculo',
             ],
-        ];
+            $rol == "gerencia" => [
+
+            ],
+            $rol == "policia"  && $data['numero_solicitudes'] == 0 => [
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Pedido vehículo' => 'solicitarvehiculo.policia',
+                    ],
+                    'route' => 'solicitud',
+                ],
+            ],
+            default => [],
+        };
+
     }
     public function render(): View
     {

@@ -41,7 +41,6 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
-
         $this->ensureIsNotRateLimited();
 
         if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
@@ -51,17 +50,20 @@ class LoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+
         $personal = new Personalpolicia();
+        $personalData = $personal->find(auth()->id());
 
-        //session(['idusuario' => auth()->id()]);
         session(['personal' => PersonalController::getPersonalIdUsuario(auth()->id())]);
-        //session(['rolusuario' => session('personal')['rol_personal_policias']]);
-        session(['rolusuario' => $personal->find(auth()->id())->rol_personal_policias]);
-        session(['subcircuito' => $personal->find(auth()->id())->subcircuito[0]->nombre_subcircuito_dependencias]);
+        session(['rolusuario' => $personalData->rol_personal_policias]);
 
-
-        //event(new Registered($user));
-        //Auth::loginUsingId(1, remember: true);
+        // Verificar si la relación subcircuito tiene datos
+        if ($personalData->subcircuito && count($personalData->subcircuito) > 0) {
+            session(['subcircuito' => $personalData->subcircuito[0]->nombre_subcircuito_dependencias]);
+        } else {
+            // Manejar el caso en que no haya subcircuito
+            session(['subcircuito' => 'Sin subcircuito asignado']); // O cualquier otro valor por defecto
+        }
 
         RateLimiter::clear($this->throttleKey());
     }

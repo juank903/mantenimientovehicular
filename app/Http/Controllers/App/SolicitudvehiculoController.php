@@ -10,6 +10,7 @@ use Http;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SolicitudvehiculoController extends Controller
 {
@@ -77,20 +78,56 @@ class SolicitudvehiculoController extends Controller
         }
     }
 
-    public function solicitudvehiculopendientePolicialogeado()
+    public function solicitudVehiculoPendientePoliciaLogeado(): RedirectResponse|View
     {
-        $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
-        $data = $response->successful() ? $response->json() : [];
-        if (Auth::user()->rol() == 'policia' && $data['numero_solicitudes'] == 0) {
-            $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/detalles'));
-            if ($response->successful()) {
-                $data = $response->json();
-                return view('inputsViews.solicitudes.vehiculos.policia.solicitudvehiculopolicia-index', compact('data'));
-            } else {
-                return redirect()->route('dashboard')->with('error', 'No existen datos');
-            }
-        } else {
-            return redirect()->route('dashboard')->with('error', 'Usted tiene solicitudes pendientes');
+        $userId = auth()->id();
+        $user = Auth::user();
+
+        if ($user->rol() !== 'policia') {
+            return redirect()->route('dashboard')->with('error', 'Acceso no autorizado.');
         }
+
+        if ($this->tieneSolicitudesPendientes($userId)) {
+            return redirect()->route('dashboard')->with('error', 'Usted tiene solicitudes pendientes.');
+        }
+
+        $datosPolicia = $this->obtenerDetallesPolicia($userId);
+        if (!$datosPolicia) {
+            return redirect()->route('dashboard')->with('error', 'No existen datos.');
+        }
+
+        return view('solicitudesvehiculosViews.index', [
+            'datosTipoVehiculo' => ['Moto', 'Auto', 'Camioneta'],
+            'datosJornada' => ['Ordinaria', 'Extraordinaria'],
+            'id' => $datosPolicia['id'],
+            'apellidoPaterno' => $datosPolicia['primerapellido_personal_policias'],
+            'apellidoMaterno' => $datosPolicia['segundoapellido_personal_policias'],
+            'primerNombre' => $datosPolicia['primernombre_personal_policias'],
+            'segundoNombre' => $datosPolicia['segundonombre_personal_policias'],
+            'circuito' => $datosPolicia['subcircuito'][0]['circuito']['nombre_circuito_dependencias'],
+            'subcircuito' => $datosPolicia['subcircuito'][0]['nombre_subcircuito_dependencias'],
+            'distrito' => $datosPolicia['subcircuito'][0]['circuito']['distrito']['nombre_distritodependencias'],
+            'provincia' => $datosPolicia['subcircuito'][0]['circuito']['distrito']['provincia']['nombre_provincia_dependencias'],
+        ]);
+    }
+
+    /**
+     * Verifica si el usuario tiene solicitudes pendientes.
+     */
+    private function tieneSolicitudesPendientes($userId): bool
+    {
+        $response = Http::get(url("/api/personal/policia/{$userId}/totalsolicitudesvehiculos/pendientes"));
+
+        return $response->successful() && $response->json()['numero_solicitudes'] > 0;
+    }
+
+    /**
+     * Obtiene los detalles del policía logueado.
+     */
+    private function obtenerDetallesPolicia($userId): ?array
+    {
+        $response = Http::get(url("/api/personal/policia/{$userId}/detalles"));
+
+        return $response->successful() ? $response->json() : null;
     }
 }
