@@ -1,53 +1,59 @@
 <x-app-layout>
+    <x-navigation.botonregresar href="{{ route('dashboard') }}" />
     <form method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('register') }}">
         @csrf
         <div class="w-full md:w-1/2 p-4 ">
-            <!-- Primer Nombre -->
-            <div>
-                <x-input-label for="primernombre" :value="__('Primer Nombre')" />
-                <x-text-input id="primernombre" class="block mt-1 w-full" type="text" name="primernombre"
-                    :value="old('primernombre')" requiredo autofocus autocomplete="primernombre" />
-                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <div class="flex gap-4">
+                <!-- Primer Nombre -->
+                <div class="w-1/2">
+                    <x-input-label for="primernombre" :value="__('Primer Nombre')" />
+                    <x-text-input id="primernombre" class="block mt-1 w-full" type="text" name="primernombre"
+                        :value="old('primernombre')" requiredo autofocus autocomplete="primernombre" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
+
+                <!-- Segundo Nombre -->
+                <div class="w-1/2">
+                    <x-input-label for="segundonombre" :value="__('Segundo Nombre')" />
+                    <x-text-input id="segundonombre" class="block mt-1 w-full" type="text" name="segundonombre"
+                        :value="old('segundonombre')" requiredo autofocus autocomplete="segundonombre" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
+            </div>
+            <div class="flex gap-4 mt-4">
+                <!-- Primer Apellido -->
+                <div class="w-1/2">
+                    <x-input-label for="primerapellido" :value="__('Primer Apellido')" />
+                    <x-text-input id="primerapellido" class="block mt-1 w-full" type="text" name="primerapellido"
+                        :value="old('primerapellido')" requiredo autofocus autocomplete="primerapellido" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
+
+                <!-- Segundo Apellido -->
+                <div class="w-1/2">
+                    <x-input-label for="segundoapellido" :value="__('Segundo Apellido')" />
+                    <x-text-input id="segundoapellido" class="block mt-1 w-full" type="text" name="segundoapellido"
+                        :value="old('segundoapellido')" requiredo autofocus autocomplete="segundoapellido" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
             </div>
 
-            <!-- Segundo Nombre -->
-            <div class="mt-4">
-                <x-input-label for="segundonombre" :value="__('Segundo Nombre')" />
-                <x-text-input id="segundonombre" class="block mt-1 w-full" type="text" name="segundonombre"
-                    :value="old('segundonombre')" requiredo autofocus autocomplete="segundonombre" />
-                <x-input-error :messages="$errors->get('name')" class="mt-2" />
-            </div>
+            <div class="flex gap-4 mt-4">
+                <!-- Cedula Identidad -->
+                <div class="w-1/2">
+                    <x-input-label for="cedula" :value="__('Cédula de Identidad')" />
+                    <x-text-input id="cedula" class="block mt-1 w-full" type="text" name="cedula"
+                        :value="old('cedula')" requiredo autofocus autocomplete="cedula" />
+                    <x-input-error :messages="$errors->get('cedula')" class="mt-2" />
+                </div>
 
-            <!-- Primer Apellido -->
-            <div class="mt-4">
-                <x-input-label for="primerapellido" :value="__('Primer Apellido')" />
-                <x-text-input id="primerapellido" class="block mt-1 w-full" type="text" name="primerapellido"
-                    :value="old('primerapellido')" requiredo autofocus autocomplete="primerapellido" />
-                <x-input-error :messages="$errors->get('name')" class="mt-2" />
-            </div>
-
-            <!-- Segundo Apellido -->
-            <div class="mt-4">
-                <x-input-label for="segundoapellido" :value="__('Segundo Apellido')" />
-                <x-text-input id="segundoapellido" class="block mt-1 w-full" type="text" name="segundoapellido"
-                    :value="old('segundoapellido')" requiredo autofocus autocomplete="segundoapellido" />
-                <x-input-error :messages="$errors->get('name')" class="mt-2" />
-            </div>
-
-            <!-- Cedula Identidad -->
-            <div class="mt-4">
-                <x-input-label for="cedula" :value="__('Cédula de Identidad')" />
-                <x-text-input id="cedula" class="block mt-1 w-full" type="text" name="cedula" :value="old('cedula')"
-                    requiredo autofocus autocomplete="cedula" />
-                <x-input-error :messages="$errors->get('cedula')" class="mt-2" />
-            </div>
-
-            <!-- Usuario -->
-            <div class="mt-4">
-                <x-input-label for="name" :value="__('Usuario')" />
-                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
-                    required autofocus autocomplete="name" />
-                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                <!-- Usuario -->
+                <div class="w-1/2">
+                    <x-input-label for="name" :value="__('Usuario')" />
+                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
+                        :value="old('name')" required autofocus autocomplete="name" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
             </div>
 
             <!-- Email Address -->
@@ -57,6 +63,7 @@
                     required autocomplete="username" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
+            <x-dependencias />
         </div>
 
 
@@ -78,24 +85,26 @@
                 <x-select name="sangre" :items="$tiposangrearray" :indice="0" />
             </div>
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-input-label for="password" :value="__('Password')" />
+            <div class="flex gap-4 mt-4">
+                <!-- Password -->
+                <div class="w-1/2">
+                    <x-input-label for="password" :value="__('Password')" />
 
-                <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
-                    autocomplete="new-password" />
+                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
+                        autocomplete="new-password" />
 
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            </div>
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
 
-            <!-- Confirme Password -->
-            <div class="mt-4">
-                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                <!-- Confirme Password -->
+                <div class="w-1/2">
+                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                    name="password_confirmation" autocomplete="new-password" />
+                    <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
+                        name="password_confirmation" autocomplete="new-password" />
 
-                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                </div>
             </div>
             <div class="justify-end">
                 {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

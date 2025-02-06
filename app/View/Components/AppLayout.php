@@ -54,6 +54,15 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
+            $rol == "auxiliar" => [
+                [
+                    'name' => 'Personal',
+                    'items' => [
+                        'Ingresar personal' => 'register',
+                    ],
+                    'route' => 'personal',
+                ],
+            ],
             default => [],
         };
 
