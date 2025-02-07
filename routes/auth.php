@@ -39,14 +39,15 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     /*Rutas por defecto*/
-    Route::get('dashboard', function () {
-        return view('auth.dashboard');
-    })->name('dashboard')
-    ->middleware(
-        'redirectDashboardAdministrador',
-                    'redirectDashboardGerencia',
-                    'redirectDashboardAuxiliar',
-                    'redirectDashboardPolicia');
+        Route::get('dashboard', function () {
+            return view('auth.dashboard');
+        })
+        ->name('dashboard')
+        ->middleware(
+            'redirectDashboardAdministrador',
+                        'redirectDashboardGerencia',
+                        'redirectDashboardAuxiliar',
+                        'redirectDashboardPolicia');
 
         /*Rutas dashboards*/
         Route::get('/policia/dashboard', [DashboardPoliciaController::class, 'index'])
@@ -58,7 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/gerencia/dashboard', [DashboardGerenciaController::class, 'index'])
             ->name('gerencia.dashboard');
 
-
+        /*Verificación email*/
         Route::get('verify-email', EmailVerificationPromptController::class)
             ->name('verification.notice');
         Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
 
-    /* Personal */
+        /* Personal */
         Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
             ->name('register');
         Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
@@ -88,51 +89,48 @@ Route::middleware('auth')->group(function () {
     /* fin rutas por defecto*/
 
     /*Rutas personal policial */
-    /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
-        ->name('mostrartodopersonal'); */
-    Route::get('mostrartodopersonal', function () {
-        return view('personalViews.index');
-    })->name('mostrartodopersonal');
-    /*Fin Rutas personal policial*/
+        /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
+            ->name('mostrartodopersonal'); */
+        Route::get('mostrartodopersonal', function () {
+            return view('personalViews.index');
+        })->name('mostrartodopersonal');
+
 
     /*Rutas Vehículos*/
-    Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
-        ->name('guardarvehiculo');
+        Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
+            ->name('guardarvehiculo');
 
-    Route::get('mostrartodovehiculos', function () {
-        return view('vehiculosViews.index');
-    })->name('mostrartodovehiculos');
-    /*Fin Rutas Vehículos*/
+        Route::get('mostrartodovehiculos', function () {
+            return view('vehiculosViews.index');
+        })->name('mostrartodovehiculos');
 
     /*Rutas Mantenimientos*/
 
-    /*Fin Rutas Mantenimientos*/
 
     /*Rutas Reportes*/
-    Route::get('mostrarsolicitudvehiculopolicialogeado-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePolicialogeado'])
-        ->name('mostrarsolicitudvehiculopolicialogeado-pendiente');
-    Route::get('mostrarsolicitudvehiculopolicia/{id}/administrador-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePoliciadministrador'])
-        ->name('mostrarsolicitudvehiculopoliciadministrador-pendiente');
-    /*Fin Rutas Reportes*/
+        Route::get('mostrarsolicitudvehiculopolicialogeado-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePolicialogeado'])
+            ->name('mostrarsolicitudvehiculopolicialogeado-pendiente');
+        Route::get('mostrarsolicitudvehiculopolicia/{id}/administrador-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePoliciadministrador'])
+            ->name('mostrarsolicitudvehiculopoliciadministrador-pendiente');
+
 
     /*Rutas Solicitudes*/
-    Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
-        return view('solicitudesViews.vehiculos.administrador.solicitudesvehiculos-index');
-    })->name('mostrartodasolicitudesvehiculos-pendientes');
+        Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
+            return view('solicitudesViews.vehiculos.administrador.solicitudesvehiculos-index');
+        })->name('mostrartodasolicitudesvehiculos-pendientes');
 
-    Route::get('solicitarvehiculo.policia.index', [SolicitudvehiculoController::class, 'solicitudvehiculopendientePolicialogeado'])
-        ->name('solicitarvehiculo.policia');
+        Route::get('solicitarvehiculo.policia.index', [SolicitudvehiculoController::class, 'solicitudvehiculopendientePolicialogeado'])
+            ->name('solicitarvehiculo.policia');
 
-    /* Route::get('solicitarvehiculo.policia.index', function () {
-        return view("inputsViews.solicitudes.vehiculos.policia.solicitudvehiculopolicia-index");
-    })->name('solicitarvehiculo.policia'); */
+        /* Route::get('solicitarvehiculo.policia.index', function () {
+            return view("inputsViews.solicitudes.vehiculos.policia.solicitudvehiculopolicia-index");
+        })->name('solicitarvehiculo.policia'); */
 
     /*Solicitudes acciones solicitudes */
-    Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
-        ->name('anularsolicitudvehiculopolicia-pendiente');
+        Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
+            ->name('anularsolicitudvehiculopolicia-pendiente');
 
-    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
-        ->name('guardarsolicitudvehiculo');
-    /*Fin Rutas Solicitudes*/
+        Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
+            ->name('guardarsolicitudvehiculo');
 
 });

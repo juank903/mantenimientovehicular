@@ -4,7 +4,7 @@
 @endphp
 <x-main-layout>
     @if (session('mensaje') || session('error'))
-        @include('components.mensajemodalexito')
+        <x-mensajemodalexito/>
     @endif
     <div class="container mx-auto">
         <div class="grid grid-cols-3 gap-4">
@@ -47,20 +47,20 @@
 
                         <!-- Email Address -->
                         <div>
-                            <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
+                            <x-inputs.input-label for="email" :value="__('Email')" />
+                            <x-inputs.text-input id="email" class="block mt-1 w-full" type="email" name="email"
                                 :value="old('email')" required autofocus autocomplete="username" />
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                            <x-inputs.input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
                         <!-- Password -->
                         <div class="mt-4">
-                            <x-input-label for="password" :value="__('Password')" />
+                            <x-inputs.input-label for="password" :value="__('Password')" />
 
-                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
+                            <x-inputs.text-input id="password" class="block mt-1 w-full" type="password" name="password"
                                 required autocomplete="current-password" />
 
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            <x-inputs.input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 
                         <!-- Remember Me -->
@@ -81,9 +81,9 @@
                                 </a>
                             @endif
 
-                            <x-primary-button class="ms-12">
+                            <x-inputs.primary-button class="ms-12">
                                 {{ __('Log in') }}
-                            </x-primary-button>
+                            </x-inputs.primary-button>
                         </div>
                     </form>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\Personalpolicia;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,40 +18,41 @@ class PersonalController extends Controller
     {
         try {
             // Validación de los datos de entrada
-            /* $request->validate([
-                'id' => 'required|integer',
+            $validated = $request->validate([
+                'user_id' => 'required|integer',
                 'primernombre' => 'required|string|max:255',
                 'segundonombre' => 'nullable|string|max:255',
                 'primerapellido' => 'required|string|max:255',
                 'segundoapellido' => 'nullable|string|max:255',
-                'cedula' => 'required|string|max:20|unique:personalpolicias,cedula_personal_policias',
-                'sangre' => 'required|string|max:10',
-                'conductor' => 'required|boolean',
+                'cedula' => 'required|string|max:10|unique:personalpolicias,cedula_personal_policias',
+                'sangre' => 'required|string|max:3',
+                'conductor' => 'required|string|max:3',
                 'rango' => 'required|string|max:50',
                 'rol' => 'required|string|max:50',
-            ]); */
+                'genero' => 'required|string|max:1',
+            ]);
 
-            $policia = new Personalpolicia;
-            $policia->user_id = $request->id;
-            $policia->primernombre_personal_policias = $request->primernombre;
-            $policia->segundonombre_personal_policias = $request->segundonombre;
-            $policia->primerapellido_personal_policias = $request->primerapellido;
-            $policia->segundoapellido_personal_policias = $request->segundoapellido;
-            $policia->cedula_personal_policias = $request->cedula;
-            $policia->tiposangre_personal_policias = $request->sangre;
-            $policia->conductor_personal_policias = $request->conductor;
-            $policia->rango_personal_policias = $request->rango;
-            $policia->rol_personal_policias = $request->rol;
-
-            $policia->save();
+            $policia = Personalpolicia::create([
+                'user_id' => $validated['user_id'],
+                'primernombre_personal_policias' => $validated['primernombre'],
+                'segundonombre_personal_policias' => $validated['segundonombre'],
+                'primerapellido_personal_policias' => $validated['primerapellido'],
+                'segundoapellido_personal_policias' => $validated['segundoapellido'],
+                'cedula_personal_policias' => $validated['cedula'],
+                'tiposangre_personal_policias' => $validated['sangre'],
+                'conductor_personal_policias' => $validated['conductor'],
+                'rango_personal_policias' => $validated['rango'],
+                'rol_personal_policias' => $validated['rol'],
+                'personalpolicias_genero' => $validated['genero'],
+            ]);
 
             return response()->json([
                 'success' => true,
                 'mensaje' => 'Personal policial guardado con éxito',
-                'personal' => $policia
+                'personal' => $policia,
             ], 201);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'error' => 'Error al guardar el personal policial.'], 500);
         }
     }

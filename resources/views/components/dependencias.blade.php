@@ -1,35 +1,34 @@
 <!-- Provincia -->
 <div class="mt-4">
-    <x-input-label for="provincia" :value="__('Provincia')" />
+    <x-inputs.input-label for="provincia" :value="__('Provincia')" />
     <select id="provincia" name="provincia"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
         required></select>
-    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    <x-inputs.input-error :messages="$errors->get('provincia')" class="mt-2" />
 </div>
 <!-- Distrito -->
 <div class="mt-4">
-    <x-input-label for="distrito" :value="__('Distrito')" />
+    <x-inputs.input-label for="distrito" :value="__('Distrito')" />
     <select id="distrito" name="distrito"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
         required></select>
-    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    <x-inputs.input-error :messages="$errors->get('distrito')" class="mt-2" />
 </div>
 <!-- Circuito -->
 <div class="mt-4">
-    <x-input-label for="circuito" :value="__('Circuito')" />
+    <x-inputs.input-label for="circuito" :value="__('Circuito')" />
     <select id="circuito" name="circuito"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
         required></select>
-    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    <x-inputs.input-error :messages="$errors->get('circuito')" class="mt-2" />
 </div>
 <!-- Subcircuito -->
 <div class="mt-4">
-    <x-input-label for="subcircuito" :value="__('Subcircuito')" />
+    <x-inputs.input-label for="subcircuito" :value="__('Subcircuito')" />
     <select id="subcircuito" name="subcircuito"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
         required></select>
-    {{-- <x-select required id="subcircuito" name="subcircuito" :items="$datosDefault" /> --}}
-    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    <x-inputs.input-error :messages="$errors->get('subcircuito')" class="mt-2" />
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -64,7 +63,7 @@
                     distritoSelect.innerHTML = '<option value="">Seleccione un Distrito</option>';
                     circuitoSelect.innerHTML = '<option value="">Seleccione un Circuito</option>';
                     subcircuitoSelect.innerHTML =
-                        '<option value="">Seleccione un subcircuito</option>';
+                        '<option value="">Seleccione un Subcircuito</option>';
 
                     if (selectedProvincia) {
                         selectedProvincia.distritos.forEach(distrito => {

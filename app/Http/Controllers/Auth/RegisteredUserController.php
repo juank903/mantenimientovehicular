@@ -43,8 +43,8 @@ class RegisteredUserController extends Controller
             'si'
         ];
         $generoarray = [
-            'Masculino',
-            'Femenino'
+            'M',
+            'F'
         ];
         $tiposangrearray = [
             'O+',
@@ -64,14 +64,13 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    //public function store(Request $request): RedirectResponse
-    public function store(Request $request): RedirectResponse
+    /* public function store(Request $request): RedirectResponse
     {
-        /* $request->validate([
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]); */
+        ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -79,10 +78,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        //event(new Registered($user));
-        //Auth::login($user);
-
-        $request["id"] = User::getId($request->name);
+        //$request["id"] = User::getId($request->name);
+        $request->merge(['id' => $user->id]);
         $response = PersonalController::guardarpersonal($request);
         $data = json_decode($response->getContent(), true);
         if ($data['success']) {
@@ -95,7 +92,41 @@ class RegisteredUserController extends Controller
             } else {
                 return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['mensaje']);
             }
-
         }
+    } */
+    public function store(Request $request): RedirectResponse
+{
+    // Validación de los datos del formulario
+    $validatedData = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
+
+    // Creación del usuario
+    $user = User::create([
+        'name' => $validatedData['name'],
+        'email' => $validatedData['email'],
+        'password' => Hash::make($validatedData['password']),
+    ]);
+
+    // Asignar el ID del usuario al request
+    $request->merge(['user_id' => $user->id]);
+
+    // Llamar al controlador PersonalController para guardar información adicional
+    $response = PersonalController::guardarpersonal($request);
+    $data = json_decode($response->getContent(), true);
+
+    // Manejo de la respuesta
+    if ($data['success']) {
+        return redirect()->intended(route('dashboard'))->with('mensaje', $data['mensaje']);
+    } else {
+        // Si falla, eliminar el usuario recién creado
+        $deleteResponse = User::eliminarultimousuarioagreado();
+        $deleteData = json_decode($deleteResponse->getContent(), true);
+
+        $message = $deleteData['success'] ? $deleteData['mensaje'] : 'Error al eliminar el usuario.';
+        return redirect()->intended(route('dashboard'))->with('error', $message);
     }
+}
 }
