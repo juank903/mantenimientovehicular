@@ -16,6 +16,7 @@ class PersonalController extends Controller
     }
     public static function guardarpersonal(Request $request): JsonResponse
     {
+        //dd($request);
         try {
             // Validación de los datos de entrada
             $validated = $request->validate([
@@ -25,6 +26,7 @@ class PersonalController extends Controller
                 'primerapellido' => 'required|string|max:255',
                 'segundoapellido' => 'nullable|string|max:255',
                 'cedula' => 'required|string|max:10|unique:personalpolicias,cedula_personal_policias',
+                //'cedula' => 'required|string|max:10',
                 'sangre' => 'required|string|max:3',
                 'conductor' => 'required|string|max:3',
                 'rango' => 'required|string|max:50',

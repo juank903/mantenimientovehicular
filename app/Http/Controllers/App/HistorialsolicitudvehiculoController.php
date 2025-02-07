@@ -82,7 +82,6 @@ class HistorialsolicitudvehiculoController extends Controller
             $timestampDesde = Carbon::createFromFormat('Y-m-d', $fechaRequerimientodesde);
             $timestampHasta = Carbon::createFromFormat('Y-m-d', $fechaRequerimientohasta);
 
-
             $solicitudvehiculo = new Solicitudvehiculo();
             $solicitudvehiculo->solicitudvehiculos_detalle = $request->detalle;
             $solicitudvehiculo->solicitudvehiculos_tipo = $request->tipo;
@@ -134,7 +133,6 @@ class HistorialsolicitudvehiculoController extends Controller
     }
     public static function guardarHistorialInicial($idPersonal, $idSolicitud){
         try {
-            //dd($idPersonal);
             $historial = new Historialsolicitudvehiculo();
             $historial->personalpolicia_id = $idPersonal;
             $historial->solicitudvehiculo_id = $idSolicitud;
@@ -153,7 +151,6 @@ class HistorialsolicitudvehiculoController extends Controller
     }
     public static function guardarHistorialModificado($idPersonal, $idSolicitud, $motivo){
         try {
-            //dd($idSolicitud);
             $historial = new Historialsolicitudvehiculo();
             $historial->personalpolicia_id = $idPersonal;
             $historial->solicitudvehiculo_id = $idSolicitud;

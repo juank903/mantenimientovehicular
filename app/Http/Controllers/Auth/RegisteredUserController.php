@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\App\PersonalController;
+use App\Http\Controllers\App\PersonalpoliciaSubcircuitodependenciaController;
+use App\Http\Controllers\App\UserController;
 use App\Http\Controllers\Controller;
 use App\Models\Personalpolicia;
 use App\Models\User;
@@ -64,69 +66,52 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    /* public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        //$request["id"] = User::getId($request->name);
-        $request->merge(['id' => $user->id]);
-        $response = PersonalController::guardarpersonal($request);
-        $data = json_decode($response->getContent(), true);
-        if ($data['success']) {
-            return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);
-        } else {
-            $response = User::eliminarultimousuarioagreado();
-            $data = json_decode($response->getContent(), true);
-            if ($data['success']) {
-                return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['mensaje']);
-            } else {
-                return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['mensaje']);
-            }
-        }
-    } */
     public function store(Request $request): RedirectResponse
-{
-    // Validación de los datos del formulario
-    $validatedData = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-        'password' => ['required', 'confirmed', Rules\Password::defaults()],
-    ]);
+    {
+        try {
+            // Validación de datos
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
 
-    // Creación del usuario
-    $user = User::create([
-        'name' => $validatedData['name'],
-        'email' => $validatedData['email'],
-        'password' => Hash::make($validatedData['password']),
-    ]);
+            // Crear usuario
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+            ]);
+            // Llamar al controlador PersonalController para guardar información adicional
+            $request->merge(['user_id' => $user->id]);
+            $response = PersonalController::guardarpersonal($request);
+            $data = json_decode($response->getContent(), true);
 
-    // Asignar el ID del usuario al request
-    $request->merge(['user_id' => $user->id]);
+            if (!$data['success']) {
+                throw new \Exception('Error al guardar información personal.');
+            }
+            // Actualizar integridad de datos en PersonalpoliciaSubcircuitodependenciaController
+            $request->merge(['id' => User::latest()->first()->personalpolicia->id]);
+            $response = PersonalpoliciaSubcircuitodependenciaController::actualizarIntegridadId($request);
+            $data = json_decode($response->getContent(), true);
 
-    // Llamar al controlador PersonalController para guardar información adicional
-    $response = PersonalController::guardarpersonal($request);
-    $data = json_decode($response->getContent(), true);
+            if (!$data['success']) {
+                throw new \Exception('Problemas actualizando la integridad.');
+            }
 
-    // Manejo de la respuesta
-    if ($data['success']) {
-        return redirect()->intended(route('dashboard'))->with('mensaje', $data['mensaje']);
-    } else {
-        // Si falla, eliminar el usuario recién creado
-        $deleteResponse = User::eliminarultimousuarioagreado();
-        $deleteData = json_decode($deleteResponse->getContent(), true);
+            session(['mensaje' => $data['mensaje']]);
+            return redirect()->route('dashboard');
+            //->with('mensaje', $data['mensaje']);
 
-        $message = $deleteData['success'] ? $deleteData['mensaje'] : 'Error al eliminar el usuario.';
-        return redirect()->intended(route('dashboard'))->with('error', $message);
+        } catch (\Exception $e) {
+            // Eliminar usuario en caso de error
+            $deleteResponse = UserController::eliminarUltimoUsuarioAgregado();
+            $deleteData = json_decode($deleteResponse->getContent(), true);
+
+            $errorMessage = $deleteData['success'] ? $deleteData['mensaje'] : 'Error al eliminar el usuario.';
+            session(['error' => $e->getMessage() . ' - ' . $errorMessage]);
+            return redirect()->route('dashboard');
+            //->with('error', $e->getMessage() . ' ' . $errorMessage);
+        }
     }
-}
 }

@@ -24,7 +24,8 @@ class Subcircuitodependencia extends Model
     {
         return $this->belongsTo(Circuitodependencia::class, 'circuitodependencia_id');
     }
-    public function parqueaderos(): BelongsToMany {
+    public function parqueaderos(): BelongsToMany
+    {
         return $this->belongsToMany(Parqueadero::class);
     }
 }
