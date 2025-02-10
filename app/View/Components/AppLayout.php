@@ -17,12 +17,8 @@ class AppLayout extends Component
     {
         //
         $rol = Auth::user()->rol();
-
         $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
-
         $data = $response->successful() ? $response->json() : ['numero_solicitudes' => 0];
-
-        //dd ($data);
 
         $this->menuItems = match (true) {
             $rol == "administrador" => [
@@ -41,6 +37,13 @@ class AppLayout extends Component
                     ],
                     'route' => 'vehiculo',
                 ],
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Solicitud pendiente' => 'solicitarvehiculo.policia',
+                    ],
+                    'route' => 'solicitud',
+                ],
             ],
             $rol == "gerencia" => [
 
@@ -50,6 +53,15 @@ class AppLayout extends Component
                     'name' => 'Solicitudes',
                     'items' => [
                         'Pedido vehículo' => 'solicitarvehiculo.policia',
+                    ],
+                    'route' => 'solicitud',
+                ],
+            ],
+            $rol == "policia"  && $data['numero_solicitudes'] > 0 => [
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Solicitud pendiente' => 'mostrarsolicitudvehiculo.policia.pendiente',
                     ],
                     'route' => 'solicitud',
                 ],

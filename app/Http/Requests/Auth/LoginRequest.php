@@ -47,11 +47,11 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => trans('Falla Credenciales'),
             ]);
         }
 
-        $personal = new Personalpolicia();
+        /* $personal = new Personalpolicia();
         $personalData = $personal->find(auth()->id());
 
         session(['personal' => PersonalController::getPersonalIdUsuario(auth()->id())]);
@@ -63,7 +63,7 @@ class LoginRequest extends FormRequest
         } else {
             // Manejar el caso en que no haya subcircuito
             session(['subcircuito' => 'Sin subcircuito asignado']); // O cualquier otro valor por defecto
-        }
+        } */
 
         RateLimiter::clear($this->throttleKey());
     }

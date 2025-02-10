@@ -10,9 +10,8 @@ use Illuminate\Http\Request;
 class PersonalpoliciaSubcircuitodependenciaController extends Controller
 {
     //
-    public static function actualizarintegridadId(Request $request)
+    public static function create(Request $request)
     {
-        //dd($request);
         $personalpoliciaId = $request->input('id');
         $subcircuitodependenciaId = $request->input('subcircuito');
 
@@ -25,7 +24,6 @@ class PersonalpoliciaSubcircuitodependenciaController extends Controller
 
         // Puedes agregar lógica adicional aquí, como devolver una respuesta al cliente.
 
-        //return response()->json(['mensaje' => 'Relación creada. Proceso ejecutado correctamente'], 201);
         return response()->json([
             'success' => true,
             'mensaje' => 'Relación creada. Proceso ejecutado correctamente',

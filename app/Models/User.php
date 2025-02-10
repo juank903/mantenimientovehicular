@@ -65,19 +65,4 @@ class User extends Authenticatable
         return $id;
     }
 
-    /* protected function eliminarultimousuarioagreado(): JsonResponse
-    {
-        try {
-            $ultimoRegistro = User::latest()->first();
-            $ultimoRegistro->delete();
-            return response()->json([
-                'success' => true,
-                'mensaje' => 'Eliminado usuario creado para mantener la integridad',
-                'error' => 'Tuvo problemas al ingresar Personal Policial',
-            ], 200);
-
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => 'Error al eliminar el usuario agregado'], 500);
-        }
-    } */
 }

@@ -67,10 +67,10 @@ class ReportesController extends Controller
         }
     }
     public function getSolicitudvehiculopendientePoliciadministrador($id){
-        //dd($request);
+
         $response = Http::get(url('/api/personal/policia/' . $id . '/totalsolicitudesvehiculos/pendientes'));
         $data = $response->successful() ? $response->json() : [];
-        //dd(Auth::user()->rol());
+
         if((Auth::user()->rol() == 'administrador' || Auth::user()->rol() == 'auxiliar' || Auth::user()->rol() == 'gerencia') && $data['numero_solicitudes'] == 0){
             return redirect()->route('dashboard')->with('error','El policia no tiene solicitudes pendientes');
         }else if (Auth::user()->rol() == 'administrador' || Auth::user()->rol() == 'auxiliar' || Auth::user()->rol() == 'gerencia') {

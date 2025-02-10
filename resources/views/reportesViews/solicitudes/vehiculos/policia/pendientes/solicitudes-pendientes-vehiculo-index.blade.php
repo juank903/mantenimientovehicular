@@ -1,8 +1,4 @@
 @php
-    //dd($data);
-    //gettype($data);
-    //$array = json_decode($data, TRUE);
-    //print_r($array);
     $id = $data['personal']['user_id'];
     $idSubcircuito = $data['personal']['subcircuito'][0]['id'];
     $apellidoPaterno = $data['personal']['primerapellido_personal_policias'];
