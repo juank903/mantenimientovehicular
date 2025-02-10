@@ -51,20 +51,6 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        /* $personal = new Personalpolicia();
-        $personalData = $personal->find(auth()->id());
-
-        session(['personal' => PersonalController::getPersonalIdUsuario(auth()->id())]);
-        session(['rolusuario' => $personalData->rol_personal_policias]);
-
-        // Verificar si la relación subcircuito tiene datos
-        if ($personalData->subcircuito && count($personalData->subcircuito) > 0) {
-            session(['subcircuito' => $personalData->subcircuito[0]->nombre_subcircuito_dependencias]);
-        } else {
-            // Manejar el caso en que no haya subcircuito
-            session(['subcircuito' => 'Sin subcircuito asignado']); // O cualquier otro valor por defecto
-        } */
-
         RateLimiter::clear($this->throttleKey());
     }
 

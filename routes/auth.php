@@ -116,12 +116,14 @@ Route::middleware('auth')->group(function () {
 
     /*Rutas Solicitudes*/
         Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
-            return view('solicitudesViews.vehiculos.administrador.solicitudesvehiculos-index');
-        })->name('mostrartodasolicitudesvehiculos-pendientes');
+            return view('solicitudesvehiculosViews.show');
+        })->name('mostrartodasolicitudesvehiculos.pendientes');
 
         Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
             ->name('solicitarvehiculo.policia');
-        Route::get('mostrarsolicitudvehiculo/policia/pendiente/index', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
+        /* Route::get('mostrarsolicitudvehiculo/policia/pendiente/index', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
+            ->name('mostrarsolicitudvehiculo.policia.pendiente'); */
+        Route::get('mostrarsolicitudvehiculo/policia/pendiente/index/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
             ->name('mostrarsolicitudvehiculo.policia.pendiente');
 
     /*Solicitudes acciones solicitudes */

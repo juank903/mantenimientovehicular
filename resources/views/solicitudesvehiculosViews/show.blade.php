@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <!--Container-->
-    <div class="container flex w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-10 z-0 text-sm">
+    <div class="flex w-full mx-auto px-2 mt-10 z-0 text-sm">
 
         <!-- Card -->
         <div id='recipients' class="p-8 mt-6 rounded shadow bg-white">
@@ -25,9 +25,7 @@
                         <th>Segundo nombre</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Data will be populated dynamically here -->
-                </tbody>
+                <tbody> </tbody>
             </table>
         </div>
         <!-- /Card -->
@@ -123,7 +121,7 @@
                             if (estado === "Pendiente") {
                                 return `
                                 <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                                    <x-show-button href="{{ route('mostrarsolicitudvehiculopoliciadministrador-pendiente', ['id' => '__ID__']) }}" />
+                                    <x-show-button href="{{ route('mostrarsolicitudvehiculo.policia.pendiente', ['id' => '__ID__']) }}" />
                                 </div>`.replace('__ID__', id);
                             } else {
                                 return ''; // No mostrar nada si el estado no es "Pendiente"

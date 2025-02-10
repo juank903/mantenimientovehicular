@@ -6,21 +6,39 @@ use Auth;
 use Http;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Request;
 
 class AppLayout extends Component
 {
-    /**
-     * Get the view / contents that represents the component.
-     */
     public array $menuItems;
-    public function __construct()
-    {
-        //
-        $rol = Auth::user()->rol();
-        $response = Http::get(url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/pendientes'));
-        $data = $response->successful() ? $response->json() : ['numero_solicitudes' => 0];
+    private ?int $userId; // Hacer userId una propiedad privada
 
-        $this->menuItems = match (true) {
+    public function __construct($userId = null)
+    {
+        //$this->userId = $request->id;
+        $this->userId = $userId ?? auth()->id(); // Inicializar userId
+        $this->menuItems = []; // Inicializar menuItems a un array vacío
+    }
+
+    public function getMenuItems(): array // Nuevo método para obtener los elementos del menú
+    {
+        if ($this->userId) { // Solo hacer la llamada a la API si userId está configurado
+            $user = Auth::user(); // Es posible que no necesites esto si solo usas el rol
+            $rol = $user?->rol(); // Manejar los casos en los que el usuario no ha iniciado sesión
+
+            if ($rol) { // Solo continuar si el usuario tiene un rol
+                $response = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/pendientes"));
+                $data = $response->successful() ? $response->json() : ['numero_solicitudes' => 0];
+
+                $this->menuItems = $this->generateMenuItems($rol, $data['numero_solicitudes'] ?? 0); // Llamar a una función auxiliar
+            }
+        }
+        return $this->menuItems;
+    }
+
+    private function generateMenuItems(string $rol, int $numero_solicitudes): array // Función auxiliar
+    {
+        return match (true) {
             $rol == "administrador" => [
                 [
                     'name' => 'Personal',
@@ -40,7 +58,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Solicitud pendiente' => 'solicitarvehiculo.policia',
+                        'Solicitudes vehículos pendientes' => 'mostrartodasolicitudesvehiculos.pendientes',
                     ],
                     'route' => 'solicitud',
                 ],
@@ -48,7 +66,7 @@ class AppLayout extends Component
             $rol == "gerencia" => [
 
             ],
-            $rol == "policia"  && $data['numero_solicitudes'] == 0 => [
+            $rol == "policia" && $numero_solicitudes == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -57,7 +75,7 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
-            $rol == "policia"  && $data['numero_solicitudes'] > 0 => [
+            $rol == "policia" && $numero_solicitudes > 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -77,10 +95,13 @@ class AppLayout extends Component
             ],
             default => [],
         };
-
     }
+
+
     public function render(): View
     {
-        return view('layouts.app');
+        $id=10;
+        $this->getMenuItems(); // Llamar al método para obtener los elementos del menú antes de renderizar
+        return view('layouts.app',  ['id' => $id]);
     }
 }

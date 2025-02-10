@@ -183,12 +183,19 @@ class SolicitudvehiculoController extends Controller
         // Verifica si hay una solicitud pendiente antes de acceder a sus elementos
         $solicitudPendiente = $datosPoliciaSolicitud['solicitud_pendiente'][0] ?? null;
 
-        return view('solicitudesvehiculosViews.index', [
-            'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-            'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
-        ]);
-    }
+        if($user->rol() !== 'policia'){
+            return view('solicitudesvehiculosViews.policia.index', [
+                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
+                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
+            ]);
+        }
 
+        return view('solicitudesvehiculosViews.administrador.index', [
+                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
+                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
+            ]);
+
+    }
 
     /**
      * Verifica si el usuario tiene solicitudes pendientes.
