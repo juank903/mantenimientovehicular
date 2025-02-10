@@ -168,7 +168,7 @@ class SolicitudvehiculoController extends Controller
         ]);
     }
 
-    public function mostrarSolicitudVehiculoPendiente($userId = null): View | RedirectResponse    {
+    public function mostrarSolicitudVehiculoPendiente($userId = null): View | RedirectResponse {
 
         $userId ??= auth()->id();
         $user = Auth::user();
@@ -180,22 +180,27 @@ class SolicitudvehiculoController extends Controller
             return redirect()->route('dashboard')->with('error', 'Error al obtener la solicitud pendiente.');
         }
 
-        // Verifica si hay una solicitud pendiente antes de acceder a sus elementos
-        $solicitudPendiente = $datosPoliciaSolicitud['solicitud_pendiente'][0] ?? null;
+        /* // Verifica si hay una solicitud pendiente antes de acceder a sus elementos
+        $solicitudPendiente = $datosPoliciaSolicitud['solicitud_pendiente'][0] ?? null; */
 
-        if($user->rol() !== 'policia'){
+        if ($user->rol() === 'administrador') {
+            return view('solicitudesvehiculosViews.administrador.index', [
+                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
+                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
+            ]);
+        }
+
+        if ($user->rol() === 'policia') {
             return view('solicitudesvehiculosViews.policia.index', [
                 'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
                 'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
             ]);
         }
 
-        return view('solicitudesvehiculosViews.administrador.index', [
-                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
-            ]);
-
+        // Si el usuario no es ni administrador ni policía, redirigir con un error.
+        return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
     }
+
 
     /**
      * Verifica si el usuario tiene solicitudes pendientes.

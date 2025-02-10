@@ -18,12 +18,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
-    @if (
-        Request::is('mostrartodopersonal') ||
-        Request::is('mostrartodovehiculos') ||
-        Request::is('mostrartodasolicitudesvehiculos/pendientes')
-        )
-
+    @if (Request::is('mostrartodopersonal') ||
+            Request::is('mostrartodovehiculos') ||
+            Request::is('mostrartodasolicitudesvehiculos/pendientes'))
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
         <!-- DataTables Buttons CSS -->
@@ -43,10 +40,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
-
     @endif
-    @if ( Route::is('gerencia.dashboard'))
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @if (Route::is('gerencia.dashboard'))
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @endif
 
 </head>
@@ -58,6 +54,7 @@
             {{ $slot }}
         </div>
     </div>
+    @stack('scripts')
 </body>
 
 </html>

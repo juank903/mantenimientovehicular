@@ -40,6 +40,4 @@ Route::get('/subcircuito/{id}/provincia', [ApiSubcircuitoController::class, 'sho
 Route::resource('/personal', ApiPersonalpoliciaController::class);
 
 /*Api Dependencias*/
-
-
 Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);

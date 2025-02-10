@@ -75,10 +75,13 @@
             </div>
         </dl>
 
-        <button onclick="openModal()"
-            class="w-full items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200">
-            Anular Solicitud
-        </button>
+        <div class="flex justify-end">
+            <button onclick="openModal()"
+                class="items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                Anular Solicitud policia
+            </button>
+        </div>
+
     </div>
 
     <!-- Modal de Confirmación -->
@@ -109,19 +112,21 @@
         </div>
     </div>
 
-    <script>
-        function openModal() {
-            let modal = document.getElementById("confirmModal");
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-        }
+    @push('scripts')
+        <script>
+            function openModal() {
+                console.log('open');
+                let modal = document.getElementById("confirmModal");
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            }
 
-        function closeModal() {
-            let modal = document.getElementById("confirmModal");
-            modal.classList.remove("flex");
-            modal.classList.add("hidden");
-        }
-    </script>
-
-
+            function closeModal() {
+                console.log('close');
+                let modal = document.getElementById("confirmModal");
+                modal.classList.remove("flex");
+                modal.classList.add("hidden");
+            }
+        </script>
+    @endpush
 </x-app-layout>

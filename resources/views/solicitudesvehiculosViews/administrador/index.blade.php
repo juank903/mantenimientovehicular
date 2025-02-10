@@ -74,96 +74,6 @@
             </div>
         </dl>
 
-        <button onclick="openModal()"
-            class="w-full items-center justify-center px-6 py-3 bg-red-600 text-white text-lg font-semibold shadow-lg transform hover:scale-105 transition-transform duration-200">
-            Anular Solicitud
-        </button>
-
-    </div>
-
-    <!-- Modal de Confirmación -->
-    <div id="confirmModal" class="fixed inset-0 flex items-start justify-center bg-gray-900 bg-opacity-50 hidden pt-10">
-        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 flex flex-col items-center">
-            <h3 class="text-lg font-semibold text-gray-800">Confirmar Anulación</h3>
-            <p class="text-sm text-gray-600 mt-2 text-center">Seleccione el motivo de la anulación:</p>
-
-            <form method="POST" id="anularForm" action="{{ route('anularsolicitudvehiculopolicia-pendiente') }}"
-                class="w-full">
-                {{-- @method('PUT') --}}
-                @csrf
-                <div class="mt-4 w-full">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="motivo" value="errores" class="mr-2"> Errores en la solicitud
-                    </label>
-                    <label class="flex items-center mt-2">
-                        <input type="checkbox" name="motivo" value="no_requiere" class="mr-2"> Ya no requiere el
-                        vehículo
-                    </label>
-
-
-                </div>
-                <input type="hidden" name="id" value="{{ $solicitud['id'] }}">
-                <div class="flex justify-center mt-4 w-full">
-                    <button type="button" onclick="closeModal()"
-                        class="px-4 py-2 bg-gray-300 rounded-md mr-2">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md">Confirmar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    @if (Auth::user()->rol() == 'administrador')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('#btnConsultarVehiculos').click(function() {
-                    // Obtener los valores de las variables
-                    let idSubcircuito = {{ $policia['id_subcircuito'] }};
-                    let tipoVehiculo =
-                        '{{ $solicitud['tipo_vehiculo'] }}'; // Se pasa como string correctamente
-
-                    // Codificar las variables para la URL
-                    idSubcircuito = encodeURIComponent(idSubcircuito);
-                    tipoVehiculo = encodeURIComponent(tipoVehiculo);
-
-                    // Construir la URL completa
-                    let urlCompleta = '/api/vehiculos/subcircuito/' + idSubcircuito + '/tipo/' + tipoVehiculo;
-
-                    // Realizar la solicitud AJAX
-                    $.ajax({
-                        url: urlCompleta,
-                        method: 'GET',
-                        success: function(data) {
-                            let select = $('#selectMarca');
-                            select.empty();
-                            select.append('<option value="">Seleccione una marca</option>');
-
-                            data.forEach(vehiculo => {
-                                select.append(
-                                    `<option value="${vehiculo.id}" data-vehiculo='${JSON.stringify(vehiculo)}'>${vehiculo.marca_vehiculos}</option>`
-                                );
-                            });
-
-                            $('#vehiculoContainer').removeClass('hidden');
-                        }
-                    });
-                });
-
-                $('#selectMarca').change(function() {
-                    let vehiculo = $(this).find(':selected').data('vehiculo');
-
-                    if (vehiculo) {
-                        $('#placa').text(vehiculo.placa_vehiculos);
-                        $('#parqueadero').text(vehiculo.parqueaderos[0].parqueaderos_nombre);
-                        $('#responsable').text(vehiculo.parqueaderos[0].parqueaderos_responsable);
-                        $('#espacio').text(vehiculo.parqueaderos[0].espacios[0].espacioparqueaderos_nombre);
-                        $('#detalleVehiculo').removeClass('hidden');
-                    } else {
-                        $('#detalleVehiculo').addClass('hidden');
-                    }
-                });
-            });
-        </script>
-
         <div class="container mx-auto px-4 mt-10">
             <button id="btnConsultarVehiculos" class="bg-blue-500 text-white px-4 py-2 rounded">Consultar
                 Vehículos</button>
@@ -180,5 +90,108 @@
                 <p><strong>Espacio:</strong> <span id="espacio"></span></p>
             </div>
         </div>
-    @endif
+
+        <div class="flex justify-end">
+            <button onclick="openModal()"
+                class="items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                Anular Solicitud administrador
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="fixed inset-0 hidden items-start justify-center bg-gray-900 bg-opacity-50 pt-10">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-1/3 flex flex-col items-center">
+            <h3 class="text-lg font-semibold text-gray-800">Confirmar Anulación</h3>
+            <p class="text-sm text-gray-600 mt-2 text-center">Seleccione el motivo de la anulación:</p>
+
+            <form method="POST" id="anularForm" action="{{ route('anularsolicitudvehiculopolicia-pendiente') }}"
+                class="w-full">
+                @csrf
+                <div class="mt-4 w-full">
+                    <label class="flex items-center">
+                        <input type="radio" name="motivo" value="errores" class="mr-2"> Errores en la solicitud
+                    </label>
+                    <label class="flex items-center mt-2">
+                        <input type="radio" name="motivo" value="no_requiere" class="mr-2"> Ya no requiere el
+                        vehículo
+                    </label>
+                </div>
+                <input type="hidden" name="id" value="{{ $solicitud['id'] }}">
+                <div class="flex justify-center mt-4 w-full">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 bg-gray-300 rounded-md mr-2">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            function openModal() {
+                console.log('open');
+                let modal = document.getElementById("confirmModal");
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            }
+
+            function closeModal() {
+                console.log('close');
+                let modal = document.getElementById("confirmModal");
+                modal.classList.remove("flex");
+                modal.classList.add("hidden");
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("btnConsultarVehiculos").addEventListener("click", function() {
+                    // Obtener los valores de las variables
+                    let idSubcircuito = encodeURIComponent({{ $policia['id_subcircuito'] }});
+                    let tipoVehiculo = encodeURIComponent('{{ $solicitud['tipo_vehiculo'] }}');
+
+                    // Construir la URL completa
+                    let urlCompleta = `/api/vehiculos/subcircuito/${idSubcircuito}/tipo/${tipoVehiculo}`;
+                    console.log('esta es la URL api: '+ urlCompleta);
+                    // Realizar la solicitud AJAX
+                    fetch(urlCompleta)
+                        .then(response => response.json())
+                        .then(data => {
+                            let select = document.getElementById("selectMarca");
+                            select.innerHTML = '<option value="">Seleccione una marca</option>';
+
+                            data.forEach(vehiculo => {
+                                let option = document.createElement("option");
+                                option.value = vehiculo.id;
+                                option.textContent = vehiculo.marca_vehiculos;
+                                option.dataset.vehiculo = JSON.stringify(vehiculo);
+                                select.appendChild(option);
+                            });
+
+                            document.getElementById("vehiculoContainer").classList.remove("hidden");
+                        })
+                        .catch(error => console.error("Error en la petición:", error));
+                });
+
+                document.getElementById("selectMarca").addEventListener("change", function() {
+                    let selectedOption = this.options[this.selectedIndex];
+                    let vehiculo = selectedOption.dataset.vehiculo ? JSON.parse(selectedOption.dataset
+                        .vehiculo) : null;
+
+                    if (vehiculo) {
+                        document.getElementById("placa").textContent = vehiculo.placa_vehiculos;
+                        document.getElementById("parqueadero").textContent = vehiculo.parqueaderos[0]
+                            .parqueaderos_nombre;
+                        document.getElementById("responsable").textContent = vehiculo.parqueaderos[0]
+                            .parqueaderos_responsable;
+                        document.getElementById("espacio").textContent = vehiculo.parqueaderos[0].espacios[0]
+                            .espacioparqueaderos_nombre;
+                        document.getElementById("detalleVehiculo").classList.remove("hidden");
+                    } else {
+                        document.getElementById("detalleVehiculo").classList.add("hidden");
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>
