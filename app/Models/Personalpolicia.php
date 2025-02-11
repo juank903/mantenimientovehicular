@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Faker\Core\Number;
-use Illuminate\Database\Eloquent\Casts\Json;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Models\Solicitudvehiculo;
 use App\Models\Subcircuitodependencia;
+use Illuminate\Database\Eloquent\Casts\Json;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Personalpolicia extends Model
 {
+    use SoftDeletes;
     public $timestamps = false;
     protected $fillable = [
         'user_id',

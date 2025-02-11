@@ -57,12 +57,23 @@
                     {
                         data: null,
                         render: function(data, type, row) {
+                            const userId = data.user_id;
+
+                            // AJAX call to get the component HTML
+                            $.ajax({
+                                url: `/delete-button/${userId}`,
+                                success: function(html) {
+                                    // Find the container and replace its content
+                                    $(`#delete-button-container-${userId}`).html(html);
+                                }
+                            });
+
                             return `
-                        <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                            <x-show-button />
-                            <x-edit-button />
-                            <x-delete-button />
-                        </div>`;
+                            <div class="flex justify-center space-x-4 align-middle cursor-pointer">
+                                <x-show-button />
+                                <x-edit-button />
+                                <div id="delete-button-container-${userId}"></div> {{-- Container for the component --}}
+                            </div>`;
                         },
                         orderable: false
                     }
@@ -108,6 +119,29 @@
             /*table.columns().every(function(index) {
                 console.log('Índice de columna: ' + index + ' - Nombre: ' + this.header().innerHTML);
             }); */
+        });
+
+        // Evento para eliminar un registro
+        $(document).on('click', '.delete-button', function() {
+            console.log('aquí estoy');
+            let id = $(this).data('id'); // Obtener el ID del registro
+            if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
+                $.ajax({
+                    url: `{{ url('/api/user') }}/${id}`, // URL para eliminar
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Si se necesita autenticación en Laravel
+                    },
+                    success: function(response) {
+                        alert('Registro eliminado correctamente');
+                        table.ajax.reload(); // Recargar la tabla
+                    },
+                    error: function(xhr) {
+                        alert('Error al eliminar el registro');
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
         });
     </script>
 </x-app-layout>

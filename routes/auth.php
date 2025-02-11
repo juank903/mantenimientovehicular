@@ -12,7 +12,6 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\App\ReportesController;
 use App\Http\Controllers\App\SolicitudvehiculoController;
 use App\Http\Controllers\App\VehiculosController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -132,5 +131,10 @@ Route::middleware('auth')->group(function () {
 
         Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
             ->name('guardarsolicitudvehiculo');
+
+    /*Componentes bonotes dinámicos */
+        Route::get('/delete-button/{userId}', function ($userId) {
+            return view('components.delete-button', ['userId' => $userId]);
+        });
 
 });

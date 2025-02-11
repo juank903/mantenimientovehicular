@@ -6,16 +6,10 @@ use App\Http\Controllers\Api\ApiProvinciaController;
 use App\Http\Controllers\Api\ApiSolicitudvehiculoController;
 use App\Http\Controllers\Api\ApiSubcircuitoController;
 use App\Http\Controllers\Api\ApiVehiculoController;
-use App\Http\Controllers\Api\CircuitoController;
-use App\Http\Controllers\Api\SolicitudvehiculoController;
-use App\Http\Controllers\Api\SubcircuitoController;
-use App\Http\Controllers\Api\VehiculoController;
 use App\Http\Controllers\App\ReportesController;
-use App\Http\Controllers\App\QuejasugerenciasController;
-use App\Models\Personalpolicia;
-use App\Models\Quejasubcircuito;
-use Illuminate\Http\Request;
+use App\Http\Controllers\App\UserController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
 Route::resource('/vehiculos', ApiVehiculoController::class);
@@ -38,6 +32,7 @@ Route::get('/provincias', [ApiProvinciaController::class, 'index']);
 Route::get('/personal/policia/{id}/detalles', [ApiPersonalpoliciaController::class, 'show']);
 Route::get('/subcircuito/{id}/provincia', [ApiSubcircuitoController::class, 'show']);
 Route::resource('/personal', ApiPersonalpoliciaController::class);
+Route::resource('/user', UserController::class);
 
 /*Api Dependencias*/
 Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);

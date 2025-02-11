@@ -20,6 +20,7 @@ class ApiPersonalpoliciaController extends Controller
 
         // Obtener la consulta base del modelo
         $query = Personalpolicia::query();
+        $query->where('rol_personal_policias', 'policia');
 
         // Implementar la búsqueda y filtrado
         if ($request->has('search.value') && $request->search['value']) {
