@@ -145,7 +145,7 @@ class ApiVehiculoController extends Controller
 
     public function getVehiculoParqueaderoSubcircuito($subcircuito_id, $tipo_vehiculo )
     {
-        $vehiculos = Vehiculo::with(['parqueaderos.espacios'])
+        $vehiculos = Vehiculo::with(['parqueaderos','espacio'])
             ->whereHas('subcircuito', function ($query) use ($subcircuito_id) {
                 $query->where('subcircuitodependencia_id', $subcircuito_id);
             })

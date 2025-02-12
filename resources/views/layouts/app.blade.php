@@ -49,7 +49,7 @@
 
 <body class="font-sans antialiased bg-gray-300">
     <x-navigation.navegacion :menuItems="$menuItems" />
-    <div class="container w-full md:w-4/5 xl:w-3/5 mx-auto px-2 mt-5 z-0 text-sm">
+    <div class="container w-full mx-auto px-2 mt-5 z-0 text-sm">
         <div id='recipients' class="p-5 rounded-2xl shadow bg-white">
             {{ $slot }}
         </div>

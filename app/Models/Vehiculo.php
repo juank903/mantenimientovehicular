@@ -26,5 +26,9 @@ class Vehiculo extends Model
     {
         return $this->belongsToMany(Subcircuitodependencia::class);
     }
+    public function espacio()
+    {
+        return $this->belongsToMany(Espacioparqueadero::class);
+    }
 
 }

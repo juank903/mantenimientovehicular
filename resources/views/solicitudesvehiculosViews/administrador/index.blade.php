@@ -88,6 +88,7 @@
                 <p><strong>Parqueadero:</strong> <span id="parqueadero"></span></p>
                 <p><strong>Responsable:</strong> <span id="responsable"></span></p>
                 <p><strong>Espacio:</strong> <span id="espacio"></span></p>
+                <p><strong>Observaciones:</strong> <span id="observaciones"></span></p>
             </div>
         </div>
 
@@ -184,8 +185,10 @@
                             .parqueaderos_nombre;
                         document.getElementById("responsable").textContent = vehiculo.parqueaderos[0]
                             .parqueaderos_responsable;
-                        document.getElementById("espacio").textContent = vehiculo.parqueaderos[0].espacios[0]
+                        document.getElementById("espacio").textContent = vehiculo.espacio[0]
                             .espacioparqueaderos_nombre;
+                        document.getElementById("observaciones").textContent = vehiculo.espacio[0]
+                            .espacioparqueaderos_observacion;
                         document.getElementById("detalleVehiculo").classList.remove("hidden");
                     } else {
                         document.getElementById("detalleVehiculo").classList.add("hidden");

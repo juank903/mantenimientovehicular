@@ -36,6 +36,7 @@
     <script>
         $(document).ready(function() {
             table = $('#solicitudesvehiculos').DataTable({
+                responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
