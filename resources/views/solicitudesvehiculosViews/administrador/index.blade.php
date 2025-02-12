@@ -83,18 +83,21 @@
                 <select id="selectMarca" class="border-gray-300 rounded mt-1 p-2 w-full"></select>
             </div>
 
-            <div id="detalleVehiculo" class=" mt-4 p-4 border rounded bg-gray-100">
+            <div id="detalleVehiculo" class="mt-4 p-4 border rounded bg-gray-100 hidden">
                 <p><strong>Placa:</strong> <span id="placa"></span></p>
                 <p><strong>Parqueadero:</strong> <span id="parqueadero"></span></p>
                 <p><strong>Responsable:</strong> <span id="responsable"></span></p>
                 <p><strong>Espacio:</strong> <span id="espacio"></span></p>
                 <p><strong>Observaciones:</strong> <span id="observaciones"></span></p>
             </div>
+
+            <button id="btnAprobarSolicitud" class="hidden bg-green-500 text-white px-4 py-2 rounded mt-4">Aprobar Solicitud</button>
+
         </div>
 
         <div class="flex justify-end">
             <button onclick="openModal()"
-                class="items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                class="rounded items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
                 Anular Solicitud administrador
             </button>
         </div>
@@ -119,7 +122,7 @@
                         vehículo
                     </label>
                 </div>
-                <input type="hidden" name="id" value="{{ $solicitud['id'] }}">
+                <input type="hidden" name="id" value="{{ $policia['id'] }}">
                 <div class="flex justify-center mt-4 w-full">
                     <button type="button" onclick="closeModal()"
                         class="px-4 py-2 bg-gray-300 rounded-md mr-2">Cancelar</button>
@@ -190,9 +193,49 @@
                         document.getElementById("observaciones").textContent = vehiculo.espacio[0]
                             .espacioparqueaderos_observacion;
                         document.getElementById("detalleVehiculo").classList.remove("hidden");
+                        document.getElementById("btnAprobarSolicitud").classList.remove("hidden");
                     } else {
                         document.getElementById("detalleVehiculo").classList.add("hidden");
+                        document.getElementById("btnAprobarSolicitud").classList.add("hidden");
                     }
+                });
+                document.getElementById("btnAprobarSolicitud").addEventListener("click", function() {
+                    let selectedOption = document.getElementById("selectMarca").options[document.getElementById("selectMarca").selectedIndex];
+                    let vehiculo = selectedOption.dataset.vehiculo ? JSON.parse(selectedOption.dataset.vehiculo) : null;
+
+                    if (!vehiculo) {
+                        alert("Por favor, seleccione un vehículo.");
+                        return;
+                    }
+
+                    // Prepare data for API call
+                    const data = {
+                        solicitud_id: {{ $solicitud['id'] }}, // Assuming you have the solicitud ID available
+                        vehiculo_id: vehiculo.id, // Assuming the API expects the vehicle ID
+                        // ... any other data your API requires
+                    };
+
+                    fetch('/api/aprobar-solicitud', { // Replace with your API endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Include CSRF token
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(responseData => {
+                        // Handle successful approval
+                        console.log("Solicitud aprobada:", responseData);
+                        alert("Solicitud aprobada exitosamente.");
+                        // Optionally, redirect or update the UI
+                        window.location.href = "{{ route('dashboard') }}"; // Example: Redirect to dashboard
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        console.error("Error al aprobar la solicitud:", error);
+                        alert("Error al aprobar la solicitud. Por favor, intente nuevamente.");
+                    });
                 });
             });
         </script>

@@ -12,7 +12,6 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -49,7 +48,7 @@
 
 <body class="font-sans antialiased bg-gray-300">
     <x-navigation.navegacion :menuItems="$menuItems" />
-    <div class="container w-full mx-auto px-2 mt-5 z-0 text-sm">
+    <div class="container w-full mx-auto px-10 mt-5 z-0 text-sm mb-10">
         <div id='recipients' class="p-5 rounded-2xl shadow bg-white">
             {{ $slot }}
         </div>

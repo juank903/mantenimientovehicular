@@ -102,7 +102,7 @@
                         vehículo
                     </label>
                 </div>
-                <input type="hidden" name="id" value="{{ $solicitud['id'] }}">
+                <input type="hidden" name="id" value="{{ $policia['id'] }}">
                 <div class="flex justify-center mt-4 w-full">
                     <button type="button" onclick="closeModal()"
                         class="px-4 py-2 bg-gray-300 rounded-md mr-2">Cancelar</button>

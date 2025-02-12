@@ -151,7 +151,9 @@ class ApiVehiculoController extends Controller
             })
             ->when($tipo_vehiculo, function ($query) use ($tipo_vehiculo) {
                 $query->where('tipo_vehiculos', $tipo_vehiculo);
-            })->get();
+            })
+            ->where('estado_vehiculos', 'no asignado')
+            ->get();
 
         return response()->json($vehiculos);
     }

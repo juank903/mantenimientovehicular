@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('mensaje') || session('error'))
-        @include('components.mensajemodalexito')
+    <x-mensajemodalexito/>
     @endif
     Estoy en la vista auxiliar
     <div class="flex flex-row space-x-4 overflow-x-auto md:w-4/5 xl:w-3/5 mx-auto px-2 z-0 text-sm">

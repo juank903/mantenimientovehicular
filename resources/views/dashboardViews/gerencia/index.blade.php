@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('mensaje') || session('error'))
-        @include('components.mensajemodalexito')
+    <x-mensajemodalexito/>
     @endif
     Estoy en la vista gerencia
 

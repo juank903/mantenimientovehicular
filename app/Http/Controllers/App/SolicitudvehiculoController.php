@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
-use App\Models\Historialsolicitudvehiculo;
 use App\Models\Solicitudvehiculo;
 use Auth;
 use Http;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class SolicitudvehiculoController extends Controller
@@ -41,105 +42,52 @@ class SolicitudvehiculoController extends Controller
             return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['error']);
         }
     }
+
     public function revokeSolicitudVehiculoPolicia(Request $request): RedirectResponse|JsonResponse
     {
-        // Obtener el ID del personal desde el request
         $personalId = $request->input('id');
+        $motivo = $request->input('motivo');
 
-        if ($personalId) {
-            // Obtener las solicitudes de vehículos del usuario dado
-            $solicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Pendiente')
-                ->get();
+        if (!$personalId) {
+            return redirect()->route('dashboard')->with('error', 'No existe el Personal Policial.');
+        }
 
-            if ($solicitudes->isEmpty()) {
-                return redirect()->route('dashboard')->with('error', 'No hay solicitudes pendientes para anular.');
-            }
+        if (!$motivo) {
+            return redirect()->route('dashboard')->with('error', 'Debe proporcionar un motivo para la anulación.');
+        }
 
-            // Cambiar el estado a "anulada"
+        $solicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
+            $query->where('personalpolicia_id', $personalId);
+        })
+            ->where('solicitudvehiculos_estado', 'Pendiente')
+            ->get();
+
+        if ($solicitudes->isEmpty()) {
+            return redirect()->route('dashboard')->with('error', 'No hay solicitudes pendientes para anular.');
+        }
+
+        DB::beginTransaction(); // Inicia la transacción
+
+        try {
             foreach ($solicitudes as $solicitud) {
                 $solicitud->solicitudvehiculos_estado = 'Anulada';
                 $solicitud->save();
-                $motivo = $request->motivo;
-                $response = HistorialsolicitudvehiculoController::guardarHistorialModificado($personalId, $solicitud->id, $motivo);
-                if ($response) {
-                    return redirect()->route('dashboard')->with('mensaje', 'Solicitud anulada y registrada');
-                } else {
-                    $solicitud->solicitudvehiculos_estado = 'Pendiente';
-                    $solicitud->save();
-                    return redirect()->route('dashboard')->with('error', 'No se pudo anular la solicitud.');
-                }
+
+                HistorialsolicitudvehiculoController::guardarHistorialModificado($personalId, $solicitud->id, $motivo);
             }
+
+            DB::commit(); // Confirma la transacción si todo fue exitoso
             return redirect()->route('dashboard')->with('mensaje', 'Solicitudes anuladas correctamente.');
-        } else {
-            return redirect()->route('dashboard')->with('error', 'No existe el Personal Policial.');
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Revierte la transacción en caso de error
+
+            // Opcional: Registra el error para depuración
+            Log::error('Error al anular solicitudes: ' . $e->getMessage());
+
+            return redirect()->route('dashboard')->with('error', 'No se pudo anular la solicitud: ' . $e->getMessage());
         }
     }
-
-    /* public function solicitudVehiculoPendientePoliciaLogeado($userId = null): RedirectResponse|View
-    {
-        $userId ??= auth()->id();
-        $user = Auth::user();
-
-        // Verifica el rol del usuario y si tiene solicitudes pendientes antes de realizar las llamadas a la API
-        if (($user->rol() !== 'policia' && $user->rol() !== 'administrador') || !$this->obtenerDetallesPolicia($userId)) {
-            return redirect()->route('dashboard')->with('error', 'Acceso no autorizado.');
-        }
-
-        //$response = Http::get(url("/api/personal/policia/{$userId}/totalsolicitudesvehiculos/pendientes"));
-        //$data = $response->successful() ? $response->json() : [];
-
-        if (!$this->tieneSolicitudesPendientes($userId) && $user->rol() === 'policia') {
-            $datosPolicia = $this->obtenerDetallesPolicia($userId);
-            //return redirect()->route('dashboard')->with('error', 'Usted no tiene solicitudes pendientes');
-            return view('solicitudesvehiculosViews.create', [
-                'tipos_vehiculo' => ['Moto', 'Auto', 'Camioneta'],
-                'jornadas' => ['Ordinaria', 'Extraordinaria'],
-                'policia' => [
-                    'id' => $datosPolicia['id'],
-                    'apellido_paterno' => $datosPolicia['primerapellido_personal_policias'],
-                    'apellido_materno' => $datosPolicia['segundoapellido_personal_policias'],
-                    'primer_nombre' => $datosPolicia['primernombre_personal_policias'],
-                    'segundo_nombre' => $datosPolicia['segundonombre_personal_policias'],
-                    'circuito' => $datosPolicia['subcircuito'][0]['circuito']['nombre_circuito_dependencias'],
-                    'subcircuito' => $datosPolicia['subcircuito'][0]['nombre_subcircuito_dependencias'],
-                    'distrito' => $datosPolicia['subcircuito'][0]['circuito']['distrito']['nombre_distritodependencias'],
-                    'provincia' => $datosPolicia['subcircuito'][0]['circuito']['distrito']['provincia']['nombre_provincia_dependencias'],
-                ],
-            ]);
-        } else if ($this->tieneSolicitudesPendientes($userId)) {
-            $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitud($userId);
-
-            return view('solicitudesvehiculosViews.index', [
-                'policia' => [
-                    'id' => $datosPoliciaSolicitud['personal']['id'],
-                    'apellido_paterno' => $datosPoliciaSolicitud['personal']['primerapellido_personal_policias'],
-                    'apellido_materno' => $datosPoliciaSolicitud['personal']['segundoapellido_personal_policias'],
-                    'primer_nombre' => $datosPoliciaSolicitud['personal']['primernombre_personal_policias'],
-                    'segundo_nombre' => $datosPoliciaSolicitud['personal']['segundonombre_personal_policias'],
-                    'circuito' => $datosPoliciaSolicitud['personal']['subcircuito'][0]['circuito']['nombre_circuito_dependencias'],
-                    'subcircuito' => $datosPoliciaSolicitud['personal']['subcircuito'][0]['nombre_subcircuito_dependencias'],
-                    'id_subcircuito' => $datosPoliciaSolicitud['personal']['subcircuito'][0]['id'],
-                    'distrito' => $datosPoliciaSolicitud['personal']['subcircuito'][0]['circuito']['distrito']['nombre_distritodependencias'],
-                    'provincia' => $datosPoliciaSolicitud['personal']['subcircuito'][0]['circuito']['distrito']['provincia']['nombre_provincia_dependencias'],
-                ],
-                'solicitud' => [
-                    'id' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['id'] ?? 'N/A',
-                    'fecha_solicitado' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['created_at'] ?? '',
-                    'detalle' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['solicitudvehiculos_detalle'] ?? '',
-                    'tipo_vehiculo' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['solicitudvehiculos_tipo'] ?? '',
-                    'fecha_desde' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['solicitudvehiculos_fecharequerimientodesde'] ?? '',
-                    'fecha_hasta' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['solicitudvehiculos_fecharequerimientohasta'] ?? '',
-                    'jornada' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['solicitudvehiculos_jornada'] ?? '',
-                    'estado_solicitud' => $datosPoliciaSolicitud['solicitud_pendiente'][0]['solicitudvehiculos_estado'] ?? '',
-                ]
-            ]);
-        }else{
-            return redirect()->route('dashboard')->with('error', 'No hay solicitudes');
-        }
-    } */
 
     /* private function obtenerDatosPolicia(int $userId): ?array
     {
@@ -168,7 +116,8 @@ class SolicitudvehiculoController extends Controller
         ]);
     }
 
-    public function mostrarSolicitudVehiculoPendiente($userId = null): View | RedirectResponse {
+    public function mostrarSolicitudVehiculoPendiente($userId = null): View|RedirectResponse
+    {
 
         $userId ??= auth()->id();
         $user = Auth::user();

@@ -1,5 +1,5 @@
 <x-app-layout>
     @if (session('mensaje') || session('error'))
-        @include('components.mensajemodalexito')
+        <x-mensajemodalexito/>
     @endif
 </x-app-layout>

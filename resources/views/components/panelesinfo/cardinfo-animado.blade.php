@@ -6,7 +6,7 @@
     $classesTextosDescriptivos = 'font-normal text-center';
     $classesTextoCifra = 'font-semibold text-5xl tracking-tight text-center';
     if ($estado == 'Aprobada') {
-        //echo ('aprobado');
+        //echo ('aprobada');
         $classesContenedor .= ' bg-green-300';
         $classesTextosDescriptivos .= ' text-green-600';
         $classesTextoCifra .= ' text-green-700';
@@ -18,10 +18,16 @@
         $classesTextoCifra .= ' text-orange-700';
     }
     if ($estado == 'Anulada') {
-        //echo ('anulado');
+        //echo ('anulada');
         $classesContenedor .= ' bg-red-300';
         $classesTextosDescriptivos .= ' text-red-600';
         $classesTextoCifra .= ' text-red-700';
+    }
+    if ($estado == 'Completa') {
+        //echo ('completa');
+        $classesContenedor .= ' bg-blue-300';
+        $classesTextosDescriptivos .= ' text-blue-600';
+        $classesTextoCifra .= ' text-blue-700';
     }
 @endphp
 

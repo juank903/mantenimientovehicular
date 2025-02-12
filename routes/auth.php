@@ -107,10 +107,7 @@ Route::middleware('auth')->group(function () {
 
 
     /*Rutas Reportes*/
-        /* Route::get('mostrarsolicitudvehiculopolicialogeado-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePolicialogeado'])
-            ->name('mostrarsolicitudvehiculopolicialogeado-pendiente');
-        Route::get('mostrarsolicitudvehiculopolicia/{id}/administrador-pendiente', [ReportesController::class, 'getSolicitudvehiculopendientePoliciadministrador'])
-            ->name('mostrarsolicitudvehiculopoliciadministrador-pendiente'); */
+
 
 
     /*Rutas Solicitudes*/

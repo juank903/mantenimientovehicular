@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('mensaje') || session('error'))
-        @include('components.mensajemodalexito')
+    <x-mensajemodalexito/>
     @endif
     Estoy en la vista administrador
     <div class="flex flex-row space-x-4 overflow-x-auto md:w-4/5 xl:w-3/5 mx-auto px-2 z-0 text-sm">
@@ -12,6 +12,8 @@
                 :items="['titulo' => 'Total solicitudes Vehiculo', 'mensaje' => 'anuladas']" />
             <x-panelesinfo.cardinfo-animado estado="Aprobada" id="solicitudesvehiculos_aprobadas" :api="url('/api/totalsolicitudesvehiculos/aprobadas')" :
                 :items="['titulo' => 'Total solicitudes Vehiculo', 'mensaje' => 'aprobadas']" />
+            <x-panelesinfo.cardinfo-animado estado="Completa" id="solicitudesvehiculos_completas" :api="url('/api/totalsolicitudesvehiculos/aprobadas')" :
+                :items="['titulo' => 'Total solicitudes Vehiculo', 'mensaje' => 'completas']" />
         </div>
     </div>
 </x-app-layout>
