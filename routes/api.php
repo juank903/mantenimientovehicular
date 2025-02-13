@@ -28,6 +28,7 @@ Route::get('/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoControl
 Route::get('/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasTotal']);
 Route::get('/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasTotal']);
 Route::get('/totalsolicitudesvehiculos/completas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoCompletasTotal']);
+Route::get('/listarsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'listarSolicitudesVehiculosPendientes']);
 Route::post('/solicitudvehiculo/aprobar', [ApiSolicitudvehiculoController::class, 'aprobarSolicitud']);
 Route::resource('/solicitudesvehiculos', ApiSolicitudvehiculoController::class);
 

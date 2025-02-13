@@ -29,7 +29,7 @@
 
         <!-- Gráfico 5 -->
         <div class="bg-white p-4 shadow rounded-lg">
-            <canvas id="chart5"></canvas>
+            <canvas id="chartLine"></canvas>
         </div>
 
         <!-- Gráfico 6 -->
@@ -52,7 +52,8 @@
                         data: datos,
                         backgroundColor: colores,
                         borderColor: colores.map(color => color.replace('1)', '0.8)')),
-                        borderWidth: 1
+                        borderWidth: 1,
+                        fill: tipo === 'line' ? false : true
                     }]
                 },
                 options: {
@@ -62,42 +63,10 @@
                         title: {
                             display: true,
                             text: titulo,
-                            font: {
-                                size: 18
-                            }
+                            font: { size: 18 }
                         }
                     },
-                    scales: tipo === 'bar' ? { y: { beginAtZero: true, max: 100 } } : {}
-                }
-            });
-        }
-        // Función para crear el gráfico Doughnut (Estado Vehículos)
-        function crearGraficoDoughnut(id, labels, datos, colores, titulo) {
-            var ctx = document.getElementById(id).getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: titulo,
-                        data: datos,
-                        backgroundColor: colores,
-                        borderColor: colores.map(color => color.replace('1)', '0.8)')),
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: titulo,
-                            font: {
-                                size: 18
-                            }
-                        }
-                    }
+                    scales: tipo === 'bar' || tipo === 'line' ? { y: { beginAtZero: true } } : {}
                 }
             });
         }
@@ -123,8 +92,8 @@
                 // Crear 6 gráficos con diferentes estilos
                 crearGrafico('chart1', 'bar', labels, datos, colores, 'Distribución de Género del Personal Policial');
                 crearGrafico('chart2', 'pie', labels, datos, colores, 'Distribución de Género del Personal Policial');
-                crearGrafico('chart4', 'polarArea', labels, datos, colores, 'Distribución de Género del Personal Policial');
-                crearGrafico('chart5', 'line', labels, datos, colores, 'Distribución de Género del Personal Policial');
+                crearGrafico('chart4', 'polarArea', labels, datos, colores,
+                    'Distribución de Género del Personal Policial');
                 crearGrafico('chart6', 'radar', labels, datos, colores, 'Distribución de Género del Personal Policial');
 
             })
@@ -156,12 +125,41 @@
                 let labels = Object.keys(estados);
                 let datos = Object.values(estados);
                 let colores = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
-                               'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'];
+                    'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'
+                ];
 
                 // Crear gráfico Doughnut (Estado Vehículos)
-                crearGraficoDoughnut('chartDoughnut', labels, datos, colores, 'Estado de los Vehículos');
+                crearGrafico('chartDoughnut', 'doughnut', labels, datos, colores, 'Estado de los Vehículos');
             })
             .catch(error => console.error('Error al obtener los datos de vehículos:', error));
+
+        // Llamar a la API para obtener datos de solicitudes de vehículos
+        fetch('/api/solicitudesvehiculos?perPage=0')
+            .then(response => response.json())
+            .then(data => {
+                let solicitudes = data.data;
+
+                let estados = {
+                    'Pendiente': 0,
+                    'Aprobada': 0,
+                    'Anulada': 0,
+                    'Completa': 0
+                };
+
+                solicitudes.forEach(solicitud => {
+                    if (solicitud.solicitudvehiculos_estado in estados) estados[solicitud
+                        .solicitudvehiculos_estado]++;
+                });
+
+                let labels = Object.keys(estados);
+                let datos = Object.values(estados);
+                let colores = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ];
+
+                crearGrafico('chartLine', 'line', labels, datos, colores, 'Solicitudes de Vehículos por Estado');
+            })
+            .catch(error => console.error('Error en datos de solicitudes:', error));
     </script>
 
 </x-app-layout>

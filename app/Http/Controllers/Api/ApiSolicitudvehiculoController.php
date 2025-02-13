@@ -34,6 +34,98 @@ class ApiSolicitudvehiculoController extends Controller
                 'personalpolicias.primernombre_personal_policias',
                 'personalpolicias.segundonombre_personal_policias'
             ])
+            ->where('personalpolicias.rol_personal_policias', 'policia'); // Solo personal con rol "policia"
+
+        // Aplicar búsqueda
+        if ($request->has('search.value') && !empty($request->search['value'])) {
+            $search = $request->search['value'];
+            $query->where(function ($q) use ($search) {
+                $q->where('solicitudvehiculos.id', 'like', "%{$search}%")
+                    ->orWhere('solicitudvehiculos.created_at', 'like', "%{$search}%")
+                    ->orWhere('solicitudvehiculos.solicitudvehiculos_fecharequerimiento', 'like', "%{$search}%")
+                    ->orWhere('solicitudvehiculos.solicitudvehiculos_tipo', 'like', "%{$search}%")
+                    ->orWhere('solicitudvehiculos.solicitudvehiculos_estado', 'like', "%{$search}%")
+                    ->orWhere('personalpolicias.rango_personal_policias', 'like', "%{$search}%")
+                    ->orWhere('personalpolicias.primerapellido_personal_policias', 'like', "%{$search}%")
+                    ->orWhere('personalpolicias.segundoapellido_personal_policias', 'like', "%{$search}%")
+                    ->orWhere('personalpolicias.primernombre_personal_policias', 'like', "%{$search}%")
+                    ->orWhere('personalpolicias.segundonombre_personal_policias', 'like', "%{$search}%");
+            });
+        }
+
+        // Aplicar ordenación
+        $columns = [
+            'solicitudvehiculos.id',
+            'solicitudvehiculos.created_at',
+            'solicitudvehiculos.solicitudvehiculos_fecharequerimiento',
+            'personalpolicias.rango_personal_policias',
+            'personalpolicias.primerapellido_personal_policias',
+            'personalpolicias.segundoapellido_personal_policias',
+            'personalpolicias.primernombre_personal_policias',
+            'personalpolicias.segundonombre_personal_policias',
+            'solicitudvehiculos.solicitudvehiculos_tipo',
+            'solicitudvehiculos.solicitudvehiculos_estado'
+        ];
+
+        if ($request->has('order')) {
+            $orderColumnIndex = intval($request->input('order.0.column', 0));
+            $orderDirection = $request->input('order.0.dir', 'asc');
+
+            if (isset($columns[$orderColumnIndex])) {
+                $query->orderBy($columns[$orderColumnIndex], $orderDirection);
+            }
+        }
+
+        // Total de registros
+        $recordsFiltered = $query->count();
+        $recordsTotal = Solicitudvehiculo::count();
+
+        // Si perPage es 0 o -1, devolver todos los registros sin paginación
+        if ($perPage == 0 || $perPage == -1) {
+            $vehiculos = $query->with('personal')->get();
+
+            return response()->json([
+                'draw' => intval($request->draw),
+                'recordsTotal' => $recordsTotal,
+                'recordsFiltered' => $recordsFiltered,
+                'data' => $vehiculos,
+                'currentPage' => 1,
+                'lastPage' => 1,
+                'perPage' => $vehiculos->count()
+            ]);
+        }
+
+        // Obtener los registros con paginación
+        $vehiculos = $query->with('personal')->paginate($perPage);
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $vehiculos->items(),
+            'currentPage' => $vehiculos->currentPage(),
+            'lastPage' => $vehiculos->lastPage(),
+            'perPage' => $vehiculos->perPage()
+        ]);
+    }
+
+    public function listarSolicitudesVehiculosPendientes(Request $request)
+    {
+        $defaultPerPage = 10;
+        $perPage = $request->input('perPage', $defaultPerPage);
+
+        // Asegurar el JOIN siempre
+        $query = Solicitudvehiculo::query()
+            ->leftJoin('personalpolicia_solicitudvehiculo', 'solicitudvehiculos.id', '=', 'personalpolicia_solicitudvehiculo.solicitudvehiculo_id')
+            ->leftJoin('personalpolicias', 'personalpolicia_solicitudvehiculo.personalpolicia_id', '=', 'personalpolicias.id')
+            ->select([
+                'solicitudvehiculos.*',
+                'personalpolicias.rango_personal_policias',
+                'personalpolicias.primerapellido_personal_policias',
+                'personalpolicias.segundoapellido_personal_policias',
+                'personalpolicias.primernombre_personal_policias',
+                'personalpolicias.segundonombre_personal_policias'
+            ])
             ->where('solicitudvehiculos.solicitudvehiculos_estado', 'Pendiente') // Solo solicitudes pendientes
             ->where('personalpolicias.rol_personal_policias', 'policia'); // Solo personal con rol "policia"
 
@@ -105,7 +197,6 @@ class ApiSolicitudvehiculoController extends Controller
             'perPage' => $vehiculos->perPage()
         ]);
     }
-
 
     /**
      * Show the form for creating a new resource.

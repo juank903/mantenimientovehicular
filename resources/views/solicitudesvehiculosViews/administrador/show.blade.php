@@ -40,7 +40,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ url('/api/solicitudesvehiculos') }}',
+                    url: '{{ url('/api/listarsolicitudesvehiculos/pendientes') }}',
                     type: 'GET',
                     dataSrc: function(json) {
                         return json.data || json.vehiculos; // Asegura obtener los datos correctamente
