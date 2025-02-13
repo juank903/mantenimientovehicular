@@ -79,14 +79,14 @@ class EntregarecepcionController extends Controller
         }
 
         if ($user->rol() === 'auxiliar') {
-            return view('solicitudesvehiculosViews.administrador.index', [
+            return view('entregarecepcionViews.auxiliar.show', [
                 'policia' => SolicitudvehiculoController::mapearDatosPolicia($datosPoliciaSolicitud['personal']),
                 'solicitud' => SolicitudvehiculoController::mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_aprobada'][0] ?? [])
             ]);
         }
 
         if ($user->rol() === 'policia') {
-            return view('solicitudesvehiculosViews.policia.index', [
+            return view('entregarecepcionViews.policia.show', [
                 'policia' => SolicitudvehiculoController::mapearDatosPolicia($datosPoliciaSolicitud['personal']),
                 'solicitud' => SolicitudvehiculoController::mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_aprobada'][0] ?? [])
             ]);

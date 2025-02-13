@@ -21,28 +21,51 @@ class SolicitudvehiculoController extends Controller
     //
     public function guardarsolicitudvehiculo(Request $request)
     {
-        $response = Solicitudvehiculo::crearsolicitudvehiculo($request);
-        $data = json_decode($response->getContent(), true);
+        try {
+            DB::beginTransaction(); // Inicia la transacción
 
-        if ($data['success']) {
-            $response = Solicitudvehiculo::actualizarintegridadId($request, $data['idSolicitud']);
+            // 1. Crear la solicitud de vehículo
+            $fechaRequerimientodesde = $request->input('fecharequerimientodesde');
+            $horaRequerimientodesde = $request->input('horarequerimientodesde');
+            $fechaRequerimientohasta = $request->input('fecharequerimientohasta');
+            $horaRequerimientohasta = $request->input('horarequerimientohasta');
+
+            // Usando interpolación de cadenas
+            $timestampDesde = Carbon::parse("{$fechaRequerimientodesde} {$horaRequerimientodesde}");
+            $timestampHasta = Carbon::parse("{$fechaRequerimientohasta} {$horaRequerimientohasta}");
+
+            $solicitudvehiculo = new Solicitudvehiculo();
+            $solicitudvehiculo->solicitudvehiculos_detalle = $request->detalle;
+            $solicitudvehiculo->solicitudvehiculos_tipo = $request->tipo;
+            $solicitudvehiculo->solicitudvehiculos_jornada = $request->jornada;
+            $solicitudvehiculo->solicitudvehiculos_fecharequerimientodesde = $timestampDesde;
+            $solicitudvehiculo->solicitudvehiculos_fecharequerimientohasta = $timestampHasta;
+            $solicitudvehiculo->save();
+
+            // 2.  Guardar la relación muchos a muchos (asumiendo que tienes una tabla pivote)
+            if ($request->has('id')) {
+                $solicitudvehiculo->personal()->attach($request->id);
+            } else {
+                throw new \Exception("Debe seleccionar al menos un personal policial.");
+            }
+            // 3. Guardar el historial inicial
+            $response = HistorialsolicitudvehiculoController::guardarHistorial($solicitudvehiculo->personal->first()->id, $solicitudvehiculo->id, ); // Usar el ID de la solicitud creada y el primer ID del personal policial relacionado.
             $data = json_decode($response->getContent(), true);
 
-            if ($data['success']) {
-                $response = HistorialsolicitudvehiculoController::guardarHistorialInicial($data['personalpolicia_id'], $data['solicitudvehiculo_id']);
-                $data = json_decode($response->getContent(), true);
-                if ($data['success']) {
-                    return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);
-                } else {
-                    return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['error']);
-                }
-            } else {
-                $ultimoRegistro = Solicitudvehiculo::latest()->first();
-                $ultimoRegistro->delete();
-                return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['error']);
+            if (!$data['success']) {
+                throw new \Exception($data['error']); // Lanza una excepción si falla el guardado del historial
             }
-        } else {
-            return redirect()->intended(route('dashboard', absolute: false))->with('error', $data['error']);
+
+            DB::commit(); // Confirma la transacción
+
+            return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            \Log::error($e);
+
+            return redirect()->intended(route('dashboard', absolute: false))->with('error', 'Error al guardar la solicitud: ' . $e->getMessage()); // Mensaje de error más informativo
         }
     }
 
@@ -76,7 +99,7 @@ class SolicitudvehiculoController extends Controller
                 $solicitud->solicitudvehiculos_estado = 'Anulada';
                 $solicitud->save();
 
-                HistorialsolicitudvehiculoController::guardarHistorialModificado($personalId, $solicitud->id, $motivo);
+                HistorialsolicitudvehiculoController::guardarHistorial($personalId, $solicitud->id, $motivo);
             }
 
             DB::commit(); // Confirma la transacción si todo fue exitoso

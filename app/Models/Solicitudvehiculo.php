@@ -8,6 +8,14 @@ use Illuminate\Http\JsonResponse;
 
 class Solicitudvehiculo extends Model
 {
+    protected $fillable = [
+        'solicitudvehiculos_detalle',
+        'solicitudvehiculos_tipo',
+        'solicitudvehiculos_fecharequerimientodesde',
+        'solicitudvehiculos_fecharequerimientohasta',
+        'solicitudvehiculos_jornada',
+        'solicitudvehiculos_estado'
+    ];
     public function personal()
     {
         return $this->belongsToMany(Personalpolicia::class);
