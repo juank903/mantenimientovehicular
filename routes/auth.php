@@ -4,6 +4,9 @@ use App\Http\Controllers\App\DashboardAdministradorController;
 use App\Http\Controllers\App\DashboardAuxiliarController;
 use App\Http\Controllers\App\DashboardGerenciaController;
 use App\Http\Controllers\App\DashboardPoliciaController;
+use App\Http\Controllers\App\EntregarecepcionController;
+use App\Http\Controllers\App\SolicitudvehiculoController;
+use App\Http\Controllers\App\VehiculosController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -11,12 +14,11 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\App\SolicitudvehiculoController;
-use App\Http\Controllers\App\VehiculosController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])
@@ -115,16 +117,16 @@ Route::middleware('auth')->group(function () {
 
     /*Rutas Solicitudes*/
         Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
-            return view('solicitudesvehiculosViews.administrador.show');
+            return view('solicitudesvehiculosViews.administrador.index');
         })->name('mostrartodasolicitudesvehiculos.pendientes');
-        Route::get('mostrarsolicitudvehiculo/policia/aprobada/show/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoAprobada'])
-            ->name('mostrarsolicitudvehiculo.policia.aprobada');
+
+        Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
+            ->name('mostrarentregarecepcionvehiculo.policia.aprobada');
 
         Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
             ->name('solicitarvehiculo.policia');
-        /* Route::get('mostrarsolicitudvehiculo/policia/pendiente/index', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
-            ->name('mostrarsolicitudvehiculo.policia.pendiente'); */
-        Route::get('mostrarsolicitudvehiculo/policia/pendiente/index/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
+
+        Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
             ->name('mostrarsolicitudvehiculo.policia.pendiente');
 
     /*Solicitudes acciones solicitudes */

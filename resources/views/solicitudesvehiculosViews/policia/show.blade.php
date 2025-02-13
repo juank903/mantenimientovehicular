@@ -4,14 +4,19 @@
 
     <div class="px-4 py-1 sm:px-6">
         <h2 class="text-xl leading-8 font-medium text-gray-900">
-            Aprobación de solicitud No  {{ $solicitud['id'] }}<br />
+            Solicitud Vehicular {{ $solicitud['estado_solicitud'] }}<br />
         </h2>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+            Esta es la información de la solicitud que usted tiene pendiente hasta el momento, puede
+            anularla si
+            desea. {{ $policia['id_subcircuito'] }} -- {{ $solicitud['tipo_vehiculo'] }}
+        </p>
     </div>
     <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
         <dl class="sm:divide-y sm:divide-gray-200">
             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
-                    Solicitante
+                    Elaborado por
                 </dt>
                 {{-- campo para llenar elaborador por --}}
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -73,7 +78,7 @@
         <div class="flex justify-end">
             <button onclick="openModal()"
                 class="items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
-                Entregar vehículo
+                Anular Solicitud policia
             </button>
         </div>
 

@@ -92,7 +92,7 @@ class SolicitudvehiculoController extends Controller
         }
     }
 
-    /* private function obtenerDatosPolicia(int $userId): ?array
+    /* public static function obtenerDatosPolicia(int $userId): ?array
     {
         $datosPolicia = $this->obtenerDetallesPolicia($userId);
         if (!$datosPolicia) {
@@ -132,65 +132,32 @@ class SolicitudvehiculoController extends Controller
             return redirect()->route('dashboard')->with('error', 'Error al obtener la solicitud pendiente.');
         }
 
-        /* // Verifica si hay una solicitud pendiente antes de acceder a sus elementos
-        $solicitudPendiente = $datosPoliciaSolicitud['solicitud_pendiente'][0] ?? null; */
-
         if ($user->rol() === 'administrador') {
-            return view('solicitudesvehiculosViews.administrador.index', [
+            return view('solicitudesvehiculosViews.administrador.show', [
                 'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
                 'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
             ]);
         }
 
         if ($user->rol() === 'policia') {
-            return view('solicitudesvehiculosViews.policia.index', [
-                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
-            ]);
-        }
-
-        // Si el usuario no es ni administrador ni policía, redirigir con un error.
-        return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
-    }
-
-    public function mostrarSolicitudVehiculoAprobada($userId = null): View|RedirectResponse
-    {
-
-        $userId ??= auth()->id();
-        $user = Auth::user();
-
-        $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitudAprobada($userId);
-         // Manejo de posibles errores al obtener los datos de la solicitud
-        if (!$datosPoliciaSolicitud) {
-            return redirect()->route('dashboard')->with('error', 'Error al obtener la solicitud aprobada.');
-        }
-
-        /* // Verifica si hay una solicitud pendiente antes de acceder a sus elementos
-        $solicitudPendiente = $datosPoliciaSolicitud['solicitud_pendiente'][0] ?? null; */
-
-        if ($user->rol() === 'auxiliar') {
-            return view('solicitudesvehiculosViews.administrador.index', [
-                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_aprobada'][0] ?? [])
-            ]);
-        }
-
-        if ($user->rol() === 'policia') {
+            //echo 'aqui estoy';
             return view('solicitudesvehiculosViews.policia.show', [
                 'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_aprobada'][0] ?? [])
+                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
             ]);
         }
 
         // Si el usuario no es ni administrador ni policía, redirigir con un error.
         return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
     }
+
+
 
 
     /**
      * Verifica si el usuario tiene solicitudes pendientes.
      */
-    private function tieneSolicitudesPendientes($userId): bool
+    public static function tieneSolicitudesPendientes($userId): bool
     {
         $response = Http::get(url("/api/personal/policia/{$userId}/totalsolicitudesvehiculos/pendientes"));
 
@@ -200,25 +167,25 @@ class SolicitudvehiculoController extends Controller
     /**
      * Obtiene los detalles del policía logueado.
      */
-    private function obtenerDetallesPolicia($userId): ?array
+    public static function obtenerDetallesPolicia($userId): ?array
     {
         $response = Http::get(url("/api/personal/policia/{$userId}/detalles"));
 
         return $response->successful() ? $response->json() : null;
     }
-    private function obtenerDetallesPoliciaSolicitudPendiente($userId): ?array
+    public static function obtenerDetallesPoliciaSolicitudPendiente($userId): ?array
     {
         $response = Http::get(url("/api/personal/policia/{$userId}/get/solicitud-pendiente"));
 
         return $response->successful() ? $response->json() : null;
     }
-    private function obtenerDetallesPoliciaSolicitudAprobada($userId): ?array
+    public static function obtenerDetallesPoliciaSolicitudAprobada($userId): ?array
     {
         $response = Http::get(url("/api/personal/policia/{$userId}/get/solicitud-aprobada"));
 
         return $response->successful() ? $response->json() : null;
     }
-    private function mapearDatosPolicia(array $datosPolicia): array
+    public static function mapearDatosPolicia(array $datosPolicia): array
     {
         return [
             'id' => $datosPolicia['id'],
@@ -234,7 +201,7 @@ class SolicitudvehiculoController extends Controller
         ];
     }
 
-    private function mapearDatosSolicitud(array $solicitud): array
+    public static function mapearDatosSolicitud(array $solicitud): array
     {
         return [
             'id' => $solicitud['id'] ?? 'N/A',

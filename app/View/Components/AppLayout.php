@@ -80,7 +80,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Solicitud Aprobada' => 'mostrarsolicitudvehiculo.policia.aprobada',
+                        'Entrega Recepción vehículo' => 'mostrarentregarecepcionvehiculo.policia.aprobada',
                     ],
                     'route' => 'solicitud',
                 ],
