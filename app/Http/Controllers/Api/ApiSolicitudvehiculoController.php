@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Asignacionvehiculo;
 use App\Models\Personalpolicia;
 use App\Models\Solicitudvehiculo;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\Clock\now;
 
 class ApiSolicitudvehiculoController extends Controller
 {
@@ -268,5 +272,59 @@ class ApiSolicitudvehiculoController extends Controller
         return response()->json([
             'numero_solicitudes' => $numeroSolicitudes
         ]);
+    }
+    public function aprobarSolicitud(Request $request)
+    {
+        try {
+            DB::beginTransaction(); // Iniciar la transacción
+
+            // Buscar la solicitud por ID
+            $solicitud = SolicitudVehiculo::findOrFail($request->solicitud_id);
+
+            // Verificar si la solicitud ya fue aprobada
+            if ($solicitud->estado === 'Aprobada') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Esta solicitud ya fue aprobada.'
+                ], 400);
+            }
+
+            // Cambiar el estado de la solicitud a 'aprobado'
+            $solicitud->solicitudvehiculos_estado = 'Aprobada'; // Asumo que este campo se llama así.  Si no, corrigelo.
+            $solicitud->save();
+
+            // Registrar la asignación del vehículo
+            $asignacion = Asignacionvehiculo::create([
+                'personalpolicias_id' => $request->personalpolicia_id,
+                'vehiculos_id' => $request->vehiculo_id,
+                'asignacionvehiculos_kmrecibido' => $request->kilometraje,
+                'asignacionvehiculos_combustible' => $request->combustible,
+            ]);
+
+            DB::commit(); // Confirmar la transacción
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Solicitud aprobada y vehículo asignado con éxito.',
+                'data' => [
+                    'solicitud_id' => $solicitud->id,
+                    'asignacion_id' => $asignacion->id,
+                    'personal_policia_id' => $asignacion->personalpolicias_id, // Corregido: Acceder al ID del personal policial
+                    'vehiculo_id' => $asignacion->vehiculos_id, // Corregido: Acceder al ID del vehículo
+                    'asignacion_fecha' => $asignacion->created_at, // Corregido: Acceder al campo correcto.
+                    'km_actual' => $asignacion->asignacionvehiculos_kmrecibido,
+                    'combustible_actual' => $asignacion->asignacionvehiculos_combustible,
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Revertir la transacción en caso de error
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al procesar la solicitud.',
+                'error' => $e->getMessage() // Devuelve el mensaje de error para debugging
+            ], 500);
+        }
     }
 }

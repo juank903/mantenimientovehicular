@@ -51,6 +51,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Vehículos',
                     'items' => [
+                        'Ingresar vehículo' => 'registrarvehiculos',
                         'Listar vehículos' => 'mostrartodovehiculos',
                     ],
                     'route' => 'vehiculo',
@@ -100,8 +101,9 @@ class AppLayout extends Component
 
     public function render(): View
     {
-        $id=10;
+        //$id=10;
         $this->getMenuItems(); // Llamar al método para obtener los elementos del menú antes de renderizar
-        return view('layouts.app',  ['id' => $id]);
+        //return view('layouts.app',  ['id' => $id]);
+        return view('layouts.app');
     }
 }

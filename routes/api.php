@@ -24,6 +24,7 @@ Route::get('/personal/policia/{id}/get/solicitud-pendiente', [ApiSolicitudvehicu
 Route::get('/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesTotal']);
 Route::get('/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasTotal']);
 Route::get('/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasTotal']);
+Route::post('/solicitudvehiculo/aprobar', [ApiSolicitudvehiculoController::class, 'aprobarSolicitud']);
 Route::resource('/solicitudesvehiculos', ApiSolicitudvehiculoController::class);
 
 /*Api Información personal policia*/

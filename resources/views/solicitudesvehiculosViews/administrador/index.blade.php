@@ -210,12 +210,16 @@
 
                     // Prepare data for API call
                     const data = {
-                        solicitud_id: {{ $solicitud['id'] }}, // Assuming you have the solicitud ID available
-                        vehiculo_id: vehiculo.id, // Assuming the API expects the vehicle ID
-                        // ... any other data your API requires
+                        solicitud_id: {{ $solicitud['id'] }},
+                        vehiculo_id: vehiculo.id,
+                        personalpolicia_id: {{ $policia['id']  }},
+                        kilometraje: parseInt(vehiculo.kmactual_vehiculos),
+                        combustible: vehiculo.combustibleactual_vehiculos,
                     };
 
-                    fetch('/api/aprobar-solicitud', { // Replace with your API endpoint
+                    console.log("Datos a enviar:", data);
+
+                    fetch('/api/solicitudvehiculo/aprobar', { // Replace with your API endpoint
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

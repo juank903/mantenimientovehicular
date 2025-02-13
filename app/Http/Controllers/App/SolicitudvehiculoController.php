@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Controllers\App\HistorialsolicitudvehiculoController;
 use App\Http\Controllers\Controller;
+use App\Models\Asignacionvehiculo;
 use App\Models\Solicitudvehiculo;
 use Auth;
+use Carbon\Carbon;
 use Http;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -205,4 +208,5 @@ class SolicitudvehiculoController extends Controller
             'estado_solicitud' => $solicitud['solicitudvehiculos_estado'] ?? '',
         ];
     }
+
 }

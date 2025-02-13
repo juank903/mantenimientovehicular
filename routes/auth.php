@@ -98,6 +98,9 @@ Route::middleware('auth')->group(function () {
     /*Rutas Vehículos*/
         Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
             ->name('guardarvehiculo');
+        Route::get('registrarvehiculos', function () {
+                return view('vehiculosViews.create');
+            })->name('registrarvehiculos');
 
         Route::get('mostrartodovehiculos', function () {
             return view('vehiculosViews.index');
