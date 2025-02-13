@@ -15,7 +15,7 @@ class ApiVehiculoController extends Controller
      */
 
 
-    public function index(Request $request): JsonResponse {
+     public function index(Request $request): JsonResponse {
         // Valor por defecto para la paginación
         $defaultPerPage = 10;
         $perPage = $request->input('perPage', $defaultPerPage);
@@ -41,7 +41,7 @@ class ApiVehiculoController extends Controller
             $orderDirection = $request->input('order.0.dir');
 
             // Mapea el índice de columna a su nombre
-            $columns = ['marca_vehiculos', 'tipo_vehiculos', 'modelo_vehiculos', 'placa_vehiculos'];
+            $columns = ['marca_vehiculos', 'tipo_vehiculos', 'modelo_vehiculos', 'placa_vehiculos', 'estado_vehiculos'];
             $orderColumn = $columns[$orderColumnIndex] ?? 'id';
 
             $query->orderBy($orderColumn, $orderDirection);
@@ -51,18 +51,42 @@ class ApiVehiculoController extends Controller
         $recordsFiltered = $query->count();
         $recordsTotal = Vehiculo::count();
 
-        // Manejar la paginación
-        if ($perPage == 0) {
+        // Si perPage es 0 o -1, obtener todos los registros sin paginar
+        if ($perPage == 0 || $perPage == -1) {
+            $vehiculos = $query->get();
+
             return response()->json([
                 'recordsTotal' => $recordsTotal,
                 'recordsFiltered' => $recordsFiltered,
-                'data' => [],
+                'data' => $vehiculos->map(function ($vehiculo) {
+                    return [
+                        'id' => $vehiculo->id,
+                        'marca' => $vehiculo->marca_vehiculos,
+                        'tipo' => $vehiculo->tipo_vehiculos,
+                        'modelo' => $vehiculo->modelo_vehiculos,
+                        'placa' => $vehiculo->placa_vehiculos,
+                        'estado' => $vehiculo->estado_vehiculos,
+                        'parqueaderos' => $vehiculo->parqueaderos->map(function ($parqueadero) {
+                            return [
+                                'id' => $parqueadero->id,
+                                'direccion' => $parqueadero->parqueaderos_direccion,
+                                'subcircuitos' => $parqueadero->subcircuitos->map(function ($subcircuito) {
+                                    return [
+                                        'id' => $subcircuito->id,
+                                        'nombre' => $subcircuito->nombre_subcircuito_dependencias,
+                                    ];
+                                }),
+                            ];
+                        }),
+                    ];
+                }),
                 'currentPage' => 1,
                 'lastPage' => 1,
-                'perPage' => 0,
+                'perPage' => $vehiculos->count(),
             ]);
         }
 
+        // Aplicar paginación normal
         $vehiculos = $query->paginate($perPage);
 
         return response()->json([
@@ -94,6 +118,7 @@ class ApiVehiculoController extends Controller
             'perPage' => $vehiculos->perPage(),
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

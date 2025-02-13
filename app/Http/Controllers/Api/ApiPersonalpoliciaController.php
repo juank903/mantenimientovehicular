@@ -65,16 +65,22 @@ class ApiPersonalpoliciaController extends Controller
         // Total de registros sin filtrar
         $recordsTotal = Personalpolicia::count();
 
-        // Si perPage es 0, devolver un array vacío
-        if ($perPage == 0) {
+        // Si perPage es 0 o -1, obtener todos los registros sin paginación
+        if ($perPage == 0 || $perPage == -1) {
+            $personalPolicia = $query->get();
+
             return response()->json([
                 'draw' => intval($request->draw),
                 'recordsTotal' => $recordsTotal,
                 'recordsFiltered' => $recordsFiltered,
-                'data' => [],
+                'data' => $personalPolicia,
                 'currentPage' => 1,
                 'lastPage' => 1,
-                'perPage' => 0,
+                'perPage' => $personalPolicia->count(),
+                'order' => [
+                    'column' => $orderColumnIndex ?? null,
+                    'direction' => $orderDirection ?? null
+                ],
             ]);
         }
 
@@ -96,6 +102,7 @@ class ApiPersonalpoliciaController extends Controller
             ],
         ]);
     }
+
 
 
     /**
