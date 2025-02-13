@@ -13,7 +13,16 @@ class Vehiculo extends Model
 {
     //
     use HasFactory;
-    public $timestamps = false;
+    protected $fillable = [
+        'marca_vehiculos',
+        'tipo_vehiculos',
+        'modelo_vehiculos',
+        'color_vehiculos',
+        'placa_vehiculos',
+        'estado_vehiculos',
+        'kmactual_vehiculos',
+        'combustibleactual_vehiculos'
+    ];
 
     public function personalpolicia(){
         return $this->belongsTo(PersonalPolicia::class);

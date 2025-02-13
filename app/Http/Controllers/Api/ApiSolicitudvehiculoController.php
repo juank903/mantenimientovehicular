@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Asignacionvehiculo;
 use App\Models\Personalpolicia;
 use App\Models\Solicitudvehiculo;
+use App\Models\Vehiculo;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -435,36 +436,44 @@ class ApiSolicitudvehiculoController extends Controller
             $solicitud = SolicitudVehiculo::findOrFail($request->solicitud_id);
 
             // Verificar si la solicitud ya fue aprobada
-            if ($solicitud->estado === 'Aprobada') {
+            if ($solicitud->solicitudvehiculos_estado === 'Aprobada') {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Esta solicitud ya fue aprobada.'
                 ], 400);
             }
 
-            // Cambiar el estado de la solicitud a 'aprobado'
-            $solicitud->solicitudvehiculos_estado = 'Aprobada'; // Asumo que este campo se llama así.  Si no, corrigelo.
+            // Cambiar el estado de la solicitud a 'Aprobada'
+            $solicitud->solicitudvehiculos_estado = 'Aprobada';
             $solicitud->save();
+
+            // Buscar el vehículo correspondiente
+            $vehiculo = Vehiculo::findOrFail($request->vehiculo_id);
+
+            // Cambiar el estado del vehículo a 'Espera'
+            $vehiculo->estado_vehiculos = 'espera';
+            $vehiculo->save();
 
             // Registrar la asignación del vehículo
             $asignacion = Asignacionvehiculo::create([
-                'personalpolicias_id' => $request->personalpolicia_id,
+                'personalpoliciasolicitante_id' => $request->personalpolicia_id,
                 'vehiculos_id' => $request->vehiculo_id,
                 'asignacionvehiculos_kmrecibido' => $request->kilometraje,
-                'asignacionvehiculos_combustible' => $request->combustible,
+                'asignacionvehiculos_combustiblerecibido' => $request->combustible,
             ]);
 
             DB::commit(); // Confirmar la transacción
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Solicitud aprobada y vehículo asignado con éxito.',
+                'message' => 'Solicitud aprobada, vehículo en espera y asignación registrada con éxito.',
                 'data' => [
                     'solicitud_id' => $solicitud->id,
                     'asignacion_id' => $asignacion->id,
-                    'personal_policia_id' => $asignacion->personalpolicias_id, // Corregido: Acceder al ID del personal policial
-                    'vehiculo_id' => $asignacion->vehiculos_id, // Corregido: Acceder al ID del vehículo
-                    'asignacion_fecha' => $asignacion->created_at, // Corregido: Acceder al campo correcto.
+                    'vehiculo_id' => $vehiculo->id,
+                    'estado_vehiculo' => $vehiculo->vehiculos_estado,
+                    'personal_policia_id' => $asignacion->personalpolicias_id,
+                    'asignacion_fecha' => $asignacion->created_at,
                     'km_actual' => $asignacion->asignacionvehiculos_kmrecibido,
                     'combustible_actual' => $asignacion->asignacionvehiculos_combustible,
                 ]
@@ -480,4 +489,5 @@ class ApiSolicitudvehiculoController extends Controller
             ], 500);
         }
     }
+
 }

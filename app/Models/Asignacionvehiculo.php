@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Asignacionvehiculo extends Model
 {
     protected $fillable = [
-        'personalpolicias_id',
         'vehiculos_id',
+        'personalpoliciasolicitante_id',
+        'personalpoliciaentrega_id',
+        'personalpoliciarecibe_id',
         'asignacionvehiculos_estado',
         'asignacionvehiculos_kmrecibido',
         'asignacionvehiculos_kmentregado',
-        'asignacionvehiculos_combustible',
+        'asignacionvehiculos_combustiblerecibido',
+        'asignacionvehiculos_combustiblentregado'
     ];
     //
     public function personalpolicia()
