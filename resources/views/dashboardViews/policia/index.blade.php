@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('mensaje') || session('error'))
-        <x-mensajemodalexito/>
+        <x-mensajemodalexito />
     @endif
     Estoy en la vista policia
     <div class="flex flex-row space-x-4 overflow-x-auto md:w-4/5 xl:w-3/5 mx-auto px-2 z-0 text-sm">
@@ -12,6 +12,8 @@
                 :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Anuladas']" />
             <x-panelesinfo.cardinfo-animado estado="Aprobada" id="solicitudvehiculo_aprobada" :api="url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/aprobadas')" :
                 :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Aprobadas']" />
+            <x-panelesinfo.cardinfo-animado estado="Completa" id="solicitudvehiculo_completa" :api="url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/completas')" :
+                :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Completas']" />
         </div>
     </div>
 </x-app-layout>

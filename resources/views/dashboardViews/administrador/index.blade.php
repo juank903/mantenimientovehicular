@@ -12,7 +12,7 @@
                 :items="['titulo' => 'Total solicitudes Vehiculo', 'mensaje' => 'anuladas']" />
             <x-panelesinfo.cardinfo-animado estado="Aprobada" id="solicitudesvehiculos_aprobadas" :api="url('/api/totalsolicitudesvehiculos/aprobadas')" :
                 :items="['titulo' => 'Total solicitudes Vehiculo', 'mensaje' => 'aprobadas']" />
-            <x-panelesinfo.cardinfo-animado estado="Completa" id="solicitudesvehiculos_completas" :api="url('/api/totalsolicitudesvehiculos/aprobadas')" :
+            <x-panelesinfo.cardinfo-animado estado="Completa" id="solicitudesvehiculos_completas" :api="url('/api/totalsolicitudesvehiculos/completas')" :
                 :items="['titulo' => 'Total solicitudes Vehiculo', 'mensaje' => 'completas']" />
         </div>
     </div>

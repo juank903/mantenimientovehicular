@@ -117,6 +117,8 @@ Route::middleware('auth')->group(function () {
         Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
             return view('solicitudesvehiculosViews.administrador.show');
         })->name('mostrartodasolicitudesvehiculos.pendientes');
+        Route::get('mostrarsolicitudvehiculo/policia/aprobada/show/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoAprobada'])
+            ->name('mostrarsolicitudvehiculo.policia.aprobada');
 
         Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
             ->name('solicitarvehiculo.policia');

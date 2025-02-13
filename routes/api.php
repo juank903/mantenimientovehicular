@@ -20,10 +20,14 @@ Route::get('/personal/policia/{id}/totalsolicitudesvehiculos', [ApiSolicitudvehi
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasPolicia']);
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesPolicia']);
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasPolicia']);
+Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/completas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoCompletasPolicia']);
 Route::get('/personal/policia/{id}/get/solicitud-pendiente', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoPendientePolicia']);
+Route::get('/personal/policia/{id}/get/solicitud-aprobada', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoAprobadaPolicia']);
+Route::get('/personal/policia/{id}/get/solicitud-completa', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoCompletaPolicia']);
 Route::get('/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesTotal']);
 Route::get('/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasTotal']);
 Route::get('/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasTotal']);
+Route::get('/totalsolicitudesvehiculos/completas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoCompletasTotal']);
 Route::post('/solicitudvehiculo/aprobar', [ApiSolicitudvehiculoController::class, 'aprobarSolicitud']);
 Route::resource('/solicitudesvehiculos', ApiSolicitudvehiculoController::class);
 

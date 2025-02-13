@@ -173,6 +173,40 @@ class ApiSolicitudvehiculoController extends Controller
             'solicitud_pendiente' => $solicitudesPendientes
         ]);
     }
+    public function getSolicitudVehiculoAprobadaPolicia($personalId): JsonResponse
+    {
+        // Buscar el PersonalPolicia por ID
+        $personalPolicia = Personalpolicia::with('subcircuito.circuito.distrito.provincia')->findOrFail($personalId);
+
+        // Recuperar las solicitudes de vehículos donde el estado es "pendiente"
+        $solicitudesAprobadas = $personalPolicia->solicitudVehiculo()
+            ->where('solicitudvehiculos_estado', 'aprobada')
+            //->with('personal') // Si personal tiene relaciones, puedes incluirlas aquí también
+            ->get();
+
+        // Agregar información del subcircuito al resultado
+        return response()->json([
+            'personal' => $personalPolicia,
+            'solicitud_aprobada' => $solicitudesAprobadas
+        ]);
+    }
+    public function getSolicitudVehiculoCompletaPolicia($personalId): JsonResponse
+    {
+        // Buscar el PersonalPolicia por ID
+        $personalPolicia = Personalpolicia::with('subcircuito.circuito.distrito.provincia')->findOrFail($personalId);
+
+        // Recuperar las solicitudes de vehículos donde el estado es "pendiente"
+        $solicitudesCompletas = $personalPolicia->solicitudVehiculo()
+            ->where('solicitudvehiculos_estado', 'completa')
+            //->with('personal') // Si personal tiene relaciones, puedes incluirlas aquí también
+            ->get();
+
+        // Agregar información del subcircuito al resultado
+        return response()->json([
+            'personal' => $personalPolicia,
+            'solicitud_completa' => $solicitudesCompletas
+        ]);
+    }
 
     public function getNumSolicitudesVehiculoPolicia($personalId): JsonResponse
     {
@@ -246,6 +280,25 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
+    public function getNumSolicitudesVehiculoCompletasPolicia($personalId): JsonResponse
+    {
+        $personal = Personalpolicia::find($personalId);
+
+        if ($personal) {
+            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
+                $query->where('personalpolicia_id', $personalId);
+            })
+                ->where('solicitudvehiculos_estado', 'Completa')
+                ->count();
+        } else {
+            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
+        }
+
+        return response()->json([
+            'personal_id' => $personalId,
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
     public function getNumSolicitudesVehiculoPendientesTotal(): JsonResponse
     {
         // Contar todas las solicitudes en estado 'Pendiente'
@@ -268,6 +321,15 @@ class ApiSolicitudvehiculoController extends Controller
     {
         // Contar todas las solicitudes en estado 'Pendiente'
         $numeroSolicitudes = Solicitudvehiculo::where('solicitudvehiculos_estado', 'Aprobada')->count();
+
+        return response()->json([
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+    public function getNumSolicitudesVehiculoCompletasTotal(): JsonResponse
+    {
+        // Contar todas las solicitudes en estado 'Pendiente'
+        $numeroSolicitudes = Solicitudvehiculo::where('solicitudvehiculos_estado', 'Completa')->count();
 
         return response()->json([
             'numero_solicitudes' => $numeroSolicitudes

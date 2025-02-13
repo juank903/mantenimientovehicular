@@ -11,32 +11,34 @@ use Request;
 class AppLayout extends Component
 {
     public array $menuItems;
-    private ?int $userId; // Hacer userId una propiedad privada
+    private ?int $userId;
 
     public function __construct($userId = null)
     {
-        //$this->userId = $request->id;
-        $this->userId = $userId ?? auth()->id(); // Inicializar userId
-        $this->menuItems = []; // Inicializar menuItems a un array vacío
+        $this->userId = $userId ?? auth()->id();
+        $this->menuItems = [];
     }
 
-    public function getMenuItems(): array // Nuevo método para obtener los elementos del menú
+    public function getMenuItems(): array
     {
-        if ($this->userId) { // Solo hacer la llamada a la API si userId está configurado
-            $user = Auth::user(); // Es posible que no necesites esto si solo usas el rol
-            $rol = $user?->rol(); // Manejar los casos en los que el usuario no ha iniciado sesión
+        if ($this->userId) {
+            $user = Auth::user();
+            $rol = $user?->rol();
 
-            if ($rol) { // Solo continuar si el usuario tiene un rol
-                $response = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/pendientes"));
-                $data = $response->successful() ? $response->json() : ['numero_solicitudes' => 0];
+            if ($rol) {
+                $responsePendientes = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/pendientes"));
+                $dataPendientes = $responsePendientes->successful() ? $responsePendientes->json() : ['numero_solicitudes' => 0];
 
-                $this->menuItems = $this->generateMenuItems($rol, $data['numero_solicitudes'] ?? 0); // Llamar a una función auxiliar
+                $responseAprobadas = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/aprobadas"));
+                $dataAprobadas = $responseAprobadas->successful() ? $responseAprobadas->json() : ['numero_solicitudes' => 0];
+
+                $this->menuItems = $this->generateMenuItems($rol, $dataPendientes['numero_solicitudes'] ?? 0, $dataAprobadas['numero_solicitudes'] ?? 0);
             }
         }
         return $this->menuItems;
     }
 
-    private function generateMenuItems(string $rol, int $numero_solicitudes): array // Función auxiliar
+    private function generateMenuItems(string $rol, int $solicitudPendiente, int $solicitudAprobada): array
     {
         return match (true) {
             $rol == "administrador" => [
@@ -64,10 +66,8 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
-            $rol == "gerencia" => [
-
-            ],
-            $rol == "policia" && $numero_solicitudes == 0 => [
+            $rol == "gerencia" => [],
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -76,7 +76,16 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
-            $rol == "policia" && $numero_solicitudes > 0 => [
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada > 0 => [
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Solicitud Aprobada' => 'mostrarsolicitudvehiculo.policia.aprobada',
+                    ],
+                    'route' => 'solicitud',
+                ],
+            ],
+            $rol == "policia" && $solicitudPendiente > 0 && $solicitudAprobada == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -93,11 +102,18 @@ class AppLayout extends Component
                     ],
                     'route' => 'personal',
                 ],
+                [
+                    'name' => 'Vehículos',
+                    'items' => [
+                        'Ingresar vehículo' => 'registrarvehiculos',
+                        'Listar vehículos' => 'mostrartodovehiculos',
+                    ],
+                    'route' => 'vehiculo',
+                ],
             ],
             default => [],
         };
     }
-
 
     public function render(): View
     {
@@ -107,3 +123,4 @@ class AppLayout extends Component
         return view('layouts.app');
     }
 }
+

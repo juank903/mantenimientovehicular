@@ -125,7 +125,7 @@ class SolicitudvehiculoController extends Controller
         $userId ??= auth()->id();
         $user = Auth::user();
 
-        $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitud($userId);
+        $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitudPendiente($userId);
 
         // Manejo de posibles errores al obtener los datos de la solicitud
         if (!$datosPoliciaSolicitud) {
@@ -153,6 +153,39 @@ class SolicitudvehiculoController extends Controller
         return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
     }
 
+    public function mostrarSolicitudVehiculoAprobada($userId = null): View|RedirectResponse
+    {
+
+        $userId ??= auth()->id();
+        $user = Auth::user();
+
+        $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitudAprobada($userId);
+         // Manejo de posibles errores al obtener los datos de la solicitud
+        if (!$datosPoliciaSolicitud) {
+            return redirect()->route('dashboard')->with('error', 'Error al obtener la solicitud aprobada.');
+        }
+
+        /* // Verifica si hay una solicitud pendiente antes de acceder a sus elementos
+        $solicitudPendiente = $datosPoliciaSolicitud['solicitud_pendiente'][0] ?? null; */
+
+        if ($user->rol() === 'auxiliar') {
+            return view('solicitudesvehiculosViews.administrador.index', [
+                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
+                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_aprobada'][0] ?? [])
+            ]);
+        }
+
+        if ($user->rol() === 'policia') {
+            return view('solicitudesvehiculosViews.policia.show', [
+                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
+                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_aprobada'][0] ?? [])
+            ]);
+        }
+
+        // Si el usuario no es ni administrador ni policía, redirigir con un error.
+        return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
+    }
+
 
     /**
      * Verifica si el usuario tiene solicitudes pendientes.
@@ -173,9 +206,15 @@ class SolicitudvehiculoController extends Controller
 
         return $response->successful() ? $response->json() : null;
     }
-    private function obtenerDetallesPoliciaSolicitud($userId): ?array
+    private function obtenerDetallesPoliciaSolicitudPendiente($userId): ?array
     {
         $response = Http::get(url("/api/personal/policia/{$userId}/get/solicitud-pendiente"));
+
+        return $response->successful() ? $response->json() : null;
+    }
+    private function obtenerDetallesPoliciaSolicitudAprobada($userId): ?array
+    {
+        $response = Http::get(url("/api/personal/policia/{$userId}/get/solicitud-aprobada"));
 
         return $response->successful() ? $response->json() : null;
     }
@@ -199,7 +238,7 @@ class SolicitudvehiculoController extends Controller
     {
         return [
             'id' => $solicitud['id'] ?? 'N/A',
-            'fecha_solicitado' => $solicitud['created_at'] ?? '',
+            'fecha_solicitado' => Carbon::parse($solicitud['created_at'])->toDateTimeString() ?? '',
             'detalle' => $solicitud['solicitudvehiculos_detalle'] ?? '',
             'tipo_vehiculo' => $solicitud['solicitudvehiculos_tipo'] ?? '',
             'fecha_desde' => $solicitud['solicitudvehiculos_fecharequerimientodesde'] ?? '',
