@@ -112,7 +112,7 @@ class SolicitudvehiculoController extends Controller
             return redirect()->route('dashboard')->with('error', 'Error al obtener los datos del policía.');
         }
 
-        return view('solicitudesvehiculosViews.create', [
+        return view('solicitudesvehiculosViews.policia.create', [
             'tipos_vehiculo' => ['Moto', 'Auto', 'Camioneta'],
             'jornadas' => ['Ordinaria', 'Extraordinaria'],
             'policia' => $this->mapearDatosPolicia($datosPolicia)
