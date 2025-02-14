@@ -121,8 +121,12 @@ Route::middleware('auth')->group(function () {
         })->name('mostrartodasolicitudesvehiculos.pendientes');
 
         Route::get('mostrartodasolicitudesvehiculos/aprobadas', function () {
-            return view('entregarecepcionViews.auxiliar.index');
+            return view('entregarecepcionViews.auxiliar.aprobadas_index');
         })->name('mostrartodasolicitudesvehiculos.aprobadas');
+
+        Route::get('mostrartodasolicitudesvehiculos/procesando', function () {
+            return view('entregarecepcionViews.auxiliar.procesando_index');
+        })->name('mostrartodasolicitudesvehiculos.procesando');
 
         Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
             ->name('mostrarentregarecepcionvehiculo.policia.aprobada');

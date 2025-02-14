@@ -45,8 +45,10 @@ Route::resource('/user', UserController::class);
 /*Api Dependencias*/
 Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);
 
+//entregarVehiculoAPolicia
 /*Api Asignaciones*/
 Route::get('/listarasignaciones/vehiculos', [ApiAsignacionvehiculoController::class, 'listarAsignacionesVehiculos']);
+Route::get('/entregarvehiculo/policia', [ApiAsignacionvehiculoController::class, 'entregarVehiculoAPolicia']);
 Route::get('/listarasignaciones/vehiculos/policia/{idSolicitante}', [ApiAsignacionvehiculoController::class, 'listarAsignacionesVehiculos']);
 Route::get('/mostrarasignaciones/espera/vehiculos', [ApiAsignacionvehiculoController::class, 'getAsignacionesEsperaVehiculos']);
 Route::get('/mostrarasignaciones/espera/vehiculos/policia/{idSolicitante}', [ApiAsignacionvehiculoController::class, 'getAsignacionesEsperaVehiculos']);

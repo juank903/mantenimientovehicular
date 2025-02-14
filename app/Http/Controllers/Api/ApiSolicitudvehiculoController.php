@@ -116,7 +116,7 @@ class ApiSolicitudvehiculoController extends Controller
         $perPage = $request->input('perPage', $defaultPerPage);
         $estado = $request->input('estado', 'Pendiente');
 
-        $estadosValidos = ['Pendiente', 'Aprobada', 'Anulada', 'Completa' ];
+        $estadosValidos = ['Pendiente', 'Aprobada', 'Anulada', 'Completa', 'Procesando' ];
         if (!in_array($estado, $estadosValidos)) {
             $estado = 'Pendiente';
         }

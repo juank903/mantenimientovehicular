@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Asignacionvehiculo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiAsignacionvehiculoController extends Controller
 {
@@ -100,5 +101,76 @@ class ApiAsignacionvehiculoController extends Controller
         $asignaciones = $query->get();
 
         return response()->json($asignaciones);
+    }
+    public function entregarVehiculoAPolicia(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $asignacion_id = $request->asignacion_id;
+
+            $asignacion = Asignacionvehiculo::findOrFail($asignacion_id);
+
+            $vehiculo = $asignacion->vehiculo;
+
+            if ($asignacion->asignacionvehiculos_estado === 'entregado') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Esta asignación ya fue entregada.'
+                ], 400);
+            }
+
+            $vehiculo->estado_vehiculos = 'asignado';
+            $vehiculo->save();
+
+            $asignacion->asignacionvehiculos_estado = 'entregado';
+            $asignacion->personalpoliciaentrega_id = auth()->id();
+            $asignacion->save();
+
+            // Filtrar la solicitud por estado "Aprobada"
+            $solicitud = $asignacion->solicitante->solicitudVehiculo()->where('solicitudvehiculos_estado', 'Aprobada')->first();
+
+            // Manejar el caso de que no se encuentre la solicitud aprobada
+            if ($solicitud) {
+                $solicitud->solicitudvehiculos_estado = 'Procesando';
+                $solicitud->save();
+            } else {
+                DB::rollBack(); // Revertir la transacción si no se encuentra la solicitud
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No se encontró ninguna solicitud aprobada para esta asignación.'
+                ], 400);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vehículo entregado a la policía con éxito.',
+                'data' => [
+                    'asignacion_id' => $asignacion->id,
+                    'vehiculo_id' => $vehiculo->id,
+                    'estado_vehiculo' => $vehiculo->estado_vehiculos,
+                    'personal_policia_id' => $asignacion->personalpoliciasolicitante_id,
+                    'asignacion_fecha' => $asignacion->created_at,
+                    'km_actual' => $asignacion->asignacionvehiculos_kmrecibido,
+                    'combustible_actual' => $asignacion->asignacionvehiculos_combustiblerecibido,
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                $message = 'No se encontró la asignación.';
+            } else {
+                $message = 'Error al entregar el vehículo a la policía: ' . $e->getMessage();
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $message,
+            ], 500);
+        }
     }
 }

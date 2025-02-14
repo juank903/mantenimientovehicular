@@ -114,6 +114,7 @@ class AppLayout extends Component
                     'name' => 'Solicitudes',
                     'items' => [
                         'Solicitudes vehículos aprobadas' => 'mostrartodasolicitudesvehiculos.aprobadas',
+                        'Solicitudes vehículos procesando' => 'mostrartodasolicitudesvehiculos.procesando',
                     ],
                     'route' => 'solicitud',
                 ],

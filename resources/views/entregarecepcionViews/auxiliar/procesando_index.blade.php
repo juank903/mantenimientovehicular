@@ -11,7 +11,7 @@
                     <tr>
                         <th rowspan="2">Solicitud No.</th>
                         <th rowspan="2">Fecha de creación</th>
-                        <th rowspan="2">Fecha para requerimiento</th>
+                        <th rowspan="2">Fecha de aprobacion</th>
                         <th colspan="5">Usuario</th>
                         <th rowspan="2">Vehículo solicitado</th>
                         <th rowspan="2">Tipo solicitud</th>
@@ -40,7 +40,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ url('/api/listarsolicitudesvehiculos?estado=Aprobada') }}',
+                    url: '{{ url('/api/listarsolicitudesvehiculos?estado=Procesando') }}',
                     type: 'GET',
                     dataSrc: function(json) {
                         return json.data || json.vehiculos; // Asegura obtener los datos correctamente
@@ -70,7 +70,7 @@
                         }
                     },
                     {
-                        data: 'solicitudvehiculos_fecharequerimientodesde',
+                        data: 'updated_at',
                         render: function(data, type, row) {
                             if (type === "display" || type === "filter") {
                                 return new Date(data).toLocaleDateString('es-ES', {
@@ -108,6 +108,7 @@
                                 data === "Anulada" ? "bg-red-300 text-red-700" :
                                 data === "Aprobada" ? "bg-green-300 text-green-700" :
                                 data === "Completa" ? "bg-blue-300 text-blue-700" :
+                                data === "Procesando" ? "bg-yellow-300 text-yellow-700" :
                                 "";
                             return `<span class="text-center flex font-bold ${colorClass}">${data}</span>`;
                         }
@@ -121,7 +122,7 @@
                             console.log('averiguar: ' + id + ', estado: ' + estado);
 
                             // Mostrar el botón solo si el estado es "Pendiente"
-                            if (estado === "Aprobada") {
+                            if (estado === "Procesando") {
                                 return `
                                 <div class="flex justify-center space-x-4 align-middle cursor-pointer">
                                     <x-show-button href="{{ route('mostrarentregarecepcionvehiculo.policia.aprobada', ['id' => '__ID__']) }}" />

@@ -84,12 +84,12 @@ class EntregarecepcionController extends Controller
         $solicitante = $this->mapearDatosSolicitante($datosApi[0]['solicitante']);
         $vehiculo = $this->mapearDatosVehiculo($datosApi[0]['vehiculo']);
         //$policia = $this->mapearDatosPolicia($datosApi[0]['solicitante']); // Mapeo de datos del policía (usando 'solicitante' como ejemplo, ajusta si es diferente)
-        //$solicitud = $this->mapearDatosSolicitud($datosApi[0]); // Mapeo de datos de la solicitud
+        $asignacion = $this->mapearDatosAsignacion($datosApi[0]); // Mapeo de datos de la solicitud
 
         if ($user->rol() === 'auxiliar') {
             return view('entregarecepcionViews.auxiliar.show', [
                 //'policia' => $policia,
-                //'solicitud' => $solicitud,
+                'asignacion' => $asignacion,
                 'solicitante' => $solicitante,
                 'vehiculo' => $vehiculo,
             ]);
@@ -98,7 +98,7 @@ class EntregarecepcionController extends Controller
         if ($user->rol() === 'policia') {
             return view('entregarecepcionViews.policia.show', [
                 //'policia' => $policia,
-                //'solicitud' => $solicitud,
+                'asignacion' => $asignacion,
                 'solicitante' => $solicitante,
                 'vehiculo' => $vehiculo,
             ]);
@@ -193,26 +193,26 @@ class EntregarecepcionController extends Controller
         ];
     }
 
-    /*     private function mapearDatosPolicia(array $datos): array
-        {
-            return [
-                'id' => $datos['id'],
-                'nombre_completo' => $datos['primernombre_personal_policias'] . ' ' . $datos['segundonombre_personal_policias'] . ' ' . $datos['primerapellido_personal_policias'] . ' ' . $datos['segundoapellido_personal_policias'],
-                'cedula' => $datos['cedula_personal_policias'],
-                'rango' => $datos['rango_personal_policias'],
-                'rol' => $datos['rol_personal_policias'],
-                // ... otros campos que necesites
-            ];
-        }
+    /* private function mapearDatosPolicia(array $datos): array
+    {
+        return [
+            'id' => $datos['id'],
+            'nombre_completo' => $datos['primernombre_personal_policias'] . ' ' . $datos['segundonombre_personal_policias'] . ' ' . $datos['primerapellido_personal_policias'] . ' ' . $datos['segundoapellido_personal_policias'],
+            'cedula' => $datos['cedula_personal_policias'],
+            'rango' => $datos['rango_personal_policias'],
+            'rol' => $datos['rol_personal_policias'],
+            // ... otros campos que necesites
+        ];
+    } */
 
-        private function mapearDatosSolicitud(array $datos): array
-        {
-            return [
-                'id' => $datos['id'],
-                'estado' => $datos['asignacionvehiculos_estado'],
-                'kmRecibido' => $datos['asignacionvehiculos_kmrecibido'],
-                'combustibleRecibido' => $datos['asignacionvehiculos_combustiblerecibido'],
-                // ... otros campos que necesites
-            ];
-        } */
+    private function mapearDatosAsignacion(array $datos): array
+    {
+        return [
+            'id' => $datos['id'],
+            'estado' => $datos['asignacionvehiculos_estado'],
+            'kmRecibido' => $datos['asignacionvehiculos_kmrecibido'],
+            'combustibleRecibido' => $datos['asignacionvehiculos_combustiblerecibido'],
+            // ... otros campos que necesites
+        ];
+    }
 }
