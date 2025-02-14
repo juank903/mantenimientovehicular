@@ -25,6 +25,17 @@ class Asignacionvehiculo extends Model
 
     public function vehiculo()
     {
-        return $this->belongsTo(Vehiculo::class);
+        return $this->belongsTo(Vehiculo::class, 'vehiculos_id');
+    }
+    public function solicitante() {
+        return $this->belongsTo(Personalpolicia::class, 'personalpoliciasolicitante_id');
+    }
+
+    public function entrega() {
+        return $this->belongsTo(Personalpolicia::class, 'personalpoliciaentrega_id');
+    }
+
+    public function recibe() {
+        return $this->belongsTo(Personalpolicia::class, 'personalpoliciarecibe_id');
     }
 }

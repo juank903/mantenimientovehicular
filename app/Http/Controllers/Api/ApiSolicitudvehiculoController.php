@@ -136,7 +136,7 @@ class ApiSolicitudvehiculoController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('solicitudvehiculos.id', 'like', "%{$search}%")
                     ->orWhere('solicitudvehiculos.created_at', 'like', "%{$search}%")
-                    ->orWhere('solicitudvehiculos.solicitudvehiculos_fecharequerimiento', 'like', "%{$search}%")
+                    ->orWhere('solicitudvehiculos.solicitudvehiculos_fecharequerimientodesde', 'like', "%{$search}%")
                     ->orWhere('solicitudvehiculos.solicitudvehiculos_tipo', 'like', "%{$search}%")
                     ->orWhere('solicitudvehiculos.solicitudvehiculos_estado', 'like', "%{$search}%")
                     ->orWhere('personalpolicias.rango_personal_policias', 'like', "%{$search}%")
@@ -151,7 +151,7 @@ class ApiSolicitudvehiculoController extends Controller
         $columns = [
             'solicitudvehiculos.id',
             'solicitudvehiculos.created_at',
-            'solicitudvehiculos.solicitudvehiculos_fecharequerimiento',
+            'solicitudvehiculos.solicitudvehiculos_fecharequerimientodesde',
             'personalpolicias.rango_personal_policias',
             'personalpolicias.primerapellido_personal_policias',
             'personalpolicias.segundoapellido_personal_policias',

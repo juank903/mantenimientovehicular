@@ -44,4 +44,15 @@ class Personalpolicia extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function asignacionVehiculo() {
+        return $this->hasMany(Asignacionvehiculo::class, 'personalpoliciasolicitante_id');
+    }
+
+    public function entregas() {
+        return $this->hasMany(Asignacionvehiculo::class, 'personalpoliciaentrega_id');
+    }
+
+    public function recepciones() {
+        return $this->hasMany(Asignacionvehiculo::class, 'personalpoliciarecibe_id');
+    }
 }

@@ -39,5 +39,8 @@ class Vehiculo extends Model
     {
         return $this->belongsToMany(Espacioparqueadero::class);
     }
+    public function asignaciones() {
+        return $this->hasMany(Asignacionvehiculo::class);
+    }
 
 }

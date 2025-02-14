@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiAsignacionvehiculoController;
 use App\Http\Controllers\Api\ApiCircuitoController;
 use App\Http\Controllers\Api\ApiPersonalpoliciaController;
 use App\Http\Controllers\Api\ApiProvinciaController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Api\ApiVehiculoController;
 use App\Http\Controllers\App\ReportesController;
 use App\Http\Controllers\App\UserController;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/quejasugerenciasubcircuitofechas', [ReportesController::class, 'getQuejasugerenciaSubcircuitoFechas']);
@@ -42,3 +44,9 @@ Route::resource('/user', UserController::class);
 
 /*Api Dependencias*/
 Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);
+
+/*Api Asignaciones*/
+Route::get('/listarasignaciones/vehiculos', [ApiAsignacionvehiculoController::class, 'listarAsignacionesVehiculos']);
+Route::get('/listarasignaciones/vehiculos/policia/{idSolicitante}', [ApiAsignacionvehiculoController::class, 'listarAsignacionesVehiculos']);
+Route::get('/mostrarasignaciones/espera/vehiculos', [ApiAsignacionvehiculoController::class, 'getAsignacionesEsperaVehiculos']);
+Route::get('/mostrarasignaciones/espera/vehiculos/policia/{idSolicitante}', [ApiAsignacionvehiculoController::class, 'getAsignacionesEsperaVehiculos']);

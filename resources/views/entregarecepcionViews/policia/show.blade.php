@@ -2,74 +2,106 @@
     <div id="imprimible">
         <x-navigation.botonregresar href="{{ route('dashboard') }}" />
 
-        <div class="px-4 py-1 sm:px-6">
-            <h2 class="text-xl leading-8 font-medium text-gray-900">
-                Aprobación de solicitud No {{ $solicitud['id'] }}<br />
+        <div class="imprimible px-4 py-1 sm:px-6">
+            <h2 class="imprimible text-xl leading-8 font-medium text-gray-900">
+                Aprobación de solicitud No {{ $vehiculo['id'] }}<br />
             </h2>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+            <p class="imprimible mt-1 max-w-2xl text-sm text-gray-500">
                 Imprima este documento y acuda al parquedero para entregar el vehículo asignado
             </p>
         </div>
-        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-            <dl class="sm:divide-y sm:divide-gray-200">
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
+        <div class="imprimible border-t border-gray-200 px-4 py-5 sm:p-0">
+            <dl class="imprimible sm:divide-y sm:divide-gray-200">
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
                         Solicitante
                     </dt>
                     {{-- campo para llenar elaborador por --}}
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $policia['apellido_paterno'] }}&nbsp
-                        {{ $policia['apellido_materno'] }}&nbsp
-                        {{ $policia['primer_nombre'] }}&nbsp
-                        {{ $policia['segundo_nombre'] }}
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $solicitante['rango'] }}&nbsp;{{ $solicitante['nombre_completo'] }}
                     </dd>
-                    <dt class="text-sm font-medium text-gray-500">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
                         Ubicación del solicitante
                     </dt>
                     {{-- campo para llenar fecha --}}
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <span class="text-xs text-gray-600">Subcircuito: </span> {{ $policia['subcircuito'] }}&nbsp /
-                        <span class="text-xs text-gray-600">Circuito: </span> {{ $policia['circuito'] }}&nbsp /
-                        <span class="text-xs text-gray-600">Distrito: </span>{{ $policia['distrito'] }}&nbsp /
-                        <span class="text-xs text-gray-600">Provincia: </span>{{ $policia['provincia'] }}
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="imprimible text-xs text-gray-600">Subcircuito: </span>
+                        {{ $solicitante['subcircuitos'][0]['nombre'] }}&nbsp /
+                        <span class="imprimible text-xs text-gray-600">Circuito: </span>
+                        {{ $solicitante['subcircuitos'][0]['circuito']['nombre'] }}&nbsp /
+                        <span class="imprimible text-xs text-gray-600">Distrito:
+                        </span>{{ $solicitante['subcircuitos'][0]['circuito']['distrito']['nombre'] }}&nbsp /
+                        <span class="imprimible text-xs text-gray-600">Provincia:
+                        </span>{{ $solicitante['subcircuitos'][0]['circuito']['distrito']['provincia']['nombre'] }}
                     </dd>
-                    <dt class="text-sm font-medium text-gray-500">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
                         Fecha elaboración solicitud
                     </dt>
                     {{-- campo para llenar fecha --}}
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitud['fecha_solicitado'] }}</dd>
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $solicitante['solicitudes'][0]['fecha_solicitado'] }}</dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Detalle de la solicitud
-                    </dt>
-                    {{-- campo para llenar detalle solicitud --}}
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitud['detalle'] }}</dd>
-                </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
                         Fecha requerimiento del vehículo - Desde
                     </dt>
                     {{-- campo para llenar fecha de requerimiento --}}
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitud['fecha_desde'] }}</dd>
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $solicitante['solicitudes'][0]['fecha_requerimiento_desde'] }}</dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
                         Fecha requerimiento del vehículo - Hasta
                     </dt>
                     {{-- campo para llenar fecha de requerimiento --}}
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitud['fecha_hasta'] }}</dd>
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $solicitante['solicitudes'][0]['fecha_requerimiento_hasta'] }}</dd>
                 </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Tipo de vehículo solicitado
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
+                        Detalle de la solicitud
                     </dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitud['tipo_vehiculo'] }}</dd>
+                    {{-- campo para llenar detalle solicitud --}}
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $solicitante['solicitudes'][0]['detalle'] }}</dd>
+                </div>
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
+                        Vehiculo asignado
+                    </dt>
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="imprimible text-xs text-gray-600">Tipo: </span> {{ $vehiculo['tipo'] }} &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Modelo: </span>{{ $vehiculo['modelo'] }} &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Marca: </span>{{ $vehiculo['marca'] }} &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Color: </span>{{ $vehiculo['color'] }} &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Placa: </span>{{ $vehiculo['placa'] }}
+                    </dd>
+                </div>
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
+                        Ubicación del Vehículo
+                    </dt>
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="imprimible text-xs text-gray-600">Nombre: </span>
+                        {{ $vehiculo['parqueaderos'][0]['nombre'] }} &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Espacio: </span> {{ $vehiculo['espacios'][0]['nombre'] }}
+                        &nbsp - &nbsp {{ $vehiculo['espacios'][0]['observacion'] }} /
+                        <span class="imprimible text-xs text-gray-600">Dirección:
+                        </span>{{ $vehiculo['parqueaderos'][0]['direccion'] }} <br />
+
+                        <span class="imprimible text-xs text-gray-600">Responsable:
+                        </span>{{ $vehiculo['parqueaderos'][0]['responsable'] }}
+                    </dd>
+                </div>
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
+                        Estado Vehículo
+                    </dt>
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="imprimible text-xs text-gray-600">Kilometraje actual: </span> {{ $vehiculo['kmActual'] }}
+                        &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Combustible actual: </span>
+                        {{ $vehiculo['combustibleActual'] }} &nbsp /
                 </div>
             </dl>
 
@@ -77,9 +109,9 @@
 
         </div>
     </div>
-    <div class="flex justify-end">
+    <div class="imprimible flex justify-end">
         <button onclick="imprimirCard()"
-            class="items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+            class=" items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
             Imprimir
         </button>
     </div>
@@ -89,7 +121,18 @@
                 printJS({
                     printable: 'imprimible',
                     type: 'html',
-                    css: 'print.css'
+                    style: `
+                        @page {
+                        size: auto; /* auto is the initial value */
+                        margin: 10mm;
+                        }
+                        .imprimible {
+                        font-size: 7pt; /* Define el tamaño de fuente aquí */
+                        display:inline-flex;
+                        padding:12px;
+                        }
+                    `,
+                    honorColor: true
                 });
             }
         </script>

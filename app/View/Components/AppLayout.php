@@ -110,6 +110,13 @@ class AppLayout extends Component
                     ],
                     'route' => 'vehiculo',
                 ],
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Solicitudes vehículos pendientes' => 'mostrartodasolicitudesvehiculos.pendientes',
+                    ],
+                    'route' => 'solicitud',
+                ],
             ],
             default => [],
         };
