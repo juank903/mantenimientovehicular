@@ -73,31 +73,40 @@ class EntregarecepcionController extends Controller
         $userId ??= auth()->id();
         $user = Auth::user();
 
+        $response = Http::get(url("/api/mostrarasignaciones/Aprobada/espera/vehiculos/policia/{$userId}"));
 
-        $response = Http::get(url("/api/mostrarasignaciones/espera/vehiculos/policia/ {$userId}"));
-        $datosApi = json_decode($response, true);
+        // Manejo de errores en la respuesta de la API
+        if (!$response->successful()) {
+            $errorMessage = $response->status() . ' - ' . $response->reason();
+            return redirect()->route('dashboard')->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
+        }
 
+        $datosApi = $response->json(); // Utiliza json() para simplificar el decodificado
+
+        // Verifica si la respuesta de la API contiene datos
         if (empty($datosApi)) {
-            return redirect()->route('dashboard')->with('error', 'Error al obtener datos de la API.');
+            return redirect()->route('dashboard')->with('error', 'No se encontraron datos.');
         }
 
-        $solicitante = $this->mapearDatosSolicitante($datosApi[0]['solicitante']);
-        $vehiculo = $this->mapearDatosVehiculo($datosApi[0]['vehiculo']);
-        //$policia = $this->mapearDatosPolicia($datosApi[0]['solicitante']); // Mapeo de datos del policía (usando 'solicitante' como ejemplo, ajusta si es diferente)
-        $asignacion = $this->mapearDatosAsignacion($datosApi[0]); // Mapeo de datos de la solicitud
+        // Extrae el primer elemento del array (asumiendo que solo hay un resultado)
+        $datos = $datosApi[0];
 
-        if ($user->rol() === 'auxiliar') {
-            return view('entregarecepcionViews.auxiliar.show', [
-                //'policia' => $policia,
-                'asignacion' => $asignacion,
-                'solicitante' => $solicitante,
-                'vehiculo' => $vehiculo,
-            ]);
-        }
+        $solicitante = $this->mapearDatosSolicitante($datos['solicitante']);
+        $vehiculo = $this->mapearDatosVehiculo($datos['vehiculo']);
+        $asignacion_solicitudvehiculo = $this->mapearDatosAsignacion_Solicitudvehiculo($datos);
+        $asignacion = $this->mapearDatosAsignacion($datos);
 
-        if ($user->rol() === 'policia') {
-            return view('entregarecepcionViews.policia.show', [
-                //'policia' => $policia,
+        // Simplifica la lógica de roles con un array y un operador ternario
+        $vista = [
+            'auxiliar' => 'entregarecepcionViews.auxiliar.show',
+            'policia' => 'entregarecepcionViews.policia.show',
+        ];
+
+        $rol = $user->rol();
+
+        if (isset($vista[$rol])) {
+            return view($vista[$rol], [
+                'asignacion_solicitudvehiculo' => $asignacion_solicitudvehiculo,
                 'asignacion' => $asignacion,
                 'solicitante' => $solicitante,
                 'vehiculo' => $vehiculo,
@@ -108,7 +117,6 @@ class EntregarecepcionController extends Controller
     }
 
     // Funciones de mapeo de datos
-
     private function mapearDatosSolicitante(array $datos): array
     {
         $subcircuitosMapeados = [];
@@ -128,31 +136,20 @@ class EntregarecepcionController extends Controller
                         ],
                     ],
                 ],
-                // ... otros campos de subcircuito
-            ];
-        }
-
-        $solicitudesMapeadas = [];
-        foreach ($datos['solicitud_vehiculo'] as $solicitud) {
-            $solicitudesMapeadas[] = [
-                'id' => $solicitud['id'],
-                'fecha_solicitado' => Carbon::parse($solicitud['created_at'])->toDateTimeString(),
-                'detalle' => $solicitud['solicitudvehiculos_detalle'],
-                'fecha_requerimiento_desde' => $solicitud['solicitudvehiculos_fecharequerimientodesde'],
-                'fecha_requerimiento_hasta' => $solicitud['solicitudvehiculos_fecharequerimientohasta'],
-                'jornada' => $solicitud['solicitudvehiculos_jornada'],
             ];
         }
 
         return [
-            'id' => $datos['id'],
+            'id_solicitante' => $datos['id'],
+            'user_id' => $datos['user_id'],
             'nombre_completo' => $datos['primernombre_personal_policias'] . ' ' . $datos['segundonombre_personal_policias'] . ' ' . $datos['primerapellido_personal_policias'] . ' ' . $datos['segundoapellido_personal_policias'],
             'cedula' => $datos['cedula_personal_policias'],
             'tipoSangre' => $datos['tiposangre_personal_policias'],
             'conductor' => $datos['conductor_personal_policias'],
             'rango' => $datos['rango_personal_policias'],
-            'subcircuitos' => $subcircuitosMapeados, // Añade los subcircuitos mapeados
-            'solicitudes' => $solicitudesMapeadas, // Añade las solicitudes mapeadas
+            'rol' => $datos['rol_personal_policias'], // Añadido el rol
+            'genero' => $datos['personalpolicias_genero'], // Añadido el género
+            'subcircuitos' => $subcircuitosMapeados,
         ];
     }
 
@@ -161,25 +158,25 @@ class EntregarecepcionController extends Controller
         $parqueaderosMapeados = [];
         foreach ($datos['parqueaderos'] as $parqueadero) {
             $parqueaderosMapeados[] = [
-                'id' => $parqueadero['id'],
+                'id_parqueadero' => $parqueadero['id'],
                 'nombre' => $parqueadero['parqueaderos_nombre'],
                 'direccion' => $parqueadero['parqueaderos_direccion'],
                 'responsable' => $parqueadero['parqueaderos_responsable'],
-
             ];
         }
 
         $espaciosMapeados = [];
         foreach ($datos['espacio'] as $espacio) {
             $espaciosMapeados[] = [
-                'id' => $espacio['id'],
+                'id_espacio' => $espacio['id'],
                 'nombre' => $espacio['espacioparqueaderos_nombre'],
                 'observacion' => $espacio['espacioparqueaderos_observacion'],
+                'estado' => $espacio['espacioparqueadero_estado'], // Añadido el estado del espacio
             ];
         }
 
         return [
-            'id' => $datos['id'],
+            'id_vehiculo' => $datos['id'],
             'marca' => $datos['marca_vehiculos'],
             'modelo' => $datos['modelo_vehiculos'],
             'tipo' => $datos['tipo_vehiculos'],
@@ -188,31 +185,31 @@ class EntregarecepcionController extends Controller
             'estado' => $datos['estado_vehiculos'],
             'kmActual' => $datos['kmactual_vehiculos'],
             'combustibleActual' => $datos['combustibleactual_vehiculos'],
-            'parqueaderos' => $parqueaderosMapeados, // Añade los parqueaderos mapeados
-            'espacios' => $espaciosMapeados, // Añade los espacios mapeados
+            'parqueadero' => $parqueaderosMapeados,
+            'espacio' => $espaciosMapeados,
         ];
     }
 
-    /* private function mapearDatosPolicia(array $datos): array
+    private function mapearDatosAsignacion_Solicitudvehiculo(array $datos): array
     {
         return [
-            'id' => $datos['id'],
-            'nombre_completo' => $datos['primernombre_personal_policias'] . ' ' . $datos['segundonombre_personal_policias'] . ' ' . $datos['primerapellido_personal_policias'] . ' ' . $datos['segundoapellido_personal_policias'],
-            'cedula' => $datos['cedula_personal_policias'],
-            'rango' => $datos['rango_personal_policias'],
-            'rol' => $datos['rol_personal_policias'],
-            // ... otros campos que necesites
+            'fecha_elaboracion' => $datos['created_at'],
+            'fecha_aprobacion' => $datos['updated_at'],
+            'id' => $datos['id'], // Añadido el ID de la solicitud
+            'detalle' => $datos['solicitudvehiculos_detalle'], // Añadido el detalle de la solicitud
+            'tipo' => $datos['solicitudvehiculos_tipo'], // Añadido el tipo de solicitud
+            'fecharequerimientodesde' => $datos['solicitudvehiculos_fecharequerimientodesde'], // Añadida la fecha de requerimiento desde
+            'fecharequerimientohasta' => $datos['solicitudvehiculos_fecharequerimientohasta'], // Añadida la fecha de requerimiento hasta
+            'estado' => $datos['solicitudvehiculos_estado'], // Añadido el estado de la solicitud
         ];
-    } */
+    }
 
     private function mapearDatosAsignacion(array $datos): array
     {
         return [
-            'id' => $datos['id'],
+            'id' => $datos['asignacion_id'],
             'estado' => $datos['asignacionvehiculos_estado'],
-            'kmRecibido' => $datos['asignacionvehiculos_kmrecibido'],
-            'combustibleRecibido' => $datos['asignacionvehiculos_combustiblerecibido'],
-            // ... otros campos que necesites
         ];
     }
+
 }

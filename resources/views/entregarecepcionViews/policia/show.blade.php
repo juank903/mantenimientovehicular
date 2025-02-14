@@ -4,7 +4,7 @@
 
         <div class="imprimible px-4 py-1 sm:px-6">
             <h2 class="imprimible text-xl leading-8 font-medium text-gray-900">
-                Aprobación de solicitud No {{ $vehiculo['id'] }}<br />
+                Aprobación de solicitud No {{ $asignacion_solicitudvehiculo['id'] }}<br />
             </h2>
             <p class="imprimible mt-1 max-w-2xl text-sm text-gray-500">
                 Imprima este documento y acuda al parquedero para entregar el vehículo asignado
@@ -20,10 +20,12 @@
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         {{ $solicitante['rango'] }}&nbsp;{{ $solicitante['nombre_completo'] }}
                     </dd>
+                </div>
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="imprimible text-sm font-medium text-gray-500">
                         Ubicación del solicitante
                     </dt>
-                    {{-- campo para llenar fecha --}}
+
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         <span class="imprimible text-xs text-gray-600">Subcircuito: </span>
                         {{ $solicitante['subcircuitos'][0]['nombre'] }}&nbsp /
@@ -34,12 +36,22 @@
                         <span class="imprimible text-xs text-gray-600">Provincia:
                         </span>{{ $solicitante['subcircuitos'][0]['circuito']['distrito']['provincia']['nombre'] }}
                     </dd>
+                </div>
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="imprimible text-sm font-medium text-gray-500">
                         Fecha elaboración solicitud
                     </dt>
                     {{-- campo para llenar fecha --}}
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitante['solicitudes'][0]['fecha_solicitado'] }}</dd>
+                        {{ $asignacion_solicitudvehiculo['fecha_elaboracion'] }}</dd>
+                </div>
+                <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="imprimible text-sm font-medium text-gray-500">
+                        Fecha aprobacion
+                    </dt>
+                    {{-- campo para llenar fecha --}}
+                    <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ $asignacion_solicitudvehiculo['fecha_aprobacion'] }}</dd>
                 </div>
                 <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="imprimible text-sm font-medium text-gray-500">
@@ -47,7 +59,7 @@
                     </dt>
                     {{-- campo para llenar fecha de requerimiento --}}
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitante['solicitudes'][0]['fecha_requerimiento_desde'] }}</dd>
+                        {{ $asignacion_solicitudvehiculo['fecharequerimientodesde'] }}</dd>
                 </div>
                 <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="imprimible text-sm font-medium text-gray-500">
@@ -55,7 +67,7 @@
                     </dt>
                     {{-- campo para llenar fecha de requerimiento --}}
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitante['solicitudes'][0]['fecha_requerimiento_hasta'] }}</dd>
+                        {{ $asignacion_solicitudvehiculo['fecharequerimientohasta'] }}</dd>
                 </div>
                 <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="imprimible text-sm font-medium text-gray-500">
@@ -63,7 +75,7 @@
                     </dt>
                     {{-- campo para llenar detalle solicitud --}}
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ $solicitante['solicitudes'][0]['detalle'] }}</dd>
+                        {{ $asignacion_solicitudvehiculo['detalle'] }}</dd>
                 </div>
                 <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="imprimible text-sm font-medium text-gray-500">
@@ -83,14 +95,15 @@
                     </dt>
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         <span class="imprimible text-xs text-gray-600">Nombre: </span>
-                        {{ $vehiculo['parqueaderos'][0]['nombre'] }} &nbsp /
-                        <span class="imprimible text-xs text-gray-600">Espacio: </span> {{ $vehiculo['espacios'][0]['nombre'] }}
-                        &nbsp - &nbsp {{ $vehiculo['espacios'][0]['observacion'] }} /
+                        {{ $vehiculo['parqueadero'][0]['nombre'] }} &nbsp /
+                        <span class="imprimible text-xs text-gray-600">Espacio: </span>
+                        {{ $vehiculo['espacio'][0]['nombre'] }}
+                        &nbsp - &nbsp {{ $vehiculo['espacio'][0]['observacion'] }} /
                         <span class="imprimible text-xs text-gray-600">Dirección:
-                        </span>{{ $vehiculo['parqueaderos'][0]['direccion'] }} <br />
+                        </span>{{ $vehiculo['parqueadero'][0]['direccion'] }} &nbsp /
 
                         <span class="imprimible text-xs text-gray-600">Responsable:
-                        </span>{{ $vehiculo['parqueaderos'][0]['responsable'] }}
+                        </span>{{ $vehiculo['parqueadero'][0]['responsable'] }}
                     </dd>
                 </div>
                 <div class="imprimible py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -98,14 +111,13 @@
                         Estado Vehículo
                     </dt>
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <span class="imprimible text-xs text-gray-600">Kilometraje actual: </span> {{ $vehiculo['kmActual'] }}
+                        <span class="imprimible text-xs text-gray-600">Kilometraje actual: </span>
+                        {{ $vehiculo['kmActual'] }}
                         &nbsp /
                         <span class="imprimible text-xs text-gray-600">Combustible actual: </span>
                         {{ $vehiculo['combustibleActual'] }} &nbsp /
                 </div>
             </dl>
-
-
 
         </div>
     </div>

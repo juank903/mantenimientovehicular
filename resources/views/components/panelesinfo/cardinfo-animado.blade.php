@@ -29,6 +29,12 @@
         $classesTextosDescriptivos .= ' text-blue-600';
         $classesTextoCifra .= ' text-blue-700';
     }
+    if ($estado == 'Procesando') {
+        //echo ('completa');
+        $classesContenedor .= ' bg-yellow-300';
+        $classesTextosDescriptivos .= ' text-yellow-600';
+        $classesTextoCifra .= ' text-yellow-700';
+    }
 @endphp
 
 <div {{ $attributes->merge(['class' => $classesContenedor]) }}>

@@ -77,7 +77,7 @@ class ApiAsignacionvehiculoController extends Controller
 
         return response()->json($asignaciones);
     }
-    public function getAsignacionesEsperaVehiculos(Request $request, $idSolicitante = null)
+    /* public function getAsignacionesEsperaVehiculos(Request $request, $idSolicitante = null)
     {
         $query = Asignacionvehiculo::with([
             'vehiculo',
@@ -96,6 +96,32 @@ class ApiAsignacionvehiculoController extends Controller
 
         if ($idSolicitante) {
             $query->where('personalpoliciasolicitante_id', $idSolicitante);
+        }
+
+        $asignaciones = $query->get();
+
+        return response()->json($asignaciones);
+    } */
+    public function getAsignacionesPorEstadoSolicitud(Request $request, $estado_solicitud, $estado_asignacion, $idSolicitante = null)
+    {
+        $query = Asignacionvehiculo::with([
+            'vehiculo',
+            'solicitante',
+            'vehiculo.parqueaderos',
+            'vehiculo.espacio',
+            'solicitante.subcircuito',
+            'solicitante.subcircuito.circuito',
+            'solicitante.subcircuito.circuito.distrito',
+            'solicitante.subcircuito.circuito.distrito.provincia',
+        ])
+        ->select('asignacionvehiculos.*', 'solicitudvehiculos.*', 'asignacionvehiculos.id as asignacion_id' )
+            ->join('personalpolicia_solicitudvehiculo', 'asignacionvehiculos.personalpoliciasolicitante_id', '=', 'personalpolicia_solicitudvehiculo.personalpolicia_id')
+            ->join('solicitudvehiculos', 'personalpolicia_solicitudvehiculo.solicitudvehiculo_id', '=', 'solicitudvehiculos.id')
+            ->where('solicitudvehiculos_estado', $estado_solicitud)
+            ->where('asignacionvehiculos_estado', $estado_asignacion);
+
+        if ($idSolicitante) {
+            $query->where('asignacionvehiculos.personalpoliciasolicitante_id', $idSolicitante);
         }
 
         $asignaciones = $query->get();

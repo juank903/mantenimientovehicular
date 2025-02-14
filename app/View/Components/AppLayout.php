@@ -32,14 +32,18 @@ class AppLayout extends Component
                 $responseAprobadas = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/aprobadas"));
                 $dataAprobadas = $responseAprobadas->successful() ? $responseAprobadas->json() : ['numero_solicitudes' => 0];
 
-                $this->menuItems = $this->generateMenuItems($rol, $dataPendientes['numero_solicitudes'] ?? 0, $dataAprobadas['numero_solicitudes'] ?? 0);
+                $responseProcesando = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/procesando"));
+                $dataProcesando = $responseProcesando->successful() ? $responseProcesando->json() : ['numero_solicitudes' => 0];
+
+                $this->menuItems = $this->generateMenuItems($rol, $dataPendientes['numero_solicitudes'] ?? 0, $dataAprobadas['numero_solicitudes'] ?? 0, $dataProcesando['numero_solicitudes'] ?? 0);
             }
         }
         return $this->menuItems;
     }
 
-    private function generateMenuItems(string $rol, int $solicitudPendiente, int $solicitudAprobada): array
+    private function generateMenuItems(string $rol, int $solicitudPendiente, int $solicitudAprobada, int $solicitudProcesando): array
     {
+        //var_dump($solicitudProcesando);
         return match (true) {
             $rol == "administrador" => [
                 [
@@ -67,7 +71,7 @@ class AppLayout extends Component
                 ],
             ],
             $rol == "gerencia" => [],
-            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 => [
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 && $solicitudProcesando == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -76,7 +80,7 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
-            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada > 0 => [
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada > 0 && $solicitudProcesando == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -85,11 +89,20 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
-            $rol == "policia" && $solicitudPendiente > 0 && $solicitudAprobada == 0 => [
+            $rol == "policia" && $solicitudPendiente > 0 && $solicitudAprobada == 0 && $solicitudProcesando == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
                         'Solicitud pendiente' => 'mostrarsolicitudvehiculo.policia.pendiente',
+                    ],
+                    'route' => 'solicitud',
+                ],
+            ],
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 && $solicitudProcesando > 0 => [
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Solicitud procesando' => 'mostrarsolicitudvehiculo.policia.pendiente',
                     ],
                     'route' => 'solicitud',
                 ],

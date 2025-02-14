@@ -12,6 +12,8 @@
                 :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Anuladas']" />
             <x-panelesinfo.cardinfo-animado estado="Aprobada" id="solicitudvehiculo_aprobada" :api="url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/aprobadas')" :
                 :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Aprobadas']" />
+            <x-panelesinfo.cardinfo-animado estado="Procesando" id="solicitudvehiculo_procesando" :api="url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/procesando')" :
+                :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Procesando']" />
             <x-panelesinfo.cardinfo-animado estado="Completa" id="solicitudvehiculo_completa" :api="url('/api/personal/policia/' . auth()->id() . '/totalsolicitudesvehiculos/completas')" :
                 :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Completas']" />
         </div>
