@@ -40,7 +40,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '{{ url('/api/listarsolicitudesvehiculos') }}',
+                    url: '{{ url('/api/listarsolicitudesvehiculos?estado=Aprobada') }}',
                     type: 'GET',
                     dataSrc: function(json) {
                         return json.data || json.vehiculos; // Asegura obtener los datos correctamente
@@ -106,7 +106,9 @@
                             let colorClass = data === "Pendiente" ?
                                 "bg-orange-300 text-orange-700" :
                                 data === "Anulada" ? "bg-red-300 text-red-700" :
-                                "bg-green-300 text-green-700";
+                                data === "Aprobada" ? "bg-green-300 text-green-700" :
+                                data === "Completa" ? "bg-blue-300 text-blue-700" :
+                                "";
                             return `<span class="text-center flex font-bold ${colorClass}">${data}</span>`;
                         }
                     },
@@ -119,10 +121,10 @@
                             console.log('averiguar: ' + id + ', estado: ' + estado);
 
                             // Mostrar el botón solo si el estado es "Pendiente"
-                            if (estado === "Pendiente") {
+                            if (estado === "Aprobada") {
                                 return `
                                 <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                                    <x-show-button href="{{ route('mostrarsolicitudvehiculo.policia.pendiente', ['id' => '__ID__']) }}" />
+                                    <x-show-button href="{{ route('mostrarentregarecepcionvehiculo.policia.aprobada', ['id' => '__ID__']) }}" />
                                 </div>`.replace('__ID__', id);
                             } else {
                                 return ''; // No mostrar nada si el estado no es "Pendiente"

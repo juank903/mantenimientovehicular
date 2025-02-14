@@ -19,7 +19,8 @@
 
     @if (Request::is('mostrartodopersonal') ||
             Request::is('mostrartodovehiculos') ||
-            Request::is('mostrartodasolicitudesvehiculos/pendientes'))
+            Request::is('mostrartodasolicitudesvehiculos/pendientes') ||
+            Route::is('mostrartodasolicitudesvehiculos.aprobadas'))
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
         <!-- DataTables Buttons CSS -->

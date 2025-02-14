@@ -120,6 +120,10 @@ Route::middleware('auth')->group(function () {
             return view('solicitudesvehiculosViews.administrador.index');
         })->name('mostrartodasolicitudesvehiculos.pendientes');
 
+        Route::get('mostrartodasolicitudesvehiculos/aprobadas', function () {
+            return view('entregarecepcionViews.auxiliar.index');
+        })->name('mostrartodasolicitudesvehiculos.aprobadas');
+
         Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
             ->name('mostrarentregarecepcionvehiculo.policia.aprobada');
 

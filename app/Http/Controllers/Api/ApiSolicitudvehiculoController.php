@@ -110,12 +110,17 @@ class ApiSolicitudvehiculoController extends Controller
         ]);
     }
 
-    public function listarSolicitudesVehiculosPendientes(Request $request)
+    public function listarSolicitudesVehiculos(Request $request)
     {
         $defaultPerPage = 10;
         $perPage = $request->input('perPage', $defaultPerPage);
+        $estado = $request->input('estado', 'Pendiente');
 
-        // Asegurar el JOIN siempre
+        $estadosValidos = ['Pendiente', 'Aprobada', 'Anulada', 'Completa' ];
+        if (!in_array($estado, $estadosValidos)) {
+            $estado = 'Pendiente';
+        }
+
         $query = Solicitudvehiculo::query()
             ->leftJoin('personalpolicia_solicitudvehiculo', 'solicitudvehiculos.id', '=', 'personalpolicia_solicitudvehiculo.solicitudvehiculo_id')
             ->leftJoin('personalpolicias', 'personalpolicia_solicitudvehiculo.personalpolicia_id', '=', 'personalpolicias.id')
@@ -127,10 +132,9 @@ class ApiSolicitudvehiculoController extends Controller
                 'personalpolicias.primernombre_personal_policias',
                 'personalpolicias.segundonombre_personal_policias'
             ])
-            ->where('solicitudvehiculos.solicitudvehiculos_estado', 'Pendiente') // Solo solicitudes pendientes
-            ->where('personalpolicias.rol_personal_policias', 'policia'); // Solo personal con rol "policia"
+            ->where('solicitudvehiculos.solicitudvehiculos_estado', $estado)
+            ->where('personalpolicias.rol_personal_policias', 'policia');
 
-        // Aplicar búsqueda
         if ($request->has('search.value') && !empty($request->search['value'])) {
             $search = $request->search['value'];
             $query->where(function ($q) use ($search) {
@@ -147,7 +151,6 @@ class ApiSolicitudvehiculoController extends Controller
             });
         }
 
-        // Aplicar ordenación
         $columns = [
             'solicitudvehiculos.id',
             'solicitudvehiculos.created_at',
@@ -170,33 +173,32 @@ class ApiSolicitudvehiculoController extends Controller
             }
         }
 
-        // Total de registros
-        $recordsFiltered = $query->count();
-        $recordsTotal = Solicitudvehiculo::count();
+        if ($perPage == 0 || $perPage == -1) {
+            $vehiculos = $query->with('personal')->get();
+            $total = $vehiculos->count();
 
-        if ($perPage == 0) {
             return response()->json([
                 'draw' => intval($request->draw),
-                'recordsTotal' => $recordsTotal,
-                'recordsFiltered' => $recordsFiltered,
-                'data' => [],
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $vehiculos,
                 'currentPage' => 1,
                 'lastPage' => 1,
-                'perPage' => 0
+                'perPage' => $total
+            ]);
+        } else {
+            $vehiculos = $query->with('personal')->paginate($perPage);
+
+            return response()->json([
+                'draw' => intval($request->draw),
+                'recordsTotal' => Solicitudvehiculo::where('solicitudvehiculos_estado', $estado)->count(),
+                'recordsFiltered' => $query->count(),
+                'data' => $vehiculos->items(),
+                'currentPage' => $vehiculos->currentPage(),
+                'lastPage' => $vehiculos->lastPage(),
+                'perPage' => $vehiculos->perPage()
             ]);
         }
-
-        $vehiculos = $query->with('personal')->paginate($perPage);
-
-        return response()->json([
-            'draw' => intval($request->draw),
-            'recordsTotal' => $recordsTotal,
-            'recordsFiltered' => $recordsFiltered,
-            'data' => $vehiculos->items(),
-            'currentPage' => $vehiculos->currentPage(),
-            'lastPage' => $vehiculos->lastPage(),
-            'perPage' => $vehiculos->perPage()
-        ]);
     }
 
     /**
