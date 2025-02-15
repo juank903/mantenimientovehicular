@@ -1,4 +1,5 @@
 <x-app-layout>
+
     <div class="p-16">
         <div class="p-8 bg-white shadow mt-24">
             <div class="grid grid-cols-1 md:grid-cols-3">
@@ -32,17 +33,23 @@
                         Message</button> </div>
             </div>
             <div class="mt-20 text-center border-b pb-12">
-                <h1 class="text-4xl font-medium text-gray-700">Jessica Jones, <span
-                        class="font-light text-gray-500">27</span></h1>
+                <h1 class="text-4xl font-medium text-gray-700">
+                    {{ $personalpolicia->primernombre_personal_policias }}
+                    {{ $personalpolicia->segundonombre_personal_policias }}
+                    {{ $personalpolicia->primerapellido_personal_policias }}
+                   {{ $personalpolicia->segundoapellido_personal_policias }}
+                   <span class="font-light text-gray-500">27</span></h1>
                 <p class="font-light text-gray-600 mt-3">Bucharest, Romania</p>
-                <p class="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
-                <p class="mt-2 text-gray-500">University of Computer Science</p>
+                <p class="mt-8 text-gray-500">{{ $personalpolicia->rango_personal_policias }}</p>
+                <p class="mt-2 text-gray-500">Policia Nacional</p>
             </div>
             <div class="mt-12 flex flex-col justify-center">
-                <p class="text-gray-600 text-center font-light lg:px-16">An artist of considerable range, Ryan — the
-                    name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his
-                    own music, giving it a warm, intimate feel with a solid groove structure. An artist of considerable
-                    range.</p> <button class="text-indigo-500 py-2 px-4  font-medium mt-4"> Show more</button>
+                <p><strong>Cédula:</strong> {{ $personalpolicia->cedula_personal_policias }}</p>
+                <p><strong>Tipo de sangre:</strong> {{ $personalpolicia->tiposangre_personal_policias }}</p>
+                <p><strong>Conductor:</strong> {{ $personalpolicia->conductor_personal_policias ? 'Sí' : 'No' }}</p>
+                <p><strong>Rango:</strong> {{ $personalpolicia->rango_personal_policias }}</p>
+                <p><strong>Rol:</strong> {{ $personalpolicia->rol_personal_policias }}</p>
+                <p><strong>Género:</strong> {{ $personalpolicia->personalpolicias_genero }}</p>
             </div>
         </div>
     </div>

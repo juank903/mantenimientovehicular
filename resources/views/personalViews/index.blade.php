@@ -67,11 +67,17 @@
                                     $(`#delete-button-container-${userId}`).html(html);
                                 }
                             });
+                            $.ajax({
+                                url: `/show-button/${userId}`, // New route for showing data
+                                success: function(html) {
+                                    $(`#show-button-container-${userId}`).html(html);
+                                }
+                            });
 
                             return `
                             <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                                <x-show-button />
-                                <x-edit-button />
+                                <div id="show-button-container-${userId}"> </div> {{-- Container for the x-show-button --}}
+
                                 <div id="delete-button-container-${userId}"></div> {{-- Container for the component --}}
                             </div>`;
                         },
@@ -142,6 +148,15 @@
                     }
                 });
             }
+        });
+        $(document).on('click', '.show-button', function() {
+            let id = $(this).data('id');
+
+            // Construir la URL con parámetros GET
+            const url = `/profile/edit?user_id=${id}`; // Usar ? para el primer parámetro y & para los siguientes
+
+            // Redirigir usando window.location.href
+            window.location.href = url;
         });
     </script>
 </x-app-layout>

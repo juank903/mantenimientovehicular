@@ -81,8 +81,10 @@ Route::middleware('auth')->group(function () {
         Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
             ->name('register');
         Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
-        Route::get('perfil', [ProfileController::class, 'edit'])
+
+        Route::get('/profile/edit/{user_id?}', [ProfileController::class, 'edit'])
             ->name('profile.edit');
+
         Route::patch('perfil', [ProfileController::class, 'update'])
             ->name('profile.update');
         Route::delete('perfil', [ProfileController::class, 'destroy'])
@@ -147,6 +149,9 @@ Route::middleware('auth')->group(function () {
     /*Componentes bonotes dinámicos */
         Route::get('/delete-button/{userId}', function ($userId) {
             return view('components.delete-button', ['userId' => $userId]);
+        });
+        Route::get('/show-button/{user_id}', function ($userId) {
+            return view('components.show-button', ['userId' => $userId]);
         });
 
 });

@@ -15,7 +15,8 @@ class ApiVehiculoController extends Controller
      */
 
 
-     public function index(Request $request): JsonResponse {
+    public function index(Request $request): JsonResponse
+    {
         // Valor por defecto para la paginación
         $defaultPerPage = 10;
         $perPage = $request->input('perPage', $defaultPerPage);
@@ -133,7 +134,32 @@ class ApiVehiculoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 1. Validar los datos del formulario (incluyendo los IDs de subcircuitos)
+        $request->validate([
+            'marca_vehiculos' => 'required|string|max:255',
+            'tipo_vehiculos' => 'required|string|max:255',
+            // ... otras validaciones
+            'subcircuito_dependencia_ids' => 'required|array', // Asegúrate de que es un array
+            'subcircuito_dependencia_ids.*' => 'exists:subcircuito_dependencias,id', // Valida que los IDs existen
+        ]);
+
+        // 2. Crear una nueva instancia del modelo Vehiculo
+        $vehiculo = new Vehiculo();
+
+        // 3. Asignar los valores del request a los atributos del modelo (excepto los IDs de subcircuitos)
+        $vehiculo->marca_vehiculos = $request->input('marca_vehiculos');
+        $vehiculo->tipo_vehiculos = $request->input('tipo_vehiculos');
+        // ... asignar los demás campos
+
+        // 4. Guardar el modelo en la base de datos
+        $vehiculo->save();
+
+        // 5. Sincronizar la tabla pivote con los IDs de subcircuitos
+        $vehiculo->subcircuitoDependencias()->sync($request->input('subcircuito_dependencia_ids'));
+
+        // 6. Redireccionar o retornar una respuesta
+        return redirect()->route('ruta.a.la.que.quieras.redireccionar')
+            ->with('success', 'Vehículo registrado exitosamente.');
     }
 
     /**
@@ -168,9 +194,9 @@ class ApiVehiculoController extends Controller
         //
     }
 
-    public function getVehiculoParqueaderoSubcircuito($subcircuito_id, $tipo_vehiculo )
+    public function getVehiculoParqueaderoSubcircuito($subcircuito_id, $tipo_vehiculo)
     {
-        $vehiculos = Vehiculo::with(['parqueaderos','espacio'])
+        $vehiculos = Vehiculo::with(['parqueaderos', 'espacio'])
             ->whereHas('subcircuito', function ($query) use ($subcircuito_id) {
                 $query->where('subcircuitodependencia_id', $subcircuito_id);
             })
