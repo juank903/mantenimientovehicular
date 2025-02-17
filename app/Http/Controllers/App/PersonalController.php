@@ -14,9 +14,8 @@ class PersonalController extends Controller
     {
 
     }
-    public static function guardarpersonal(Request $request): JsonResponse
+    public static function store(Request $request): JsonResponse
     {
-        //dd($request);
         try {
             // Validación de los datos de entrada
             $validated = $request->validate([

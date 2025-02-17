@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class PersonalpoliciaSubcircuitodependenciaController extends Controller
 {
     //
-    public static function create(Request $request)
+    public static function store(Request $request)
     {
         $personalpoliciaId = $request->input('id');
         $subcircuitodependenciaId = $request->input('subcircuito');

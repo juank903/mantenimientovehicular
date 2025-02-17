@@ -10,14 +10,16 @@ class Parqueadero extends Model
     //
     use HasFactory;
 
-    public function vehiculos() {
+    public function vehiculos()
+    {
         return $this->belongsToMany(Vehiculo::class);
     }
-    public function subcircuitos() {
-        return $this->belongsToMany(Subcircuitodependencia::class);
+    public function subcircuitos()
+    {
+        return $this->belongsToMany(Subcircuitodependencia::class, 'parqueadero_subcircuitodependencia');
     }
     public function espacios()
     {
-        return $this->belongsToMany(Espacioparqueadero::class);
+        return $this->belongsToMany(Espacioparqueadero::class, 'espacioparqueadero_parqueadero');
     }
 }

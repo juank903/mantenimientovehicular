@@ -3,7 +3,7 @@
     <x-inputs.input-label for="provincia" :value="__('Provincia')" />
     <select id="provincia" name="provincia"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required></select>
+        required :value="old('provincia')"></select>
     <x-inputs.input-error :messages="$errors->get('provincia')" class="mt-2" />
 </div>
 <!-- Distrito -->
@@ -11,7 +11,7 @@
     <x-inputs.input-label for="distrito" :value="__('Distrito')" />
     <select id="distrito" name="distrito"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required></select>
+        required :value="old('distrito')"></select>
     <x-inputs.input-error :messages="$errors->get('distrito')" class="mt-2" />
 </div>
 <!-- Circuito -->
@@ -19,7 +19,7 @@
     <x-inputs.input-label for="circuito" :value="__('Circuito')" />
     <select id="circuito" name="circuito"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required></select>
+        required :value="old('circuito')"></select>
     <x-inputs.input-error :messages="$errors->get('circuito')" class="mt-2" />
 </div>
 <!-- Subcircuito -->
@@ -27,7 +27,7 @@
     <x-inputs.input-label for="subcircuito" :value="__('Subcircuito')" />
     <select id="subcircuito" name="subcircuito"
         class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required></select>
+        required :value="old('subcircuito')"></select>
     <x-inputs.input-error :messages="$errors->get('subcircuito')" class="mt-2" />
 </div>
 <script>

@@ -16,7 +16,7 @@ class RolPoliciaTest extends TestCase
     {
 
                 // Crea un usuario con un rol diferente
-                $user = Personalpolicia::factory()->create(['rol_personal_policias' => 'policia']); // Asumiendo que tienes un rol 'usuario'
+                $user = Personalpolicia::factory()->store(['rol_personal_policias' => 'policia']); // Asumiendo que tienes un rol 'usuario'
 
                 // Realiza la solicitud con autenticación
                 $response = $this->actingAs($user)->get('/api/quejasugerenciasubcircuitofechas/?fechainicio=2023-01-01&fechafin=2023-01-31');
@@ -30,7 +30,7 @@ class RolPoliciaTest extends TestCase
     public function it_denies_access_for_unauthorized_user()
     {
 // Crea un usuario con un rol específico
-$user = Personalpolicia::factory()->create(['rol_personal_policias' => 'administrador']); // Asumiendo que tienes una columna 'role'
+$user = Personalpolicia::factory()->store(['rol_personal_policias' => 'administrador']); // Asumiendo que tienes una columna 'role'
 
 // Realiza la solicitud con autenticación
 $response = $this->actingAs($user)->get('/api/quejasugerenciasubcircuitofechas/?fechainicio=2023-01-01&fechafin=2023-01-31');

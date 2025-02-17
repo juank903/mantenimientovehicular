@@ -14,7 +14,7 @@ class ApiProvinciaController extends Controller
      */
     public function index(): JsonResponse
     {
-        $provincias = Provinciadependencia::with('distritos.circuitos.subcircuitos')->get();
+        $provincias = Provinciadependencia::with('distritos.circuitos.subcircuitos.parqueaderos.espacios')->get();
         return response()->json($provincias);
     }
 
@@ -40,7 +40,7 @@ class ApiProvinciaController extends Controller
     public function show($id): JsonResponse
     {
         // Obtener la provincia con sus distritos, circuitos y subcircuitos
-        $provincia = Provinciadependencia::with('distritos.circuitos.subcircuitos')->find($id);
+        $provincia = Provinciadependencia::with('distritos.circuitos.subcircuitos.parqueaderos.espacios')->find($id);
 
         // Verificar si la provincia existe
         if (!$provincia) {

@@ -80,6 +80,7 @@ Route::middleware('auth')->group(function () {
         /* Personal */
         Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
             ->name('register');
+
         Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
 
         Route::get('/profile/edit/{user_id?}', [ProfileController::class, 'edit'])
@@ -100,11 +101,11 @@ Route::middleware('auth')->group(function () {
 
 
     /*Rutas Vehículos*/
-        Route::post('vehiculos', [VehiculosController::class, 'guardarvehiculo'])
+        Route::post('guardarvehiculo', [VehiculosController::class, 'store'])
             ->name('guardarvehiculo');
-        Route::get('registrarvehiculos', function () {
-                return view('vehiculosViews.create');
-            })->name('registrarvehiculos');
+
+        Route::get('registrarvehiculos', [VehiculosController::class, 'create'])
+            ->name('registrarvehiculos');
 
         Route::get('mostrartodovehiculos', function () {
             return view('vehiculosViews.index');
