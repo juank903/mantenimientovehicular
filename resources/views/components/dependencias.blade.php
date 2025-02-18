@@ -2,32 +2,32 @@
 <div class="mt-4">
     <x-inputs.input-label for="provincia" :value="__('Provincia')" />
     <select id="provincia" name="provincia"
-        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required :value="old('provincia')"></select>
+        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required
+        :value="old('provincia')"></select>
     <x-inputs.input-error :messages="$errors->get('provincia')" class="mt-2" />
 </div>
 <!-- Distrito -->
 <div class="mt-4">
     <x-inputs.input-label for="distrito" :value="__('Distrito')" />
     <select id="distrito" name="distrito"
-        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required :value="old('distrito')"></select>
+        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required
+        :value="old('distrito')"></select>
     <x-inputs.input-error :messages="$errors->get('distrito')" class="mt-2" />
 </div>
 <!-- Circuito -->
 <div class="mt-4">
     <x-inputs.input-label for="circuito" :value="__('Circuito')" />
     <select id="circuito" name="circuito"
-        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required :value="old('circuito')"></select>
+        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required
+        :value="old('circuito')"></select>
     <x-inputs.input-error :messages="$errors->get('circuito')" class="mt-2" />
 </div>
 <!-- Subcircuito -->
 <div class="mt-4">
     <x-inputs.input-label for="subcircuito" :value="__('Subcircuito')" />
     <select id="subcircuito" name="subcircuito"
-        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-        required :value="old('subcircuito')"></select>
+        class="w-full rounded text-xs border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" required
+        :value="old('subcircuito')"></select>
     <x-inputs.input-error :messages="$errors->get('subcircuito')" class="mt-2" />
 </div>
 <script>
@@ -54,7 +54,8 @@
                 data.forEach(provincia => {
                     const option = document.createElement("option");
                     option.value = provincia.id;
-                    option.textContent = provincia.nombre_provincia_dependencias;
+                    option.textContent = provincia.id + ' - ' + provincia
+                        .nombre_provincia_dependencias;
                     provinciaSelect.appendChild(option);
                 });
 
@@ -69,7 +70,8 @@
                         selectedProvincia.distritos.forEach(distrito => {
                             const option = document.createElement("option");
                             option.value = distrito.id;
-                            option.textContent = distrito.nombre_distritodependencias;
+                            option.textContent = distrito.id + ' - ' + distrito
+                                .nombre_distritodependencias;
                             distritoSelect.appendChild(option);
                         });
                     }
@@ -87,7 +89,8 @@
                         selectedDistrito.circuitos.forEach(circuito => {
                             const option = document.createElement("option");
                             option.value = circuito.id;
-                            option.textContent = circuito.nombre_circuito_dependencias;
+                            option.textContent = circuito.id + ' - ' + circuito
+                                .nombre_circuito_dependencias;
                             circuitoSelect.appendChild(option);
                         });
                     }
@@ -106,7 +109,7 @@
                         selectedCircuito.subcircuitos.forEach(subcircuito => {
                             const option = document.createElement("option");
                             option.value = subcircuito.id;
-                            option.textContent = subcircuito
+                            option.textContent = subcircuito.id + ' - ' + subcircuito
                                 .nombre_subcircuito_dependencias;
                             subcircuitoSelect.appendChild(option);
                         });

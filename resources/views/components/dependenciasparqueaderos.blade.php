@@ -72,7 +72,7 @@
             data.forEach(item => {
                 const option = document.createElement("option");
                 option.value = item[id];
-                option.textContent = item[nombre];
+                option.textContent = item[id] + ' - ' + item[nombre];
                 select.appendChild(option);
             });
         }

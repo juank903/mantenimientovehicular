@@ -1,6 +1,6 @@
 @props(['href'])
 
-<a href="{{$href}}">
+<a href="{{ $href }}">
     <div class="group flex h-10 w-10 cursor-pointer items-center justify-center bg-white p-1 hover:bg-slate-200">
         <div class="space-y-2">
             <span
