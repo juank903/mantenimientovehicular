@@ -9,7 +9,11 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/script.js',
                 'resources/js/tablePersonal.js',
-                'resources/js/tableVehiculos.js'
+                'resources/js/tableVehiculos.js',
+                'resources/js/tableSolicitudesVehiculosPendientes.js',
+                'resources/js/tableSolicitudesVehiculosAprobadas.js',
+                'resources/js/tableSolicitudesVehiculosProcesando.js',
+                'resources/js/tableSolicitudesVehiculosCompletas.js',
             ],
             refresh: true,
         }),

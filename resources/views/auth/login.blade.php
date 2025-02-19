@@ -1,10 +1,6 @@
-@php
-    //echo $usuario;
-    //var_dump(session('mensaje'));
-@endphp
 <x-main-layout>
     @if (session('mensaje') || session('error'))
-        <x-mensajemodalexito/>
+        <x-mensajemodalexito />
     @endif
     <div class="container mx-auto">
         <div class="grid grid-cols-3 gap-4">
@@ -57,8 +53,8 @@
                         <div class="mt-4">
                             <x-inputs.input-label for="password" :value="__('Password')" />
 
-                            <x-inputs.text-input id="password" class="block mt-1 w-full" type="password" name="password"
-                                required autocomplete="current-password" />
+                            <x-inputs.text-input id="password" class="block mt-1 w-full" type="password"
+                                name="password" required autocomplete="current-password" />
 
                             <x-inputs.input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>

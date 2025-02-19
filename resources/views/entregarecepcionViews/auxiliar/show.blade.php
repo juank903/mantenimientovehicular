@@ -16,7 +16,6 @@
                     <dt class="imprimible text-sm font-medium text-gray-500">
                         Solicitante
                     </dt>
-                    {{-- campo para llenar elaborador por --}}
                     <dd class="imprimible mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         {{ $solicitante['rango'] }}&nbsp;{{ $solicitante['nombre_completo'] }}
                     </dd>

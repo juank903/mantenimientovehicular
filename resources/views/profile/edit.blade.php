@@ -1,6 +1,3 @@
-@php
-    //dd($personalpolicia);
-@endphp
 <x-app-layout>
     <div class="p-2">
         <div class="p-8 bg-white shadow mt-24">
@@ -129,9 +126,7 @@
                                 id="genero">{{ $personalpolicia->personalpolicias_genero }}</span></p>
                     </div>
                 </div>
-
             </section>
-
         </div>
     </div>
 </x-app-layout>
