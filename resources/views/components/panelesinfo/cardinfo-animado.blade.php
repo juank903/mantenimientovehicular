@@ -1,10 +1,9 @@
 @props(['estado', 'items', 'id', 'api'])
 
 @php
-    $classesContenedor =
-        'h-40 max-w-40 inline-block rounded-xl shadow-md p-4 flex flex-col items-center justify-center';
-    $classesTextosDescriptivos = 'font-normal text-center';
-    $classesTextoCifra = 'font-semibold text-5xl tracking-tight text-center';
+    $classesContenedor = ' shadow-xs p-2 flex flex-col items-center justify-center';
+    $classesTextosDescriptivos = 'text-xs font-normal text-center';
+    $classesTextoCifra = 'font-semibold text-xl tracking-tight text-center';
     if ($estado == 'Aprobada') {
         //echo ('aprobada');
         $classesContenedor .= ' bg-green-300';
@@ -34,6 +33,12 @@
         $classesContenedor .= ' bg-yellow-300';
         $classesTextosDescriptivos .= ' text-yellow-600';
         $classesTextoCifra .= ' text-yellow-700';
+    }
+    if ($estado == 'User') {
+        //echo ('completa');
+        $classesContenedor = ' ';
+        $classesTextosDescriptivos = ' text-xs text-gray-400';
+        $classesTextoCifra = ' font-bold text-gray-700 text-xl';
     }
 @endphp
 

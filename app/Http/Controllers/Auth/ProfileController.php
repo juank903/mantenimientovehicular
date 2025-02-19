@@ -24,32 +24,25 @@ class ProfileController extends Controller
     } */
 
     public function edit(Request $request, $user_id = null): View
-{
-    // Obtén el userId del parámetro o del usuario autenticado
-    $user_id = $request->input('user_id') ?? Auth::id();
+    {
+        // Obtén el userId del parámetro o del usuario autenticado
+        $user_id = $request->input('user_id') ?? Auth::id();
 
-    $personalpolicia = Personalpolicia::select([
-        'id',
-        'user_id',
-        'primernombre_personal_policias',
-        'segundonombre_personal_policias',
-        'primerapellido_personal_policias',
-        'segundoapellido_personal_policias',
-        'cedula_personal_policias',
-        'tiposangre_personal_policias',
-        'conductor_personal_policias',
-        'rango_personal_policias',
-        'rol_personal_policias',
-        'personalpolicias_genero',
-        'deleted_at'
-    ])->where('id', $user_id)->first(); // Usa where para buscar por user_id
+        $personalpolicia = Personalpolicia::with('subcircuito.circuito.distrito.provincia', 'user')
+            ->where('id', $user_id)
+            ->first();
 
-    return view('profile.edit', [
-        'user' => $request->user(),
-        'personalpolicia' => $personalpolicia,
-        'user_d' => $user_id
-    ]);
-}
+        if (!$personalpolicia) {
+            session(['error' => 'El usuario no existe o no tiene un perfil registrado.']);
+            return view('auth.dashboard');
+        }
+
+        return view('profile.edit', [
+            'user' => $request->user(),
+            'personalpolicia' => $personalpolicia,
+            'user_id' => $user_id
+        ]);
+    }
 
 
     /**

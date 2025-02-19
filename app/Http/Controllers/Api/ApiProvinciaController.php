@@ -12,9 +12,22 @@ class ApiProvinciaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(): JsonResponse
     {
-        $provincias = Provinciadependencia::with('distritos.circuitos.subcircuitos.parqueaderos.espacios')->get();
+        $query = Provinciadependencia::with('distritos.circuitos.subcircuitos.parqueaderos.espacios');
+
+        // Obtener el estado de los espacios desde los parámetros de la solicitud
+        $estado = request('estado');
+
+        // Filtrar por estado si se proporciona
+        if ($estado) {
+            $query->whereHas('distritos.circuitos.subcircuitos.parqueaderos.espacios', function ($q) use ($estado) {
+                $q->where('espacioparqueadero_estado', $estado);
+            });
+        }
+
+        $provincias = $query->get();
         return response()->json($provincias);
     }
 
