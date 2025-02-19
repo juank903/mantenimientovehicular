@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Vehiculo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class ApiVehiculoController extends Controller
@@ -100,6 +101,7 @@ class ApiVehiculoController extends Controller
                     'tipo' => $vehiculo->tipo_vehiculos,
                     'modelo' => $vehiculo->modelo_vehiculos,
                     'placa' => $vehiculo->placa_vehiculos,
+                    'estado' => $vehiculo->estado_vehiculos,
                     'parqueaderos' => $vehiculo->parqueaderos->map(function ($parqueadero) {
                         return [
                             'id' => $parqueadero->id,
@@ -189,9 +191,31 @@ class ApiVehiculoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            // Encuentra el registro a eliminar
+            $modelo = Vehiculo::find($id);
+
+            // Verifica si el registro existe
+            if (!$modelo) {
+                return response()->json(['mensaje' => 'Registro no encontrado'], 404);
+            }
+
+            // Inicia una transacción para asegurar la integridad de la base de datos
+            DB::beginTransaction();
+
+            // Elimina el registro y sus relaciones
+            $modelo->delete();
+
+            DB::commit();
+
+            return response()->json(['mensaje' => 'Registro eliminado correctamente '], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al eliminar el registro: ' . $e->getMessage()], 500);
+        }
     }
 
     public function getVehiculoParqueaderoSubcircuito($subcircuito_id, $tipo_vehiculo)

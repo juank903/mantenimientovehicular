@@ -21,12 +21,12 @@
             Request::is('mostrartodovehiculos') ||
             Request::is('mostrartodasolicitudesvehiculos/pendientes') ||
             Route::is('mostrartodasolicitudesvehiculos.aprobadas') ||
-            Route::is('mostrartodasolicitudesvehiculos.procesando')
-            )
+            Route::is('mostrartodasolicitudesvehiculos.procesando'))
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
         <!-- DataTables Buttons CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

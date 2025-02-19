@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class Vehiculo extends Model
 {
     //
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'marca_vehiculos',
         'tipo_vehiculos',
@@ -24,11 +26,13 @@ class Vehiculo extends Model
         'combustibleactual_vehiculos'
     ];
 
-    public function personalpolicia(){
+    public function personalpolicia()
+    {
         return $this->belongsTo(PersonalPolicia::class);
     }
 
-    public function parqueaderos() {
+    public function parqueaderos()
+    {
         return $this->belongsToMany(Parqueadero::class);
     }
     public function subcircuito()
@@ -39,7 +43,8 @@ class Vehiculo extends Model
     {
         return $this->belongsToMany(Espacioparqueadero::class);
     }
-    public function asignaciones() {
+    public function asignaciones()
+    {
         return $this->hasMany(Asignacionvehiculo::class);
     }
 

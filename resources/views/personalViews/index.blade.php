@@ -1,8 +1,9 @@
 <x-app-layout>
 
-    <table id="personal" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+    <table id="personal" class="stripe hover">
         <thead>
             <tr>
+                <th class="w-1/6">Id</th>
                 <th class="w-1/6">Rango</th>
                 <th class="w-1/6">Apellido Paterno</th>
                 <th class="w-1/6">Apellido Materno</th>
@@ -14,8 +15,11 @@
         <tbody>
         </tbody>
     </table>
+    @push('scripts')
+        @vite('resources/js/tablePersonal.js')
+    @endpush
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             table = $('#personal').DataTable({
                 processing: true,
@@ -40,6 +44,9 @@
                     }
                 },
                 columns: [{
+                        data: 'id'
+                    },
+                    {
                         data: 'rango_personal_policias'
                     },
                     {
@@ -76,9 +83,9 @@
 
                             return `
                             <div class="flex justify-center space-x-4 align-middle cursor-pointer">
-                                <div id="show-button-container-${userId}"> </div> {{-- Container for the x-show-button --}}
+                                <div id="show-button-container-${userId}"> </div>
 
-                                <div id="delete-button-container-${userId}"></div> {{-- Container for the component --}}
+                                <div id="delete-button-container-${userId}"></div>
                             </div>`;
                         },
                         orderable: false
@@ -127,36 +134,55 @@
             }); */
         });
 
-        // Evento para eliminar un registro
-        $(document).on('click', '.delete-button', function() {
-            console.log('aquí estoy');
+        // Evento para eliminar un registro (CON CONFIRMACIÓN)
+        $(document).on('click', '.delete-button', function(event) {
+            event.preventDefault(); // Evitar la acción predeterminada del enlace
+
             let id = $(this).data('id'); // Obtener el ID del registro
-            if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
-                $.ajax({
-                    url: `{{ url('/api/user') }}/${id}`, // URL para eliminar
-                    type: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Si se necesita autenticación en Laravel
-                    },
-                    success: function(response) {
-                        alert('Registro eliminado correctamente');
-                        table.ajax.reload(); // Recargar la tabla
-                    },
-                    error: function(xhr) {
-                        alert('Error al eliminar el registro');
-                        console.log(xhr.responseText);
-                    }
-                });
-            }
+
+            Swal.fire({
+                title: '¿Estás seguro de que deseas eliminar este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `{{ url('/api/user') }}/${id}`, // URL para eliminar
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Si se necesita autenticación en Laravel
+                        },
+                        success: function(response) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El registro ha sido eliminado.',
+                                'success'
+                            );
+                            table.ajax.reload(); // Recargar la tabla
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                '¡Error!',
+                                'Error al eliminar el registro.',
+                                'error'
+                            );
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
         });
+
         $(document).on('click', '.show-button', function() {
             let id = $(this).data('id');
 
-            // Construir la URL con parámetros GET
-            const url = `/profile/edit?user_id=${id}`; // Usar ? para el primer parámetro y & para los siguientes
+            const url = `/profile/edit?user_id=${id}`;
 
-            // Redirigir usando window.location.href
             window.location.href = url;
         });
-    </script>
+    </script> --}}
 </x-app-layout>
