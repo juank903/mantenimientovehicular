@@ -5,6 +5,7 @@ use App\Http\Controllers\App\DashboardAuxiliarController;
 use App\Http\Controllers\App\DashboardGerenciaController;
 use App\Http\Controllers\App\DashboardPoliciaController;
 use App\Http\Controllers\App\EntregarecepcionController;
+use App\Http\Controllers\App\PartenovedadesController;
 use App\Http\Controllers\App\SolicitudvehiculoController;
 use App\Http\Controllers\App\VehiculosController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -40,76 +41,77 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     /*Rutas por defecto*/
-        Route::get('dashboard', function () {
-            return view('auth.dashboard');
-        })
+    Route::get('dashboard', function () {
+        return view('auth.dashboard');
+    })
         ->name('dashboard')
         ->middleware(
             'redirectDashboardAdministrador',
-                        'redirectDashboardGerencia',
-                        'redirectDashboardAuxiliar',
-                        'redirectDashboardPolicia');
+            'redirectDashboardGerencia',
+            'redirectDashboardAuxiliar',
+            'redirectDashboardPolicia'
+        );
 
-        /*Rutas dashboards*/
-        Route::get('/policia/dashboard', [DashboardPoliciaController::class, 'index'])
-            ->name('policia.dashboard');
-        Route::get('/administrador/dashboard', [DashboardAdministradorController::class, 'index'])
-            ->name('administrador.dashboard');
-        Route::get('/auxiliar/dashboard', [DashboardAuxiliarController::class, 'index'])
-            ->name('auxiliar.dashboard');
-        Route::get('/gerencia/dashboard', [DashboardGerenciaController::class, 'index'])
-            ->name('gerencia.dashboard');
+    /*Rutas dashboards*/
+    Route::get('/policia/dashboard', [DashboardPoliciaController::class, 'index'])
+        ->name('policia.dashboard');
+    Route::get('/administrador/dashboard', [DashboardAdministradorController::class, 'index'])
+        ->name('administrador.dashboard');
+    Route::get('/auxiliar/dashboard', [DashboardAuxiliarController::class, 'index'])
+        ->name('auxiliar.dashboard');
+    Route::get('/gerencia/dashboard', [DashboardGerenciaController::class, 'index'])
+        ->name('gerencia.dashboard');
 
-        /*Verificación email*/
-        Route::get('verify-email', EmailVerificationPromptController::class)
-            ->name('verification.notice');
-        Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-            ->middleware(['signed', 'throttle:6,1'])
-            ->name('verification.verify');
-        Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-            ->middleware('throttle:6,1')
-            ->name('verification.send');
-        Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-            ->name('password.confirm');
-        Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-        Route::put('password', [PasswordController::class, 'update'])
-            ->name('password.update');
-        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->name('logout');
+    /*Verificación email*/
+    Route::get('verify-email', EmailVerificationPromptController::class)
+        ->name('verification.notice');
+    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
+        ->name('password.confirm');
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::put('password', [PasswordController::class, 'update'])
+        ->name('password.update');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
 
-        /* Personal */
-        Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
-            ->name('register');
+    /* Personal */
+    Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
+        ->name('register');
 
-        Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
+    Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
 
-        Route::get('/profile/edit/{user_id?}', [ProfileController::class, 'edit'])
-            ->name('profile.edit');
+    Route::get('/profile/edit/{user_id?}', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
-        Route::patch('perfil', [ProfileController::class, 'update'])
-            ->name('profile.update');
-        Route::delete('perfil', [ProfileController::class, 'destroy'])
-            ->name('profile.destroy');
+    Route::patch('perfil', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    Route::delete('perfil', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
     /* fin rutas por defecto*/
 
     /*Rutas personal policial */
-        /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
-            ->name('mostrartodopersonal'); */
-        Route::get('mostrartodopersonal', function () {
-            return view('personalViews.index');
-        })->name('mostrartodopersonal');
+    /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
+        ->name('mostrartodopersonal'); */
+    Route::get('mostrartodopersonal', function () {
+        return view('personalViews.index');
+    })->name('mostrartodopersonal');
 
 
     /*Rutas Vehículos*/
-        Route::post('guardarvehiculo', [VehiculosController::class, 'store'])
-            ->name('guardarvehiculo');
+    Route::post('guardarvehiculo', [VehiculosController::class, 'store'])
+        ->name('guardarvehiculo');
 
-        Route::get('registrarvehiculos', [VehiculosController::class, 'create'])
-            ->name('registrarvehiculos');
+    Route::get('registrarvehiculos', [VehiculosController::class, 'create'])
+        ->name('registrarvehiculos');
 
-        Route::get('mostrartodovehiculos', function () {
-            return view('vehiculosViews.index');
-        })->name('mostrartodovehiculos');
+    Route::get('mostrartodovehiculos', function () {
+        return view('vehiculosViews.index');
+    })->name('mostrartodovehiculos');
 
     /*Rutas Mantenimientos*/
 
@@ -119,40 +121,43 @@ Route::middleware('auth')->group(function () {
 
 
     /*Rutas Solicitudes*/
-        Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
-            return view('solicitudesvehiculosViews.administrador.index');
-        })->name('mostrartodasolicitudesvehiculos.pendientes');
+    Route::get('mostrartodasolicitudesvehiculos/pendientes', function () {
+        return view('solicitudesvehiculosViews.administrador.index');
+    })->name('mostrartodasolicitudesvehiculos.pendientes');
 
-        Route::get('mostrartodasolicitudesvehiculos/aprobadas', function () {
-            return view('entregarecepcionViews.auxiliar.aprobadas_index');
-        })->name('mostrartodasolicitudesvehiculos.aprobadas');
+    Route::get('mostrartodasolicitudesvehiculos/aprobadas', function () {
+        return view('entregarecepcionViews.auxiliar.aprobadas_index');
+    })->name('mostrartodasolicitudesvehiculos.aprobadas');
 
-        Route::get('mostrartodasolicitudesvehiculos/procesando', function () {
-            return view('entregarecepcionViews.auxiliar.procesando_index');
-        })->name('mostrartodasolicitudesvehiculos.procesando');
+    Route::get('mostrartodasolicitudesvehiculos/procesando', function () {
+        return view('entregarecepcionViews.auxiliar.procesando_index');
+    })->name('mostrartodasolicitudesvehiculos.procesando');
 
-        Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
-            ->name('mostrarentregarecepcionvehiculo.policia.aprobada');
+    Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
+        ->name('mostrarentregarecepcionvehiculo.policia.aprobada');
 
-        Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
-            ->name('solicitarvehiculo.policia');
+    Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
+        ->name('solicitarvehiculo.policia');
 
-        Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
-            ->name('mostrarsolicitudvehiculo.policia.pendiente');
+    Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
+        ->name('mostrarsolicitudvehiculo.policia.pendiente');
+
+    Route::get('partenovedades/crear', [PartenovedadesController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
+        ->name('partenovedades.crear');
 
     /*Solicitudes acciones solicitudes */
-        Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
-            ->name('anularsolicitudvehiculopolicia-pendiente');
+    Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
+        ->name('anularsolicitudvehiculopolicia-pendiente');
 
-        Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
-            ->name('guardarsolicitudvehiculo');
+    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
+        ->name('guardarsolicitudvehiculo');
 
     /*Componentes bonotes dinámicos */
-        Route::get('/delete-button/{userId}', function ($userId) {
-            return view('components.delete-button', ['userId' => $userId]);
-        });
-        Route::get('/show-button/{user_id}', function ($userId) {
-            return view('components.show-button', ['userId' => $userId]);
-        });
+    Route::get('/delete-button/{userId}', function ($userId) {
+        return view('components.delete-button', ['userId' => $userId]);
+    });
+    Route::get('/show-button/{user_id}', function ($userId) {
+        return view('components.show-button', ['userId' => $userId]);
+    });
 
 });

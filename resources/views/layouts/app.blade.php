@@ -46,7 +46,7 @@
     @if (Route::is('gerencia.dashboard'))
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @endif
-    @if (Route::is('mostrarentregarecepcionvehiculo.policia.aprobada'))
+    @if (Route::is('mostrarentregarecepcionvehiculo.policia.aprobada') || Route::is('partenovedades.crear'))
         <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js"
             integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>

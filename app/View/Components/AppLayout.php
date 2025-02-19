@@ -102,7 +102,8 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Solicitud procesando' => 'mostrarsolicitudvehiculo.policia.pendiente',
+                        'Solicitud procesando' => 'dashboard',
+                        'Ingrear Parte de Novedades' => 'partenovedades.crear',
                     ],
                     'route' => 'solicitud',
                 ],
