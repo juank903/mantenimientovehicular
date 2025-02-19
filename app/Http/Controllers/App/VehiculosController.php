@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Espacioparqueadero;
+use App\Models\Parqueadero;
 use App\Models\Vehiculo;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -31,7 +33,7 @@ class VehiculosController extends Controller
         $tipovehiculoarray = [
             'Moto',
             'Camioneta',
-            'Vehiculo',
+            'Auto',
         ];
         $combustiblearray = [
             'cuarto',
@@ -64,8 +66,45 @@ class VehiculosController extends Controller
             $vehiculo->fill($request->all());
             $vehiculo->save();
 
-            $subcircuitoIds = $request->input('subcircuito');
-            $vehiculo->subcircuito()->attach($subcircuitoIds);
+            $subcircuitoId = $request->input('subcircuito');
+            $vehiculo->subcircuito()->attach($subcircuitoId);
+
+            // Obtener el ID del Espacioparqueadero seleccionado
+            $espacioParqueaderoId = $request->input('espacio_parqueadero');
+
+            // Actualización de espacioparqueadero_estado (condicional)
+            if ($espacioParqueaderoId) {
+                $espacio = Espacioparqueadero::find($espacioParqueaderoId);
+
+                if ($espacio) { // Verifica si el espacio existe
+                    // Verifica si ya existe la relación
+                    $existeRelacion = $vehiculo->espacio()->where('espacioparqueadero_id', $espacio->id)->exists();
+                    if (!$existeRelacion) {
+                        // Crea la relación en la tabla pivote
+                        $vehiculo->espacio()->attach($espacio->id);
+                        // Actualiza el estado del Espacioparqueadero
+                        $espacio->espacioparqueadero_estado = 'Ocupado';
+                        $espacio->save();
+                    }
+                }
+            }
+
+            // Obtener el ID del Parqueadero seleccionado
+            $parqueaderoId = $request->input('parqueadero');
+
+            // Actualización de espacioparqueadero_estado (condicional)
+            if ($parqueaderoId) {
+                $parqueadero = Parqueadero::find($parqueaderoId);
+
+                if ($parqueadero) { // Verifica si el parqueadero existe
+                    // Verifica si ya existe la relación
+                    $existeRelacion = $vehiculo->parqueaderos()->where('parqueadero_id', $parqueadero->id)->exists();
+                    if (!$existeRelacion) {
+                        // Crea la relación en la tabla pivote
+                        $vehiculo->parqueaderos()->attach($parqueadero->id);
+                    }
+                }
+            }
 
             DB::commit();
 
@@ -76,19 +115,19 @@ class VehiculosController extends Controller
         } catch (ValidationException $e) {
             DB::rollBack();
             // Redirección con errores de validación en la sesión
-            return back()->withErrors($e->errors())->withInput(); // Redirecciona a la página anterior con errores
+            return back()->withErrors($e->errors())->withInput();
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error('Error al guardar el vehículo: ' . $e->getMessage());
             // Redirección con mensaje de error en la sesión
             session(['error' => 'Error en la base de datos']);
-            return back()->withInput(); // Redirecciona a la página anterior
+            return back()->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error inesperado: ' . $e->getMessage());
             // Redirección con mensaje de error en la sesión
             session(['error' => 'Error inesperado']);
-            return back()->withInput(); // Redirecciona a la página anterior
+            return back()->withInput();
         }
     }
 }

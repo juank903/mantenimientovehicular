@@ -67,12 +67,16 @@
             espacioParqueadero: document.getElementById("espacio_parqueadero")
         };
 
-        function llenarSelect(select, data, nombre, id) {
+        function llenarSelect(select, data, nombre, id, estado) {
             select.innerHTML = '<option value="">Seleccione una opción</option>';
             data.forEach(item => {
                 const option = document.createElement("option");
                 option.value = item[id];
-                option.textContent = item[id] + ' - ' + item[nombre];
+                let texto = item[id] + ' - ' + item[nombre];
+                if (estado && item[estado]) {
+                    texto += ' - ' + item[estado];
+                }
+                option.textContent = texto;
                 select.appendChild(option);
             });
         }
@@ -125,7 +129,7 @@
                         .value);
                     const parqueadero = subcircuito?.parqueaderos.find(p => p.id == this.value);
                     llenarSelect(selects.espacioParqueadero, parqueadero?.espacios || [],
-                        "espacioparqueaderos_nombre", "id");
+                        "espacioparqueaderos_nombre", "id", "espacioparqueadero_estado");
                 });
             })
             .catch(error => {

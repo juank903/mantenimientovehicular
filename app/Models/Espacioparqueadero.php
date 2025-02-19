@@ -11,4 +11,9 @@ class Espacioparqueadero extends Model
     {
         return $this->belongsToMany(Parqueadero::class);
     }
+    public function espacioparqueadero()
+    {
+        return $this->belongsToMany(Espacioparqueadero::class)
+            ->withTimestamps();
+    }
 }
