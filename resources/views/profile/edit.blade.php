@@ -4,16 +4,25 @@
             <div class="grid grid-cols-1 md:grid-cols-3">
                 <div class="grid grid-cols-3 text-center order-last md:order-first  gap-8">
                     <div>
-                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente1" :api="route('policia.solicitudes.pendientes', ['id' => $user_id])"
+                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente" :api="route('totalsolicitudes.vehiculo.policia', [
+                            'id' => $user_id,
+                            'estado' => 'Pendiente',
+                        ])"
                             :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Pendiente']" />
                     </div>
                     <div>
-                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente2" :api="route('policia.solicitudes.pendientes', ['id' => $user_id])"
-                            :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Pendiente']" />
+                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_aprobada" :api="route('totalsolicitudes.vehiculo.policia', [
+                            'id' => $user_id,
+                            'estado' => 'Aprobada',
+                        ])"
+                            :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Aprobada']" />
                     </div>
                     <div>
-                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente3" :api="route('policia.solicitudes.pendientes', ['id' => $user_id])"
-                            :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Pendiente']" />
+                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_procesando" :api="route('totalsolicitudes.vehiculo.policia', [
+                            'id' => $user_id,
+                            'estado' => 'Procesando',
+                        ])"
+                            :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Procesando']" />
                     </div>
                 </div>
                 <div class="relative">
@@ -28,16 +37,25 @@
                 </div>
                 <div class="grid grid-cols-3 text-center  ">
                     <div>
-                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente4"
-                            :api="route('policia.solicitudes.pendientes', ['id' => $user_id])" :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Pendiente']" />
+                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_anulada" :api="route('totalsolicitudes.vehiculo.policia', [
+                            'id' => $user_id,
+                            'estado' => 'Anulada',
+                        ])"
+                            :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Anulada']" />
                     </div>
                     <div>
-                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente5"
-                            :api="route('policia.solicitudes.pendientes', ['id' => $user_id])" :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Pendiente']" />
+                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_completa" :api="route('totalsolicitudes.vehiculo.policia', [
+                            'id' => $user_id,
+                            'estado' => 'Completa',
+                        ])"
+                            :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Completa']" />
                     </div>
                     <div>
-                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_pendiente6"
-                            :api="route('policia.solicitudes.pendientes', ['id' => $user_id])" :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Pendiente']" />
+                        <x-panelesinfo.cardinfo-animado estado="User" id="solicitudvehiculo_procesando2"
+                            :api="route('totalsolicitudes.vehiculo.policia', [
+                                'id' => $user_id,
+                                'estado' => 'Procesando',
+                            ])" :items="['titulo' => 'Solicitud Vehiculo', 'mensaje' => 'Procesando']" />
                     </div>
                 </div>
             </div>

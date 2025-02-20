@@ -25,6 +25,8 @@
                     {{ $policia['primer_nombre'] }}&nbsp
                     {{ $policia['segundo_nombre'] }}
                 </dd>
+            </div>
+            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Ubicación del solicitante
                 </dt>
@@ -35,6 +37,8 @@
                     <span class="text-xs text-gray-600">Distrito: </span>{{ $policia['distrito'] }}&nbsp /
                     <span class="text-xs text-gray-600">Provincia: </span>{{ $policia['provincia'] }}
                 </dd>
+            </div>
+            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Fecha elaboración solicitud
                 </dt>
@@ -75,10 +79,14 @@
             </div>
         </dl>
 
-        <div class="flex justify-end">
+        <div class="flex justify-end space-x-4 mt-4 no-print">
             <button onclick="openModal()"
-                class="items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                class="rounded-md items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
                 Anular Solicitud policia
+            </button>
+            <button onclick="window.print()"
+                class="rounded-md items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                Imprimir
             </button>
         </div>
 

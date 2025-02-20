@@ -193,8 +193,8 @@ class EntregarecepcionController extends Controller
     private function mapearDatosAsignacion_Solicitudvehiculo(array $datos): array
     {
         return [
-            'fecha_elaboracion' => $datos['created_at'],
-            'fecha_aprobacion' => $datos['updated_at'],
+            'fecha_elaboracion' => Carbon::parse($datos['created_at'])->toDateTimeString(),
+            'fecha_aprobacion' => Carbon::parse($datos['updated_at'])->toDateTimeString(),
             'id' => $datos['id'], // Añadido el ID de la solicitud
             'detalle' => $datos['solicitudvehiculos_detalle'], // Añadido el detalle de la solicitud
             'tipo' => $datos['solicitudvehiculos_tipo'], // Añadido el tipo de solicitud

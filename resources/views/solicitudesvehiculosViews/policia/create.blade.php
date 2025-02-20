@@ -38,11 +38,13 @@
                         Fecha requerimiento del vehículo - desde
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <div>
-                            <input class="text-xs" type="date" id="fecharequerimientodesde"
-                                name="fecharequerimientodesde" required>
-                            <input id="horarequerimientodesde" type="time" name="horarequerimientodesde" step="1800" required />
-                            <x-inputs.input-error :messages="$errors->get('name')" class="mt-2" />
+                        <div class="relative">
+                            <input type="text" class="fechas input input-floating peer max-w-sm"
+                                placeholder="YYYY-MM-DD" name="fecharequerimientodesde" id="fecharequerimientodesde" />
+                            <x-inputs.input-error :messages="$errors->get('fecharequerimientodesde')" class="mt-2" />
+                            <input type="text" class="input max-w-sm" placeholder="HH:MM" id="horarequerimientodesde"
+                                name="horarequerimientodesde" />
+                            <x-inputs.input-error :messages="$errors->get('horarequerimientodesde')" class="mt-2" />
                         </div>
                     </dd>
                 </div>
@@ -51,11 +53,13 @@
                         Fecha requerimiento del vehículo - hasta
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <div>
-                            <input class="text-xs" type="date" id="fecharequerimientohasta"
-                                name="fecharequerimientohasta" required>
-                            <input id="horarequerimientohasta" type="time" name="horarequerimientohasta" required />
-                            <x-inputs.input-error :messages="$errors->get('name')" class="mt-2" />
+                        <div class="relative">
+                            <input type="text" class="fechas input input-floating peer max-w-sm"
+                                placeholder="YYYY-MM-DD" name="fecharequerimientohasta" id="fecharequerimientohasta" />
+                            <x-inputs.input-error :messages="$errors->get('fecharequerimientohasta')" class="mt-2" />
+                            <input type="text" class="input max-w-sm" placeholder="HH:MM" id="horarequerimientohasta"
+                                name="horarequerimientohasta" />
+                            <x-inputs.input-error :messages="$errors->get('horarequerimientohasta')" class="mt-2" />
                         </div>
                     </dd>
                 </div>
@@ -102,4 +106,7 @@
             </form>
         </dl>
     </div>
+    @push('scripts')
+        @vite('resources/js/datetimeSelects.js')
+    @endpush
 </x-app-layout>

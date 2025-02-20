@@ -15,6 +15,7 @@
         <tbody>
         </tbody>
     </table>
+
     @push('scripts')
         @vite('resources/js/tablePersonal.js')
     @endpush

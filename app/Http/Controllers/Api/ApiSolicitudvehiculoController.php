@@ -116,7 +116,7 @@ class ApiSolicitudvehiculoController extends Controller
         $perPage = $request->input('perPage', $defaultPerPage);
         $estado = $request->input('estado', 'Pendiente');
 
-        $estadosValidos = ['Pendiente', 'Aprobada', 'Anulada', 'Completa', 'Procesando' ];
+        $estadosValidos = ['Pendiente', 'Aprobada', 'Anulada', 'Completa', 'Procesando'];
         if (!in_array($estado, $estadosValidos)) {
             $estado = 'Pendiente';
         }
@@ -317,7 +317,7 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
-    public function getNumSolicitudesVehiculoAnuladasPolicia($personalId): JsonResponse
+    /* public function getNumSolicitudesVehiculoAnuladasPolicia($personalId): JsonResponse
     {
         $personal = Personalpolicia::find($personalId);
 
@@ -411,7 +411,7 @@ class ApiSolicitudvehiculoController extends Controller
             'personal_id' => $personalId,
             'numero_solicitudes' => $numeroSolicitudes
         ]);
-    }
+    } */
     public function getNumSolicitudesVehiculoPendientesTotal(): JsonResponse
     {
         // Contar todas las solicitudes en estado 'Pendiente'
@@ -519,5 +519,29 @@ class ApiSolicitudvehiculoController extends Controller
             ], 500);
         }
     }
+    public function getNumSolicitudesVehiculoPorEstado($personalId, $estado): JsonResponse
+    {
+        $personal = Personalpolicia::find($personalId);
+
+        if (!$personal) {
+            return response()->json([
+                'personal_id' => $personalId,
+                'numero_solicitudes' => 0
+            ]);
+        }
+
+        $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
+            $query->where('personalpolicia_id', $personalId);
+        })
+            ->where('solicitudvehiculos_estado', $estado)
+            ->count();
+
+        return response()->json([
+            'personal_id' => $personalId,
+            'estado' => $estado,
+            'numero_solicitudes' => $numeroSolicitudes
+        ]);
+    }
+
 
 }

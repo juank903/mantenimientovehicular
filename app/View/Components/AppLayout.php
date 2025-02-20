@@ -26,13 +26,13 @@ class AppLayout extends Component
             $rol = $user?->rol();
 
             if ($rol) {
-                $responsePendientes = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/pendientes"));
+                $responsePendientes = Http::get(url("/api/totalsolicitudes-vehiculo/policia/{$this->userId}/Pendiente"));
                 $dataPendientes = $responsePendientes->successful() ? $responsePendientes->json() : ['numero_solicitudes' => 0];
 
-                $responseAprobadas = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/aprobadas"));
+                $responseAprobadas = Http::get(url("/api/totalsolicitudes-vehiculo/policia/{$this->userId}/Aprobada"));
                 $dataAprobadas = $responseAprobadas->successful() ? $responseAprobadas->json() : ['numero_solicitudes' => 0];
 
-                $responseProcesando = Http::get(url("/api/personal/policia/{$this->userId}/totalsolicitudesvehiculos/procesando"));
+                $responseProcesando = Http::get(url("/api/totalsolicitudes-vehiculo/policia/{$this->userId}/Procesando"));
                 $dataProcesando = $responseProcesando->successful() ? $responseProcesando->json() : ['numero_solicitudes' => 0];
 
                 $this->menuItems = $this->generateMenuItems($rol, $dataPendientes['numero_solicitudes'] ?? 0, $dataAprobadas['numero_solicitudes'] ?? 0, $dataProcesando['numero_solicitudes'] ?? 0);

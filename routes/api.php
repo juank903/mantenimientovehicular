@@ -20,11 +20,12 @@ Route::resource('/circuito', ApiCircuitoController::class);
 
 /*Api Solicitudes hechas por usuario policia*/
 Route::get('/personal/policia/{id}/totalsolicitudesvehiculos', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPolicia']);
-Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasPolicia']);
-Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesPolicia'])->name('policia.solicitudes.pendientes');
-Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasPolicia']);
-Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/completas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoCompletasPolicia']);
-Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/procesando', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoProcesandoPolicia']);
+// Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasPolicia']);
+// Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesPolicia'])->name('policia.solicitudes.pendientes');
+// Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasPolicia']);
+// Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/completas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoCompletasPolicia']);
+// Route::get('/personal/policia/{id}/totalsolicitudesvehiculos/procesando', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoProcesandoPolicia']);
+Route::get('/totalsolicitudes-vehiculo/policia/{id}/{estado}', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPorEstado'])->name('totalsolicitudes.vehiculo.policia');
 Route::get('/personal/policia/{id}/get/solicitud-pendiente', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoPendientePolicia']);
 Route::get('/personal/policia/{id}/get/solicitud-aprobada', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoAprobadaPolicia']);
 Route::get('/personal/policia/{id}/get/solicitud-completa', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoCompletaPolicia']);

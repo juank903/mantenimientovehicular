@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/js/tableSolicitudesVehiculosAprobadas.js',
                 'resources/js/tableSolicitudesVehiculosProcesando.js',
                 'resources/js/tableSolicitudesVehiculosCompletas.js',
+                'resources/js/datetimeSelects.js',
             ],
             refresh: true,
         }),

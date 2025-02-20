@@ -27,7 +27,6 @@
         <!-- DataTables Buttons CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <!-- DataTables JS -->
@@ -43,9 +42,11 @@
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
     @endif
+
     @if (Route::is('gerencia.dashboard'))
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @endif
+
     @if (Route::is('mostrarentregarecepcionvehiculo.policia.aprobada') || Route::is('partenovedades.crear'))
         <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js"
             integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw=="
@@ -54,6 +55,18 @@
             integrity="sha512-tKGnmy6w6vpt8VyMNuWbQtk6D6vwU8VCxUi0kEMXmtgwW+6F70iONzukEUC3gvb+KTJTLzDKAGGWc1R7rmIgxQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endif
+
+    @if (Route::is('solicitarvehiculo.policia'))
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    @endif
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
 
 </head>
 

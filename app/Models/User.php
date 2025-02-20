@@ -53,7 +53,7 @@ class User extends Authenticatable
         return $this->hasOne(Personalpolicia::class);
     }
 
-    public function rol()
+    public function rol(): mixed
     {
         // Devuelve el rol o un valor predeterminado
         return $this->personalpolicia ? $this->personalpolicia->rol_personal_policias : 'Rol no asignado'; // Cambia 'Rol no asignado' por lo que desees
