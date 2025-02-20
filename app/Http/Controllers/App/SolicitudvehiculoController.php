@@ -89,7 +89,9 @@ class SolicitudvehiculoController extends Controller
             ->get();
 
         if ($solicitudes->isEmpty()) {
-            return redirect()->route('dashboard')->with('error', 'No hay solicitudes pendientes para anular.');
+            session(["error" => "No hay solicitudes pendientes para anular."]);
+            return redirect()->route('dashboard');
+            //->with('error', 'No hay solicitudes pendientes para anular.');
         }
 
         DB::beginTransaction(); // Inicia la transacción
@@ -103,15 +105,18 @@ class SolicitudvehiculoController extends Controller
             }
 
             DB::commit(); // Confirma la transacción si todo fue exitoso
-            return redirect()->route('dashboard')->with('mensaje', 'Solicitudes anuladas correctamente.');
+            session(["mensaje" => "Solicitud anulada correctamente."]);
+            return redirect()->route('dashboard');
+            //->with('mensaje', 'Solicitud anulada correctamente.');
 
         } catch (\Exception $e) {
             DB::rollBack(); // Revierte la transacción en caso de error
 
             // Opcional: Registra el error para depuración
             Log::error('Error al anular solicitudes: ' . $e->getMessage());
-
-            return redirect()->route('dashboard')->with('error', 'No se pudo anular la solicitud: ' . $e->getMessage());
+            session(["error" => 'No se pudo anular la solicitud: ' . $e->getMessage()]);
+            return redirect()->route('dashboard');
+            //->with('error', 'No se pudo anular la solicitud: ' . $e->getMessage());
         }
     }
 
@@ -152,7 +157,9 @@ class SolicitudvehiculoController extends Controller
 
         // Manejo de posibles errores al obtener los datos de la solicitud
         if (!$datosPoliciaSolicitud) {
-            return redirect()->route('dashboard')->with('error', 'Error al obtener la solicitud pendiente.');
+            session(["error" => 'Error al obtener la solicitud pendiente.']);
+            return redirect()->route('dashboard');
+            //->with('error', 'Error al obtener la solicitud pendiente.');
         }
 
         if ($user->rol() === 'administrador') {
@@ -171,7 +178,9 @@ class SolicitudvehiculoController extends Controller
         }
 
         // Si el usuario no es ni administrador ni policía, redirigir con un error.
-        return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
+        session(["error" => 'No tienes permisos para acceder a esta sección.']);
+        return redirect()->route('dashboard');
+        //->with('error', 'No tienes permisos para acceder a esta sección.');
     }
 
 

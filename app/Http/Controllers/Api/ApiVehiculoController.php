@@ -43,7 +43,7 @@ class ApiVehiculoController extends Controller
             $orderDirection = $request->input('order.0.dir');
 
             // Mapea el índice de columna a su nombre
-            $columns = ['marca_vehiculos', 'tipo_vehiculos', 'modelo_vehiculos', 'placa_vehiculos', 'estado_vehiculos'];
+            $columns = ['id', 'marca_vehiculos', 'tipo_vehiculos', 'modelo_vehiculos', 'placa_vehiculos', 'estado_vehiculos'];
             $orderColumn = $columns[$orderColumnIndex] ?? 'id';
 
             $query->orderBy($orderColumn, $orderDirection);

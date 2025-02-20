@@ -133,7 +133,7 @@ $(document).ready(function () {
     $(document).on('click', '.show-button', function () {
         let id = $(this).data('id');
         // Puedes redirigir o usar AJAX para mostrar la información
-        const url = `/mostrarsolicitudvehiculo/policia/aprobada/show/${id}`;
+        const url = `/mostrarentregarecepcionvehiculo/policia/aprobada/show/${id}`;
         // Mostrar el botón solo si el estado es "Pendiente"
 
         window.location.href = url;

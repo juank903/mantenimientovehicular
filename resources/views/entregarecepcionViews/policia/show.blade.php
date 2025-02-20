@@ -121,32 +121,11 @@
 
         </div>
     </div>
-    <div class="imprimible flex justify-end">
-        <button onclick="imprimirCard()"
-            class=" items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+    <div class="imprimible flex justify-end no-print">
+        <button onclick="window.print()"
+            class="rounded-md items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
             Imprimir
         </button>
     </div>
-    @push('scripts')
-        <script>
-            function imprimirCard() {
-                printJS({
-                    printable: 'imprimible',
-                    type: 'html',
-                    style: `
-                        @page {
-                        size: auto; /* auto is the initial value */
-                        margin: 10mm;
-                        }
-                        .imprimible {
-                        font-size: 7pt; /* Define el tamaño de fuente aquí */
-                        display:inline-flex;
-                        padding:12px;
-                        }
-                    `,
-                    honorColor: true
-                });
-            }
-        </script>
-    @endpush
+
 </x-app-layout>

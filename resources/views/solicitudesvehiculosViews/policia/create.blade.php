@@ -98,8 +98,8 @@
                     </dd>
                     <input type="hidden" value="{{ $policia['id'] }}" name="id"></input>
                 </div>
-                <div class="justify-end">
-                    <x-inputs.primary-button class="flex justify-center mt-4 w-full text-xl">
+                <div class="flex justify-end">
+                    <x-inputs.primary-button class=" justify-center mt-4 text-xl">
                         {{ __('Solicitar') }}
                     </x-inputs.primary-button>
                 </div>

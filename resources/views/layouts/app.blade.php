@@ -47,26 +47,29 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @endif
 
+    @if (Route::is('mostrarsolicitudvehiculo.policia.pendiente'))
+        @vite(['resources/js/modalAprobarSolicitudVehiculoAdministrador.js'])
+    @endif
+
     @if (Route::is('mostrarentregarecepcionvehiculo.policia.aprobada') || Route::is('partenovedades.crear'))
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js"
-            integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.css"
-            integrity="sha512-tKGnmy6w6vpt8VyMNuWbQtk6D6vwU8VCxUi0kEMXmtgwW+6F70iONzukEUC3gvb+KTJTLzDKAGGWc1R7rmIgxQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <style>
+            @media print {
+                .no-print {
+                    display: none;
+                }
+            }
+        </style>
+    @endif
+
+    @if (Route::is('mostrarsolicitudvehiculo.policia.pendiente') ||
+            Route::is('mostrarentregarecepcionvehiculo.policia.aprobada'))
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @endif
 
     @if (Route::is('solicitarvehiculo.policia'))
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     @endif
-    <style>
-        @media print {
-            .no-print {
-                display: none;
-            }
-        }
-    </style>
 
 </head>
 

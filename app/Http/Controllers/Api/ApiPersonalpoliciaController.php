@@ -47,6 +47,7 @@ class ApiPersonalpoliciaController extends Controller
 
             // Mapea el índice de columna a su nombre en la base de datos
             $columns = [
+                'id',
                 'rango_personal_policias',
                 'primerapellido_personal_policias',
                 'segundoapellido_personal_policias',

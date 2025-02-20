@@ -2,14 +2,18 @@
     <x-navigation.botonregresar href="{{ route('dashboard') }}" />
 
     <div class="px-4 py-1 sm:px-6">
-        <h2 class="text-xl leading-8 font-medium text-gray-900">
-            Solicitud Vehicular {{ $solicitud['estado_solicitud'] }}<br />
+        <h2 class="text-xl leading-8 font-medium text-gray-900 flex">
+            Solicitud Vehicular {{ $solicitud['estado_solicitud'] }} No.
+            <div id="solicitudId">{{ $solicitud['id'] }}</div><br />
         </h2>
         <p class="mt-1 max-w-2xl text-sm text-gray-500">
             Esta es la información de la solicitud que usted tiene pendiente hasta el momento, puede
-            anularla si
-            desea. {{ $policia['id_subcircuito'] }} -- {{ $solicitud['tipo_vehiculo'] }}
-        </p>
+            anularla si desea.</p>
+    </div>
+    <div class="px-4 py-1 sm:px-6 flex">
+        <div class="hidden" id="idSubcircuito">{{ $policia['id_subcircuito'] }}</div>&nbsp
+        <div class="hidden" id="tipoVehiculo">{{ $solicitud['tipo_vehiculo'] }}</div>
+
     </div>
     <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
         <dl class="sm:divide-y sm:divide-gray-200">
@@ -19,11 +23,14 @@
                 </dt>
                 {{-- campo para llenar elaborador por --}}
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <div class="hidden" id="policiaId">{{ $policia['id'] }}</div>
                     {{ $policia['apellido_paterno'] }}&nbsp
                     {{ $policia['apellido_materno'] }}&nbsp
                     {{ $policia['primer_nombre'] }}&nbsp
                     {{ $policia['segundo_nombre'] }}
                 </dd>
+            </div>
+            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Ubicación del solicitante
                 </dt>
@@ -34,6 +41,8 @@
                     <span class="text-xs text-gray-600">Distrito: </span>{{ $policia['distrito'] }}&nbsp /
                     <span class="text-xs text-gray-600">Provincia: </span>{{ $policia['provincia'] }}
                 </dd>
+            </div>
+            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Fecha elaboración solicitud
                 </dt>
@@ -91,12 +100,13 @@
                 <p><strong>Observaciones:</strong> <span id="observaciones"></span></p>
             </div>
 
-            <button id="btnAprobarSolicitud" class="hidden bg-green-500 text-white px-4 py-2 rounded mt-4">Aprobar Solicitud</button>
+            <button id="btnAprobarSolicitud" class="hidden bg-green-500 text-white px-4 py-2 rounded mt-4">Aprobar
+                Solicitud</button>
 
         </div>
 
-        <div class="flex justify-end">
-            <button onclick="openModal()"
+        <div class="flex justify-end mt-10">
+            <button id="openModalButton"
                 class="rounded items-center justify-center text-md px-3 py-2 bg-red-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
                 Anular Solicitud administrador
             </button>
@@ -124,7 +134,7 @@
                 </div>
                 <input type="hidden" name="id" value="{{ $policia['id'] }}">
                 <div class="flex justify-center mt-4 w-full">
-                    <button type="button" onclick="closeModal()"
+                    <button type="button" id="closeModalButton"
                         class="px-4 py-2 bg-gray-300 rounded-md mr-2">Cancelar</button>
                     <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md">Confirmar</button>
                 </div>
@@ -133,22 +143,12 @@
     </div>
 
     @push('scripts')
-        <script>
-            function openModal() {
-                console.log('open');
-                let modal = document.getElementById("confirmModal");
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
-            }
-
-            function closeModal() {
-                console.log('close');
-                let modal = document.getElementById("confirmModal");
-                modal.classList.remove("flex");
-                modal.classList.add("hidden");
-            }
+        @vite('resources/js/showAprobarSolicitudVehiculoAdministrador.js')
+    @endpush
+    {{-- <script>
 
             document.addEventListener("DOMContentLoaded", function() {
+
                 document.getElementById("btnConsultarVehiculos").addEventListener("click", function() {
                     // Obtener los valores de las variables
                     let idSubcircuito = encodeURIComponent({{ $policia['id_subcircuito'] }});
@@ -242,6 +242,5 @@
                     });
                 });
             });
-        </script>
-    @endpush
+        </script> --}}
 </x-app-layout>

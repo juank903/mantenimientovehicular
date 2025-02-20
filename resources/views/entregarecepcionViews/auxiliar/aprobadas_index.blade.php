@@ -1,8 +1,7 @@
 <x-app-layout>
     <x-navigation.botonregresar href="{{ route('dashboard') }}" />
 
-    <table id="solicitudesvehiculos-aprobadas" class="stripe hover"
-        style="width:100%; padding-top: 1em; padding-bottom: 1em;">
+    <table id="solicitudesvehiculos-aprobadas" class="stripe hover">
         <thead>
             <tr>
                 <th rowspan="2">Solicitud No.</th>
