@@ -89,9 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const data = {
-                solicitud_id: document.getElementById('solicitudId').textContent,
+                solicitud_id: parseInt(document.getElementById('solicitudId').textContent),
                 vehiculo_id: vehiculo.id,
-                personalpolicia_id: document.getElementById('policiaId').textContent,
+                personalpolicia_id: parseInt(document.getElementById('policiaId').textContent),
                 kilometraje: parseInt(vehiculo.kmactual_vehiculos),
                 combustible: vehiculo.combustibleactual_vehiculos,
             };
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             title: 'Éxito',
                             text: 'Solicitud aprobada exitosamente.'
                         }).then(() => {
-                            window.location.href = "{{ route('dashboard') }}";
+                            window.location.href = "/dashboard";
                         }); // Redirige después de la aprobación exitosa
                     }
                 })

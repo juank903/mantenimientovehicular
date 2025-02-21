@@ -4,7 +4,7 @@
 
     <div class="imprimible px-4 py-1 sm:px-6">
         <h2 class="imprimible text-xl leading-8 font-medium text-gray-900">
-            Entrega Recepción de vehículo - solicitud No {{ $asignacion_solicitudvehiculo['id'] }}<br />
+            Recepción de vehículo - solicitud No {{ $asignacion_solicitudvehiculo['id'] }}<br />
         </h2>
         <p class="imprimible mt-1 max-w-2xl text-sm text-gray-500">
             Imprima este documento y acuda al parquedero para entregar el vehículo asignado
@@ -132,104 +132,8 @@
         </button>
     </div>
 
-    {{-- <div id="modalConfirmacion" class="fixed z-10 inset-0 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-                role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                                Confirmar entrega de vehículo
-                            </h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500">
-                                    ¿Está seguro de que desea entregar este vehículo?
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button id="btnConfirmar" type="button"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Confirmar
-                    </button>
-                    <button id="btnCancelar" type="button"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     @push('scripts')
         @vite('resources/js/showEntregarVehiculoAuxiliar.js')
     @endpush
-    {{-- <script>
-        const btnEntregarVehiculo = document.getElementById('btnEntregarVehiculo');
-        const modalConfirmacion = document.getElementById('modalConfirmacion');
-        const btnConfirmar = document.getElementById('btnConfirmar');
-        const btnCancelar = document.getElementById('btnCancelar');
-
-        btnEntregarVehiculo.addEventListener('click', () => {
-            modalConfirmacion.classList.remove('hidden');
-        });
-
-        btnCancelar.addEventListener('click', () => {
-            modalConfirmacion.classList.add('hidden');
-        });
-
-        btnConfirmar.addEventListener('click', () => {
-            modalConfirmacion.classList.add('hidden');
-
-            const asignacionId = "{{ $asignacion['id'] }}"; // Make sure $asignacion['id'] is available
-            console.log(asignacionId);
-
-            fetch(`/api/entregarvehiculo/policia?asignacion_id=${asignacionId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: data.message,
-                            confirmButtonText: 'OK',
-                        }).then(() => {
-                            window.location.href =
-                                "{{ route('dashboard') }}"; // Redirect after success
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: data.message,
-                            confirmButtonText: 'OK',
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Ocurrió un error al entregar el vehículo.',
-                        confirmButtonText: 'OK',
-                    });
-                });
-        });
-    </script> --}}
 
 </x-app-layout>

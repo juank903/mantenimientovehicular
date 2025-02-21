@@ -13,24 +13,7 @@ use Carbon\Carbon;
 class ReportesController extends Controller
 {
     //
-    /* public function quejasugerenciasfechashow(Request $request)
-    {
-        $request->validate([
-            'fechainicio' => 'required|date',
-            'fechafin' => 'required|date|after_or_equal:fecha_inicio',
-        ]);
-
-        $fechaInicio = $request->input('fechainicio');
-        $fechaFin = $request->input('fechafin');
-
-        $fechaInicio = Carbon::createFromFormat('Y-m-d', $fechaInicio); // Fecha de inicio
-        $fechaFin = Carbon::createFromFormat('Y-m-d', $fechaFin); // Fecha de fin
-
-        $arrayQuejasugerencias = Quejasugerencia::whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
-        return view("reportes.quejasugerencias", compact("arrayQuejasugerencias"));
-    } */
-
-    public function getQuejasugerenciaSubcircuitoFechas(Request $request)
+/*     public function getQuejasugerenciaSubcircuitoFechas(Request $request)
     {
         $request->validate([
             'fechainicio' => 'required|date',
@@ -79,5 +62,5 @@ class ReportesController extends Controller
 
             return view('reportesViews.solicitudes.vehiculos.policia.pendientes.solicitudes-pendientes-vehiculo-index',compact('data'));
         }
-    }
+    } */
 }

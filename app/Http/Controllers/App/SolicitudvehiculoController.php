@@ -120,14 +120,6 @@ class SolicitudvehiculoController extends Controller
         }
     }
 
-    /* public static function obtenerDatosPolicia(int $userId): ?array
-    {
-        $datosPolicia = $this->obtenerDetallesPolicia($userId);
-        if (!$datosPolicia) {
-            abort(404, 'Datos de policía no encontrados.');
-        }
-        return $datosPolicia;
-    } */
     public function mostrarFormularioCreacionSolicitudVehiculo($userId = null): View|RedirectResponse
     {
         $userId ??= auth()->id();
@@ -147,7 +139,7 @@ class SolicitudvehiculoController extends Controller
         ]);
     }
 
-    public function mostrarSolicitudVehiculoPendiente($userId = null): View|RedirectResponse
+    /* public function mostrarSolicitudVehiculoPendiente($userId = null): View|RedirectResponse
     {
 
         $userId ??= auth()->id();
@@ -156,13 +148,15 @@ class SolicitudvehiculoController extends Controller
         $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitudPendiente($userId);
 
         // Manejo de posibles errores al obtener los datos de la solicitud
-        if (!$datosPoliciaSolicitud) {
+        if (!$datosPoliciaSolicitud['success']) {
             session(["error" => 'Error al obtener la solicitud pendiente.']);
             return redirect()->route('dashboard');
             //->with('error', 'Error al obtener la solicitud pendiente.');
         }
 
         if ($user->rol() === 'administrador') {
+            session()->forget('mensaje');
+            session()->forget('error');
             return view('solicitudesvehiculosViews.administrador.show', [
                 'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
                 'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
@@ -170,21 +164,62 @@ class SolicitudvehiculoController extends Controller
         }
 
         if ($user->rol() === 'policia') {
-            //echo 'aqui estoy';
+            session()->forget('mensaje');
+            session()->forget('error');
             return view('solicitudesvehiculosViews.policia.show', [
                 'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
                 'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
             ]);
         }
 
-        // Si el usuario no es ni administrador ni policía, redirigir con un error.
         session(["error" => 'No tienes permisos para acceder a esta sección.']);
         return redirect()->route('dashboard');
         //->with('error', 'No tienes permisos para acceder a esta sección.');
+    } */
+
+    public function mostrarSolicitudVehiculoPendiente($userId = null): View|RedirectResponse
+    {
+        $userId ??= auth()->id();
+        $user = Auth::user();
+
+        try {
+            $datosSolicitud = $this->obtenerDetallesPoliciaSolicitudPendiente($userId);
+
+            // Verificar si la solicitud fue exitosa
+            if (!$datosSolicitud['success']) {
+                throw new \Exception($datosSolicitud['message'] ?? 'Error al obtener la solicitud pendiente.'); // Lanzar una excepción con el mensaje de error
+            }
+
+            // Mapear los datos para la vista
+            $policia = $this->mapearDatosPolicia($datosSolicitud['personal']);
+            $solicitud = $this->mapearDatosSolicitud($datosSolicitud['solicitudes'][0] ?? []);
+
+            // Determinar la vista a renderizar según el rol del usuario
+            $vista = match ($user->rol()) {
+                'administrador' => 'solicitudesvehiculosViews.administrador.show',
+                'policia' => 'solicitudesvehiculosViews.policia.show',
+                default => null, // Retornar null si el rol no tiene acceso
+            };
+
+            // Si no se encontró una vista, retornar un error de permisos
+            if ($vista === null) {
+                throw new \Exception('No tienes permisos para acceder a esta sección.');
+            }
+
+            // Limpiar mensajes de sesión (opcional, dependiendo de la lógica de tu aplicación)
+            session()->forget(['mensaje', 'error']);
+
+            return view($vista, [
+                'policia' => $policia,
+                'solicitud' => $solicitud,
+            ]);
+
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción y mostrar un mensaje de error
+            session(['error' => $e->getMessage()]);
+            return redirect()->route('dashboard');
+        }
     }
-
-
-
 
     /**
      * Verifica si el usuario tiene solicitudes pendientes.
@@ -205,10 +240,13 @@ class SolicitudvehiculoController extends Controller
 
         return $response->successful() ? $response->json() : null;
     }
-    public static function obtenerDetallesPoliciaSolicitudPendiente($userId): ?array
-    {
-        $response = Http::get(url("/api/personal/policia/{$userId}/get/solicitud-pendiente"));
+    public static function
+        obtenerDetallesPoliciaSolicitudPendiente(
+        $userId
+    ): ?array {
 
+        $response = Http::get(url("/api/policia/{$userId}/get/solicitud/vehiculo/pendiente"));
+        //dd($response->json());
         return $response->successful() ? $response->json() : null;
     }
     public static function obtenerDetallesPoliciaSolicitudAprobada($userId): ?array

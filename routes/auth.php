@@ -133,8 +133,13 @@ Route::middleware('auth')->group(function () {
         return view('entregarecepcionViews.auxiliar.procesando_index');
     })->name('mostrartodasolicitudesvehiculos.procesando');
 
-    Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
-        ->name('mostrarentregarecepcionvehiculo.policia.aprobada');
+    /* Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
+        ->name('mostrarentregarecepcionvehiculo.policia.aprobada'); */
+
+    Route::get('mostrarentregarecepcionvehiculo/{estadoAsignacion}/show/{id?}', [EntregarecepcionController::class, 'show'])
+        ->where('estadoAsignacion', 'Aprobada\/espera|Procesando\/entregado|Completa\/recibido')
+        ->name('mostrarentregarecepcionvehiculo.estado');
+
 
     Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
         ->name('solicitarvehiculo.policia');

@@ -13,62 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class EntregarecepcionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-    public function mostrarEntregaRecepcionVehiculoAprobada(Request $request, $userId = null): View|RedirectResponse
+    /* public function mostrarEntregaRecepcionVehiculoAprobada(Request $request, $userId = null): View|RedirectResponse
     {
         $userId ??= auth()->id();
         $user = Auth::user();
@@ -114,6 +59,63 @@ class EntregarecepcionController extends Controller
         }
 
         return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder.');
+    } */
+
+    public function show(Request $request, string $estadoAsignacion, $userId = null): View|RedirectResponse
+    {
+        $userId ??= auth()->id();
+        $user = Auth::user();
+
+        $response = Http::get(url("/api/mostrarasignaciones/{$estadoAsignacion}/vehiculos/policia/{$userId}"));
+
+        // Manejo de errores en la respuesta de la API
+        if (!$response->successful()) {
+            $errorMessage = $response->status() . ' - ' . $response->reason();
+            return redirect()->route('dashboard')->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
+        }
+
+        $datosApi = $response->json(); // Utiliza json() para simplificar el decodificado
+
+        // Verifica si la respuesta de la API contiene datos
+        if (empty($datosApi)) {
+            return redirect()->route('dashboard')->with('error', 'No se encontraron datos.');
+        }
+
+        // Extrae el primer elemento del array (asumiendo que solo hay un resultado)
+        $datos = $datosApi[0];
+
+        $solicitante = $this->mapearDatosSolicitante($datos['solicitante']);
+        $vehiculo = $this->mapearDatosVehiculo($datos['vehiculo']);
+        $asignacion_solicitudvehiculo = $this->mapearDatosAsignacion_Solicitudvehiculo($datos);
+        $asignacion = $this->mapearDatosAsignacion($datos);
+
+        // Simplifica la lógica de roles con un array y un operador ternario
+        if ($estadoAsignacion == 'Aprobada/espera') {
+            $vista = [
+                'auxiliar' => 'entregarecepcionViews.auxiliar.aprobada_show',
+                'policia' => 'entregarecepcionViews.policia.show',
+            ];
+        }
+        if ($estadoAsignacion == 'Procesando/entregado') {
+            $vista = [
+                'auxiliar' => 'entregarecepcionViews.auxiliar.procesando_show',
+                'policia' => 'entregarecepcionViews.policia.show',
+            ];
+        }
+
+        $rol = $user->rol();
+
+        if (isset($vista[$rol])) {
+            return view($vista[$rol], [
+                'asignacion_solicitudvehiculo' => $asignacion_solicitudvehiculo,
+                'asignacion' => $asignacion,
+                'solicitante' => $solicitante,
+                'vehiculo' => $vehiculo,
+            ]);
+        }
+        session(['error' => 'No tienes permisos para acceder']);
+        return redirect()->route('dashboard');
+        //->with('error', 'No tienes permisos para acceder.');
     }
 
     // Funciones de mapeo de datos

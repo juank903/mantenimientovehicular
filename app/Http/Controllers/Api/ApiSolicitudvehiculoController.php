@@ -250,7 +250,7 @@ class ApiSolicitudvehiculoController extends Controller
     {
         //
     }
-    public function getSolicitudVehiculoPendientePolicia($personalId): JsonResponse
+    /* public function getSolicitudVehiculoPendientePolicia($personalId): JsonResponse
     {
         // Buscar el PersonalPolicia por ID
         $personalPolicia = Personalpolicia::with('subcircuito.circuito.distrito.provincia')->findOrFail($personalId);
@@ -300,7 +300,45 @@ class ApiSolicitudvehiculoController extends Controller
             'personal' => $personalPolicia,
             'solicitud_completa' => $solicitudesCompletas
         ]);
+    } */
+
+    public function getSolicitudVehiculoPorEstado($personalId, $estado): JsonResponse
+    {
+        // Validar que el estado sea uno de los permitidos
+        $estadosPermitidos = ['pendiente', 'aprobada', 'completa', 'procesando', 'anulada'];
+        if (!in_array($estado, $estadosPermitidos)) {
+            return response()->json([
+                'success' => false,
+                'status' => 400,
+                'message' => 'Estado no válido. Use: pendiente, aprobada, anulada, procesando o completa.',
+            ], 400);
+        }
+
+        // Buscar el PersonalPolicia por ID con relaciones
+        $personalPolicia = Personalpolicia::with('subcircuito.circuito.distrito.provincia')->find($personalId);
+
+        if (!$personalPolicia) {
+            return response()->json([
+                'success' => false,
+                'status' => 404,
+                'message' => 'PersonalPolicia no encontrado.',
+            ], 404);
+        }
+
+        // Recuperar las solicitudes de vehículos con el estado solicitado
+        $solicitudes = $personalPolicia->solicitudVehiculo()
+            ->where('solicitudvehiculos_estado', $estado)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'status' => 200,
+            'message' => 'Solicitudes recuperadas exitosamente.',
+            'personal' => $personalPolicia,
+            'solicitudes' => $solicitudes
+        ], 200);
     }
+
 
     public function getNumSolicitudesVehiculoPolicia($personalId): JsonResponse
     {
@@ -317,101 +355,7 @@ class ApiSolicitudvehiculoController extends Controller
             'numero_solicitudes' => $numeroSolicitudes
         ]);
     }
-    /* public function getNumSolicitudesVehiculoAnuladasPolicia($personalId): JsonResponse
-    {
-        $personal = Personalpolicia::find($personalId);
 
-        if ($personal) {
-            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Anulada')
-                ->count();
-        } else {
-            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
-        }
-
-        return response()->json([
-            'personal_id' => $personalId,
-            'numero_solicitudes' => $numeroSolicitudes
-        ]);
-    }
-    public function getNumSolicitudesVehiculoPendientesPolicia($personalId): JsonResponse
-    {
-        $personal = Personalpolicia::find($personalId);
-
-        if ($personal) {
-            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Pendiente')
-                ->count();
-        } else {
-            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
-        }
-
-        return response()->json([
-            'personal_id' => $personalId,
-            'numero_solicitudes' => $numeroSolicitudes
-        ]);
-    }
-    public function getNumSolicitudesVehiculoAprobadasPolicia($personalId): JsonResponse
-    {
-        $personal = Personalpolicia::find($personalId);
-
-        if ($personal) {
-            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Aprobada')
-                ->count();
-        } else {
-            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
-        }
-
-        return response()->json([
-            'personal_id' => $personalId,
-            'numero_solicitudes' => $numeroSolicitudes
-        ]);
-    }
-    public function getNumSolicitudesVehiculoCompletasPolicia($personalId): JsonResponse
-    {
-        $personal = Personalpolicia::find($personalId);
-
-        if ($personal) {
-            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Completa')
-                ->count();
-        } else {
-            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
-        }
-
-        return response()->json([
-            'personal_id' => $personalId,
-            'numero_solicitudes' => $numeroSolicitudes
-        ]);
-    }
-    public function getNumSolicitudesVehiculoProcesandoPolicia($personalId): JsonResponse
-    {
-        $personal = Personalpolicia::find($personalId);
-
-        if ($personal) {
-            $numeroSolicitudes = Solicitudvehiculo::whereHas('personal', function ($query) use ($personalId) {
-                $query->where('personalpolicia_id', $personalId);
-            })
-                ->where('solicitudvehiculos_estado', 'Procesando')
-                ->count();
-        } else {
-            $numeroSolicitudes = 0; // Retorna 0 si no se encontró el personal
-        }
-
-        return response()->json([
-            'personal_id' => $personalId,
-            'numero_solicitudes' => $numeroSolicitudes
-        ]);
-    } */
     public function getNumSolicitudesVehiculoPendientesTotal(): JsonResponse
     {
         // Contar todas las solicitudes en estado 'Pendiente'

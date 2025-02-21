@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody> </tbody>
-    </table>
+    </table>Holaaaaaa
 
     @push('scripts')
         @vite('resources/js/tableSolicitudesVehiculosProcesando.js')
