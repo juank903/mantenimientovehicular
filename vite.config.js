@@ -17,7 +17,8 @@ export default defineConfig({
                 'resources/js/datetimeSelects.js',
                 'resources/js/showAprobarSolicitudVehiculoAdministrador.js',
                 'resources/js/modalAprobarSolicitudVehiculoAdministrador.js',
-                'resources/js/showEntregarVehiculoAuxiliar.js'
+                'resources/js/showEntregarVehiculoAuxiliar.js',
+                'resources/js/editProfile.js',
             ],
             refresh: true,
         }),

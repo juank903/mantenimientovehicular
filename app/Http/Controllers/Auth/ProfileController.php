@@ -32,6 +32,8 @@ class ProfileController extends Controller
             ->where('id', $user_id)
             ->first();
 
+
+
         if (!$personalpolicia) {
             session(['error' => 'El usuario no existe o no tiene un perfil registrado.']);
             return view('auth.dashboard');
@@ -40,7 +42,16 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user' => $request->user(),
             'personalpolicia' => $personalpolicia,
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'rangosarray' => [
+                'Capitan',
+                'Teniente',
+                'Subteniente',
+                'Sargento Primero',
+                'Sargento Segundo',
+                'Cabo Primero',
+                'Cabo Segundo',
+            ],
         ]);
     }
 
