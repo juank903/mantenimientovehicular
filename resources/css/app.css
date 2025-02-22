@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+    .header {
+        display: flex;
+        align-items: center;
+        /* Centra verticalmente la imagen y el título */
+        justify-content: center;
+        margin-bottom: -10px;
+    }
+
+    .header img {
+        max-width: 50px;
+    }
+
+    .no-print {
+        display: none;
+    }
+}

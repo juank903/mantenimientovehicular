@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Http\Controllers\App\SolicitudvehiculoController;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -13,75 +12,27 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class EntregarecepcionController extends Controller
 {
-    /* public function mostrarEntregaRecepcionVehiculoAprobada(Request $request, $userId = null): View|RedirectResponse
-    {
-        $userId ??= auth()->id();
-        $user = Auth::user();
-
-        $response = Http::get(url("/api/mostrarasignaciones/Aprobada/espera/vehiculos/policia/{$userId}"));
-
-        // Manejo de errores en la respuesta de la API
-        if (!$response->successful()) {
-            $errorMessage = $response->status() . ' - ' . $response->reason();
-            return redirect()->route('dashboard')->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
-        }
-
-        $datosApi = $response->json(); // Utiliza json() para simplificar el decodificado
-
-        // Verifica si la respuesta de la API contiene datos
-        if (empty($datosApi)) {
-            return redirect()->route('dashboard')->with('error', 'No se encontraron datos.');
-        }
-
-        // Extrae el primer elemento del array (asumiendo que solo hay un resultado)
-        $datos = $datosApi[0];
-
-        $solicitante = $this->mapearDatosSolicitante($datos['solicitante']);
-        $vehiculo = $this->mapearDatosVehiculo($datos['vehiculo']);
-        $asignacion_solicitudvehiculo = $this->mapearDatosAsignacion_Solicitudvehiculo($datos);
-        $asignacion = $this->mapearDatosAsignacion($datos);
-
-        // Simplifica la lógica de roles con un array y un operador ternario
-        $vista = [
-            'auxiliar' => 'entregarecepcionViews.auxiliar.show',
-            'policia' => 'entregarecepcionViews.policia.show',
-        ];
-
-        $rol = $user->rol();
-
-        if (isset($vista[$rol])) {
-            return view($vista[$rol], [
-                'asignacion_solicitudvehiculo' => $asignacion_solicitudvehiculo,
-                'asignacion' => $asignacion,
-                'solicitante' => $solicitante,
-                'vehiculo' => $vehiculo,
-            ]);
-        }
-
-        return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder.');
-    } */
-
     public function show(Request $request, string $estadoAsignacion, $userId = null): View|RedirectResponse
     {
+
         $userId ??= auth()->id();
         $user = Auth::user();
 
         $response = Http::get(url("/api/mostrarasignaciones/{$estadoAsignacion}/vehiculos/policia/{$userId}"));
 
-        // Manejo de errores en la respuesta de la API
         if (!$response->successful()) {
             $errorMessage = $response->status() . ' - ' . $response->reason();
-            return redirect()->route('dashboard')->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
+            session(['error' => "Error al obtener datos de la API: {$errorMessage}"]);
+            return redirect()->route('dashboard');
+            //->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
         }
 
-        $datosApi = $response->json(); // Utiliza json() para simplificar el decodificado
+        $datosApi = $response->json();
 
-        // Verifica si la respuesta de la API contiene datos
         if (empty($datosApi)) {
             return redirect()->route('dashboard')->with('error', 'No se encontraron datos.');
         }
 
-        // Extrae el primer elemento del array (asumiendo que solo hay un resultado)
         $datos = $datosApi[0];
 
         $solicitante = $this->mapearDatosSolicitante($datos['solicitante']);
@@ -89,17 +40,16 @@ class EntregarecepcionController extends Controller
         $asignacion_solicitudvehiculo = $this->mapearDatosAsignacion_Solicitudvehiculo($datos);
         $asignacion = $this->mapearDatosAsignacion($datos);
 
-        // Simplifica la lógica de roles con un array y un operador ternario
         if ($estadoAsignacion == 'Aprobada/espera') {
             $vista = [
-                'auxiliar' => 'entregarecepcionViews.auxiliar.aprobada_show',
-                'policia' => 'entregarecepcionViews.policia.show',
+                'auxiliar' => 'entregarecepcionViews.auxiliar.entrega_show',
+                'policia' => 'solicitudesvehiculosViews.policia.aprobada_show',
             ];
         }
         if ($estadoAsignacion == 'Procesando/entregado') {
             $vista = [
-                'auxiliar' => 'entregarecepcionViews.auxiliar.procesando_show',
-                'policia' => 'entregarecepcionViews.policia.show',
+                'auxiliar' => 'entregarecepcionViews.auxiliar.recepcion_show',
+                'policia' => 'solicitudesvehiculosViews.policia.procesando_show',
             ];
         }
 

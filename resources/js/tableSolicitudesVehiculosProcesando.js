@@ -21,7 +21,7 @@ $(document).ready(function () {
             data: 'id'
         },
         {
-            data: 'created_at',
+            data: 'updated_at',
             render: function (data, type, row) {
                 if (type === "display" || type === "filter") {
                     return new Date(data).toLocaleDateString('es-ES', {

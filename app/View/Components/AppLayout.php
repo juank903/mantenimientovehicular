@@ -84,7 +84,8 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Entrega Recepción vehículo' => 'mostrarentregarecepcionvehiculo.policia.aprobada',
+                        'Entrega Recepción vehículo' => "mostrarentregarecepcionvehiculo.estado, ['estadoAsignacion'=>'Aprobada/espera', 'id'=>$this->userId]",
+                        //'Entrega Recepción vehículo' => 'mostrarentregarecepcionvehiculo.policia.aprobada',
                     ],
                     'route' => 'solicitud',
                 ],
@@ -102,7 +103,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Solicitud procesando' => 'dashboard',
+                        'Solicitud procesando' => "mostrarentregarecepcionvehiculo.estado, ['estadoAsignacion'=>'Procesando/entregado', 'id'=>$this->userId]",
                         'Ingrear Parte de Novedades' => 'partenovedades.crear',
                     ],
                     'route' => 'solicitud',

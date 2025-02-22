@@ -126,11 +126,11 @@ Route::middleware('auth')->group(function () {
     })->name('mostrartodasolicitudesvehiculos.pendientes');
 
     Route::get('mostrartodasolicitudesvehiculos/aprobadas', function () {
-        return view('entregarecepcionViews.auxiliar.aprobadas_index');
+        return view('solicitudesvehiculosViews.auxiliar.aprobadas_index');
     })->name('mostrartodasolicitudesvehiculos.aprobadas');
 
     Route::get('mostrartodasolicitudesvehiculos/procesando', function () {
-        return view('entregarecepcionViews.auxiliar.procesando_index');
+        return view('solicitudesvehiculosViews.auxiliar.procesando_index');
     })->name('mostrartodasolicitudesvehiculos.procesando');
 
     /* Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
@@ -141,20 +141,20 @@ Route::middleware('auth')->group(function () {
         ->name('mostrarentregarecepcionvehiculo.estado');
 
 
-    Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'mostrarFormularioCreacionSolicitudVehiculo'])
+    Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'create'])
         ->name('solicitarvehiculo.policia');
 
-    Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'mostrarSolicitudVehiculoPendiente'])
+    Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'show'])
         ->name('mostrarsolicitudvehiculo.policia.pendiente');
 
     Route::get('partenovedades/crear', [PartenovedadesController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
         ->name('partenovedades.crear');
 
     /*Solicitudes acciones solicitudes */
-    Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revokeSolicitudVehiculoPolicia'])
+    Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revoke'])
         ->name('anularsolicitudvehiculopolicia-pendiente');
 
-    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'guardarsolicitudvehiculo'])
+    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'store'])
         ->name('guardarsolicitudvehiculo');
 
     /*Componentes bonotes dinámicos */

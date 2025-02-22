@@ -19,7 +19,7 @@ use Illuminate\View\View;
 class SolicitudvehiculoController extends Controller
 {
     //
-    public function guardarsolicitudvehiculo(Request $request)
+    public function store(Request $request)
     {
         try {
             DB::beginTransaction(); // Inicia la transacción
@@ -30,7 +30,6 @@ class SolicitudvehiculoController extends Controller
             $fechaRequerimientohasta = $request->input('fecharequerimientohasta');
             $horaRequerimientohasta = $request->input('horarequerimientohasta');
 
-            // Usando interpolación de cadenas
             $timestampDesde = Carbon::parse("{$fechaRequerimientodesde} {$horaRequerimientodesde}");
             $timestampHasta = Carbon::parse("{$fechaRequerimientohasta} {$horaRequerimientohasta}");
 
@@ -42,21 +41,21 @@ class SolicitudvehiculoController extends Controller
             $solicitudvehiculo->solicitudvehiculos_fecharequerimientohasta = $timestampHasta;
             $solicitudvehiculo->save();
 
-            // 2.  Guardar la relación muchos a muchos (asumiendo que tienes una tabla pivote)
+
             if ($request->has('id')) {
                 $solicitudvehiculo->personal()->attach($request->id);
             } else {
                 throw new \Exception("Debe seleccionar al menos un personal policial.");
             }
-            // 3. Guardar el historial inicial
+
             $response = HistorialsolicitudvehiculoController::guardarHistorial($solicitudvehiculo->personal->first()->id, $solicitudvehiculo->id, ); // Usar el ID de la solicitud creada y el primer ID del personal policial relacionado.
             $data = json_decode($response->getContent(), true);
 
             if (!$data['success']) {
-                throw new \Exception($data['error']); // Lanza una excepción si falla el guardado del historial
+                throw new \Exception($data['error']);
             }
 
-            DB::commit(); // Confirma la transacción
+            DB::commit();
 
             return redirect()->intended(route('dashboard', absolute: false))->with('mensaje', $data['mensaje']);
 
@@ -69,7 +68,7 @@ class SolicitudvehiculoController extends Controller
         }
     }
 
-    public function revokeSolicitudVehiculoPolicia(Request $request): RedirectResponse|JsonResponse
+    public function revoke(Request $request): RedirectResponse|JsonResponse
     {
         $personalId = $request->input('id');
         $motivo = $request->input('motivo');
@@ -120,7 +119,7 @@ class SolicitudvehiculoController extends Controller
         }
     }
 
-    public function mostrarFormularioCreacionSolicitudVehiculo($userId = null): View|RedirectResponse
+    public function create($userId = null): View|RedirectResponse
     {
         $userId ??= auth()->id();
         $user = Auth::user();
@@ -139,45 +138,7 @@ class SolicitudvehiculoController extends Controller
         ]);
     }
 
-    /* public function mostrarSolicitudVehiculoPendiente($userId = null): View|RedirectResponse
-    {
-
-        $userId ??= auth()->id();
-        $user = Auth::user();
-
-        $datosPoliciaSolicitud = $this->obtenerDetallesPoliciaSolicitudPendiente($userId);
-
-        // Manejo de posibles errores al obtener los datos de la solicitud
-        if (!$datosPoliciaSolicitud['success']) {
-            session(["error" => 'Error al obtener la solicitud pendiente.']);
-            return redirect()->route('dashboard');
-            //->with('error', 'Error al obtener la solicitud pendiente.');
-        }
-
-        if ($user->rol() === 'administrador') {
-            session()->forget('mensaje');
-            session()->forget('error');
-            return view('solicitudesvehiculosViews.administrador.show', [
-                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
-            ]);
-        }
-
-        if ($user->rol() === 'policia') {
-            session()->forget('mensaje');
-            session()->forget('error');
-            return view('solicitudesvehiculosViews.policia.show', [
-                'policia' => $this->mapearDatosPolicia($datosPoliciaSolicitud['personal']),
-                'solicitud' => $this->mapearDatosSolicitud($datosPoliciaSolicitud['solicitud_pendiente'][0] ?? [])
-            ]);
-        }
-
-        session(["error" => 'No tienes permisos para acceder a esta sección.']);
-        return redirect()->route('dashboard');
-        //->with('error', 'No tienes permisos para acceder a esta sección.');
-    } */
-
-    public function mostrarSolicitudVehiculoPendiente($userId = null): View|RedirectResponse
+    public function show($userId = null): View|RedirectResponse
     {
         $userId ??= auth()->id();
         $user = Auth::user();
@@ -197,7 +158,7 @@ class SolicitudvehiculoController extends Controller
             // Determinar la vista a renderizar según el rol del usuario
             $vista = match ($user->rol()) {
                 'administrador' => 'solicitudesvehiculosViews.administrador.show',
-                'policia' => 'solicitudesvehiculosViews.policia.show',
+                'policia' => 'solicitudesvehiculosViews.policia.pendiente_show',
                 default => null, // Retornar null si el rol no tiene acceso
             };
 
@@ -252,7 +213,6 @@ class SolicitudvehiculoController extends Controller
     public static function obtenerDetallesPoliciaSolicitudAprobada($userId): ?array
     {
         $response = Http::get(url("/api/personal/policia/{$userId}/get/solicitud-aprobada"));
-
         return $response->successful() ? $response->json() : null;
     }
     public static function mapearDatosPolicia(array $datosPolicia): array

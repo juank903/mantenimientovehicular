@@ -18,7 +18,7 @@
                 <dt class="text-sm font-medium text-gray-500">
                     Elaborado por
                 </dt>
-                {{-- campo para llenar elaborador por --}}
+
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{ $policia['apellido_paterno'] }}&nbsp
                     {{ $policia['apellido_materno'] }}&nbsp
@@ -30,7 +30,7 @@
                 <dt class="text-sm font-medium text-gray-500">
                     Ubicación del solicitante
                 </dt>
-                {{-- campo para llenar fecha --}}
+
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     <span class="text-xs text-gray-600">Subcircuito: </span> {{ $policia['subcircuito'] }}&nbsp /
                     <span class="text-xs text-gray-600">Circuito: </span> {{ $policia['circuito'] }}&nbsp /
@@ -42,7 +42,7 @@
                 <dt class="text-sm font-medium text-gray-500">
                     Fecha elaboración solicitud
                 </dt>
-                {{-- campo para llenar fecha --}}
+
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{ $solicitud['fecha_solicitado'] }}</dd>
             </div>
@@ -50,7 +50,7 @@
                 <dt class="text-sm font-medium text-gray-500">
                     Detalle de la solicitud
                 </dt>
-                {{-- campo para llenar detalle solicitud --}}
+
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{ $solicitud['detalle'] }}</dd>
             </div>
@@ -58,7 +58,7 @@
                 <dt class="text-sm font-medium text-gray-500">
                     Fecha requerimiento del vehículo - Desde
                 </dt>
-                {{-- campo para llenar fecha de requerimiento --}}
+
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{ $solicitud['fecha_desde'] }}</dd>
             </div>
@@ -66,7 +66,7 @@
                 <dt class="text-sm font-medium text-gray-500">
                     Fecha requerimiento del vehículo - Hasta
                 </dt>
-                {{-- campo para llenar fecha de requerimiento --}}
+
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{ $solicitud['fecha_hasta'] }}</dd>
             </div>
@@ -120,7 +120,7 @@
         </div>
     </div>
 
-    @push('scripts')
+    {{-- @push('scripts')
         <script>
             function openModal() {
                 console.log('open');
@@ -136,5 +136,5 @@
                 modal.classList.add("hidden");
             }
         </script>
-    @endpush
+    @endpush --}}
 </x-app-layout>

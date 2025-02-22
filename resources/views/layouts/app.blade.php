@@ -51,16 +51,6 @@
         @vite(['resources/js/modalAprobarSolicitudVehiculoAdministrador.js'])
     @endif
 
-    @if (Route::is('mostrarentregarecepcionvehiculo.policia.aprobada') || Route::is('partenovedades.crear'))
-        <style>
-            @media print {
-                .no-print {
-                    display: none;
-                }
-            }
-        </style>
-    @endif
-
     @if (Route::is('mostrarsolicitudvehiculo.policia.pendiente') ||
             Route::is('mostrarentregarecepcionvehiculo.policia.aprobada') ||
             Route::is('mostrarentregarecepcionvehiculo.estado'))
@@ -76,6 +66,9 @@
 
 <body class="font-sans antialiased bg-gray-300">
     <x-navigation.navegacion :menuItems="$menuItems" />
+    <div class="header hidden">
+        <img src="{{ asset('img/logoPolicia.png') }}" alt="Logo">
+    </div>
     <div class="container w-full mx-auto px-10 mt-5 z-0 text-sm mb-10">
         <div id='recipients' class="p-5 rounded-2xl shadow bg-white">
             {{ $slot }}
