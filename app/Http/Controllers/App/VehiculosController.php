@@ -28,7 +28,6 @@ class VehiculosController extends Controller
      */
     public function create()
     {
-
         //valores para los select
         $tipovehiculoarray = [
             'Moto',

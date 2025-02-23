@@ -57,7 +57,7 @@
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @endif
 
-    @if (Route::is('solicitarvehiculo.policia'))
+    @if (Route::is('solicitarvehiculo.policia.create'))
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     @endif

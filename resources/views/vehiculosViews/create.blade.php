@@ -2,7 +2,7 @@
     <x-navigation.botonregresar href="{{ route('dashboard') }}" />
     <h1> Ingresar Vehículo </h1>
     <form id="registrationForm" method="POST" class="flex flex-col md:flex-row flex-wrap gap-4"
-        action="{{ route('guardarvehiculo') }}">
+        action="{{ route('vehiculo.store') }}">
         @csrf
 
         <div class="w-full md:w-1/2 p-4">

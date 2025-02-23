@@ -95,19 +95,17 @@ Route::middleware('auth')->group(function () {
     /* fin rutas por defecto*/
 
     /*Rutas personal policial */
-    /* Route::get('mostrartodopersonal', [PersonalController::class, 'mostrartodopersonal'])
-        ->name('mostrartodopersonal'); */
     Route::get('mostrartodopersonal', function () {
         return view('personalViews.index');
     })->name('mostrartodopersonal');
 
 
     /*Rutas Vehículos*/
-    Route::post('guardarvehiculo', [VehiculosController::class, 'store'])
-        ->name('guardarvehiculo');
+    Route::post('vehiculo/store', [VehiculosController::class, 'store'])
+        ->name('vehiculo.store');
 
-    Route::get('registrarvehiculos', [VehiculosController::class, 'create'])
-        ->name('registrarvehiculos');
+    Route::get('vehiculos/create', [VehiculosController::class, 'create'])
+        ->name('vehiculos.create');
 
     Route::get('mostrartodovehiculos', function () {
         return view('vehiculosViews.index');
@@ -142,13 +140,16 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'create'])
-        ->name('solicitarvehiculo.policia');
+        ->name('solicitarvehiculo.policia.create');
 
     Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'show'])
         ->name('mostrarsolicitudvehiculo.policia.pendiente');
 
-    Route::get('partenovedades/crear', [PartenovedadesController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
-        ->name('partenovedades.crear');
+    Route::get('partenovedades/crear', [PartenovedadesController::class, 'create'])
+        ->name('partenovedades.create');
+
+    Route::post('guardarpartenovedades', [PartenovedadesController::class, 'store'])
+        ->name('partenovedades.store');
 
     /*Solicitudes acciones solicitudes */
     Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revoke'])

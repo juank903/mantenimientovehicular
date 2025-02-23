@@ -57,7 +57,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Vehículos',
                     'items' => [
-                        'Ingresar vehículo' => 'registrarvehiculos',
+                        'Ingresar vehículo' => 'vehiculos.create',
                         'Listar vehículos' => 'mostrartodovehiculos',
                     ],
                     'route' => 'vehiculo',
@@ -75,7 +75,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Pedido vehículo' => 'solicitarvehiculo.policia',
+                        'Pedido vehículo' => 'solicitarvehiculo.policia.create',
                     ],
                     'route' => 'solicitud',
                 ],
@@ -103,10 +103,16 @@ class AppLayout extends Component
                 [
                     'name' => 'Solicitudes',
                     'items' => [
-                        'Solicitud procesando' => "mostrarentregarecepcionvehiculo.estado, ['estadoAsignacion'=>'Procesando/entregado', 'id'=>$this->userId]",
-                        'Ingrear Parte de Novedades' => 'partenovedades.crear',
+                        'Solicitud en proceso' => "mostrarentregarecepcionvehiculo.estado, ['estadoAsignacion'=>'Procesando/entregado', 'id'=>$this->userId]",
                     ],
                     'route' => 'solicitud',
+                ],
+                [
+                    'name' => 'Partes Novedades',
+                    'items' => [
+                        'Ingrear Parte de Novedades' => 'partenovedades.create',
+                    ],
+                    'route' => 'partenovedades',
                 ],
             ],
             $rol == "auxiliar" => [
@@ -120,7 +126,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Vehículos',
                     'items' => [
-                        'Ingresar vehículo' => 'registrarvehiculos',
+                        'Ingresar vehículo' => 'vehiculos.create',
                         'Listar vehículos' => 'mostrartodovehiculos',
                     ],
                     'route' => 'vehiculo',

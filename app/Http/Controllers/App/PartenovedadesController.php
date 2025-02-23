@@ -3,17 +3,26 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Espacioparqueadero;
+use App\Models\Parqueadero;
+use App\Models\Partenovedad;
+use App\Models\Vehiculo;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PartenovedadesController extends Controller
 {
     //
-    public function mostrarEntregaRecepcionVehiculoAprobada(Request $request, $userId = null): View|RedirectResponse
+    public function create(Request $request, $userId = null): View|RedirectResponse
     {
         $userId ??= auth()->id();
         $user = Auth::user();
@@ -54,10 +63,71 @@ class PartenovedadesController extends Controller
                 'asignacion' => $asignacion,
                 'solicitante' => $solicitante,
                 'vehiculo' => $vehiculo,
+                'novedadArray' => ['reporte', 'accidente', 'siniestro', 'anulación'],
+                'combustibleArray' => ['cuarto', 'medio', 'tres cuartos', 'full'],
             ]);
         }
 
         return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder.');
+    }
+
+    public function store(Request $request)
+    {
+        // Validar los datos de entrada
+        $validator = Validator::make($request->all(), [
+            'personalpolicia_id' => 'required|exists:personalpolicias,id',
+            'vehiculo_id' => 'required|exists:vehiculos,id',
+            'asignacionvehiculo_id' => 'nullable|exists:asignacionvehiculos,id',
+            'partenovedades_detalle' => 'nullable|string',
+            'partenovedades_tipo' => 'nullable|string',
+            'partenovedades_kilometraje' => 'nullable|integer',
+            'partenovedades_combustible' => 'nullable|string',
+        ]);
+
+        // Si la validación falla, lanzar ValidationException
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        // Iniciar una transacción de base de datos
+        DB::beginTransaction();
+
+        try {
+            // Crear y guardar el registro en una sola línea
+            Partenovedad::create([
+                'personalpolicia_id' => $request->input('personalpolicia_id'),
+                'vehiculo_id' => $request->input('vehiculo_id'),
+                'asignacionvehiculo_id' => $request->input('asignacionvehiculo_id'),
+                'partenovedades_detalle' => $request->input('partenovedades_detalle'),
+                'partenovedades_tipo' => $request->input('partenovedades_tipo'),
+                'partenovedades_kilometraje' => $request->input('partenovedades_kilometraje'),
+                'partenovedades_combustible' => $request->input('partenovedades_combustible'),
+            ]);
+
+            // Confirmar la transacción
+            DB::commit();
+
+            // Mensaje de éxito en la sesión
+            session(['mensaje' => 'Parte guardado con éxito']);
+
+            // Redireccionar al dashboard
+            return redirect()->route('dashboard');
+
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            session(['error' => 'Error de validación: ' . $e->getMessage()]);
+            return redirect()->route('dashboard')->withErrors($e->errors())->withInput();
+
+        } catch (QueryException $e) {
+            DB::rollBack();
+            session(['error' => 'Error al guardar el parte en la base de datos.' . $e->getMessage()]);
+            return redirect()->route('dashboard')->withInput();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session(['error' => 'Error al guardar el parte.' . $e->getMessage()]);
+            return redirect()->route('dashboard')->withInput();
+        }
     }
 
     // Funciones de mapeo de datos
