@@ -6,6 +6,7 @@ use App\Http\Controllers\App\DashboardGerenciaController;
 use App\Http\Controllers\App\DashboardPoliciaController;
 use App\Http\Controllers\App\EntregarecepcionController;
 use App\Http\Controllers\App\PartenovedadesController;
+use App\Http\Controllers\App\SolicitudcombustibleController;
 use App\Http\Controllers\App\SolicitudvehiculoController;
 use App\Http\Controllers\App\VehiculosController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::middleware('guest')->group(function () {
@@ -131,13 +133,9 @@ Route::middleware('auth')->group(function () {
         return view('solicitudesvehiculosViews.auxiliar.procesando_index');
     })->name('mostrartodasolicitudesvehiculos.procesando');
 
-    /* Route::get('mostrarentregarecepcionvehiculo/policia/aprobada/show/{id?}', [EntregarecepcionController::class, 'mostrarEntregaRecepcionVehiculoAprobada'])
-        ->name('mostrarentregarecepcionvehiculo.policia.aprobada'); */
-
     Route::get('mostrarentregarecepcionvehiculo/{estadoAsignacion}/show/{id?}', [EntregarecepcionController::class, 'show'])
         ->where('estadoAsignacion', 'Aprobada\/espera|Procesando\/entregado|Completa\/recibido')
         ->name('mostrarentregarecepcionvehiculo.estado');
-
 
     Route::get('solicitarvehiculo/policia/create', [SolicitudvehiculoController::class, 'create'])
         ->name('solicitarvehiculo.policia.create');
@@ -145,18 +143,21 @@ Route::middleware('auth')->group(function () {
     Route::get('mostrarsolicitudvehiculo/policia/pendiente/show/{id?}', [SolicitudvehiculoController::class, 'show'])
         ->name('mostrarsolicitudvehiculo.policia.pendiente');
 
-    Route::get('partenovedades/crear', [PartenovedadesController::class, 'create'])
-        ->name('partenovedades.create');
+    Route::get('partenovedades/policia/create', [PartenovedadesController::class, 'create'])
+        ->name('partenovedades.policia.create');
 
     Route::post('guardarpartenovedades', [PartenovedadesController::class, 'store'])
         ->name('partenovedades.store');
+
+    Route::get('solicitarcombustible/policia/create', [SolicitudcombustibleController::class, 'create'])
+        ->name('solicitudcombustible.policia.create');
 
     /*Solicitudes acciones solicitudes */
     Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revoke'])
         ->name('anularsolicitudvehiculopolicia-pendiente');
 
-    Route::post('solicitarvehiculo.guardar', [SolicitudvehiculoController::class, 'store'])
-        ->name('guardarsolicitudvehiculo');
+    Route::post('guardarsolicitarvehiculo', [SolicitudvehiculoController::class, 'store'])
+        ->name('solicitudvehiculo.store');
 
     /*Componentes bonotes dinámicos */
     Route::get('/delete-button/{userId}', function ($userId) {

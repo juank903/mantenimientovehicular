@@ -110,9 +110,17 @@ class AppLayout extends Component
                 [
                     'name' => 'Partes Novedades',
                     'items' => [
-                        'Ingrear Parte de Novedades' => 'partenovedades.create',
+                        'Ingrear Parte de Novedades' => 'partenovedades.policia.create',
                     ],
                     'route' => 'partenovedades',
+                ],
+                [
+                    'name' => 'Solicitudes Combustible',
+                    'items' => [
+                        'Solicitar combustible' => 'solicitudcombustible.policia.create',
+                    ],
+                    'route' => 'solicitudcombustible',
+
                 ],
             ],
             $rol == "auxiliar" => [

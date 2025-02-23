@@ -102,9 +102,10 @@
                     </dt>
                     <dd class=" mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         <span class=" text-xs text-gray-600">Kilometraje actual: </span>
-                        <input type="text" name="kilometraje_actual" value="{{ $vehiculo['kmActual'] }}"
+                        <input type="text" name="partenovedades_kilometraje" value="{{ $vehiculo['kmActual'] }}"
                             min="{{ $vehiculo['kmActual'] }}" max="900000"></br><br>
-                        <span class=" text-xs text-gray-600">Combustible actual: </span>
+                        <span class=" text-xs text-gray-600">
+                            Combustible actual: </span>
                         <x-select id="partenovedades_combustible" name="partenovedades_combustible" :items="$combustibleArray"
                             required />
                     </dd>
