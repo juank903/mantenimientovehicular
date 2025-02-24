@@ -43,7 +43,7 @@ class SolicitudcombustibleController extends Controller
         $asignacion = $this->mapearDatosAsignacion($datos);
 
         $vista = [
-            'policia' => 'solicitudcombustibleViews.policia.create',
+            'policia' => 'solicitudcombustiblesViews.policia.create',
         ];
 
         $rol = $user->rol();
@@ -61,12 +61,52 @@ class SolicitudcombustibleController extends Controller
 
         return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder.');
     }
+    public function show(Request $request, $userId = null)
+    {
+        $userId = $userId ?? auth()->id();
+
+        if (!$userId) {
+            session(['error' => 'ID de usuario no válido.']);
+            return redirect()->route('dashboard');
+        }
+
+        $solicitud = SolicitudCombustible::where('personalpolicia_id', $userId)->first();
+
+        if (!$solicitud) {
+            session(['error' => 'La orden de combustible no fue encontrada.']);
+            return redirect()->route('dashboard');
+        }
+
+        $datos = DB::table('solicitudcombustibles')
+            ->join('asignacionvehiculos', 'solicitudcombustibles.asignacionvehiculo_id', '=', 'asignacionvehiculos.id')
+            ->join('personalpolicia_solicitudvehiculo', 'asignacionvehiculos.personalpoliciasolicitante_id', '=', 'personalpolicia_solicitudvehiculo.personalpolicia_id')
+            ->join('personalpolicias', 'personalpolicia_solicitudvehiculo.personalpolicia_id', '=', 'personalpolicias.id')
+            ->join('vehiculos', 'asignacionvehiculos.vehiculos_id', '=', 'vehiculos.id')
+            ->where('solicitudcombustibles.personalpolicia_id', $userId)
+            ->select(
+                'solicitudcombustibles.*',
+                DB::raw("CONCAT(personalpolicias.primernombre_personal_policias, ' ', personalpolicias.segundonombre_personal_policias, ' ', personalpolicias.primerapellido_personal_policias, ' ', personalpolicias.segundoapellido_personal_policias) AS nombre_completo"),
+                'vehiculos.marca_vehiculos AS marca',
+                'vehiculos.modelo_vehiculos AS modelo',
+                'vehiculos.tipo_vehiculos AS tipo',
+                'vehiculos.placa_vehiculos AS placa',
+                'vehiculos.color_vehiculos AS color',
+                'vehiculos.estado_vehiculos AS estado',
+                'vehiculos.kmactual_vehiculos AS kmActual',
+                'vehiculos.tipocombustible_vehiculos AS tipoCombustible',
+                'vehiculos.combustibleactual_vehiculos AS combustibleActual'
+            )
+            ->first();
+
+        return view('solicitudcombustiblesViews.policia.show', compact('datos'));
+    }
     public function store(Request $request)
     {
         // Define las reglas de validación
         //dd($request);
         $rules = [
             'asignacionvehiculo_id' => 'required|integer|exists:asignacionvehiculos,id',
+            'personalpolicia_id' => 'required|integer|exists:asignacionvehiculos,personalpoliciasolicitante_id',
             'solicitudcombustible_motivo' => 'required|string|max:255',
             'solicitudcombustible_km' => 'required|integer',
             'solicitudcombustible_tipo' => 'required|string|max:255',
@@ -88,14 +128,16 @@ class SolicitudcombustibleController extends Controller
 
             SolicitudCombustible::create([
                 'asignacionvehiculo_id' => $request->input('asignacionvehiculo_id'),
+                'personalpolicia_id' => $request->input('personalpolicia_id'),
                 'solicitudcombustible_motivo' => $request->input('solicitudcombustible_motivo'),
                 'solicitudcombustible_km' => $request->input('solicitudcombustible_km'),
                 'solicitudcombustible_tipo' => $request->input('solicitudcombustible_tipo'),
             ]);
 
             DB::commit();
-            session(['mensaje' => 'Solicitud de combustible creada exitosamente.']);
-            return redirect()->route('dashboard')->with('success', 'Solicitud de combustible creada exitosamente.');
+            session(['mensaje' => 'Solicitud de combustible creada exitosamente!!!!.']);
+            return redirect()->route('solicitudcombustible.show', ['id' => $request->input('personalpolicia_id')]);
+            //->with('success', 'Solicitud de combustible creada exitosamente.');
 
         } catch (\Exception $e) {
             DB::rollBack();

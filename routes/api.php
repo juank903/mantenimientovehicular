@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiCircuitoController;
 use App\Http\Controllers\Api\ApiPartenovedadController;
 use App\Http\Controllers\Api\ApiPersonalpoliciaController;
 use App\Http\Controllers\Api\ApiProvinciaController;
+use App\Http\Controllers\Api\ApiSolicitudcombustibleController;
 use App\Http\Controllers\Api\ApiSolicitudvehiculoController;
 use App\Http\Controllers\Api\ApiSubcircuitoController;
 use App\Http\Controllers\Api\ApiUserController;
@@ -35,7 +36,6 @@ Route::get('/totalsolicitudes-vehiculo/policia/{id}/{estado}', [ApiSolicitudvehi
 Route::get('/policia/{id}/get/solicitud/vehiculo/{estado}', [ApiSolicitudvehiculoController::class, 'getSolicitudVehiculoPorEstado']);
 
 
-
 Route::get('/totalsolicitudesvehiculos/pendientes', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoPendientesTotal']);
 Route::get('/totalsolicitudesvehiculos/anuladas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAnuladasTotal']);
 Route::get('/totalsolicitudesvehiculos/aprobadas', [ApiSolicitudvehiculoController::class, 'getNumSolicitudesVehiculoAprobadasTotal']);
@@ -57,7 +57,9 @@ Route::resource('/partenovedades', ApiPartenovedadController::class);
 /*Api Dependencias*/
 Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);
 
-//entregarVehiculoAPolicia
+/*Api Solicitud Combustible*/
+Route::get('/solicitudcombustible/conteo/{userId?}', [ApiSolicitudcombustibleController::class, 'conteo']);
+
 /*Api Asignaciones*/
 Route::get('/listarasignaciones/vehiculos', [ApiAsignacionvehiculoController::class, 'listarAsignacionesVehiculos']);
 Route::get('/entregarvehiculo/policia', [ApiAsignacionvehiculoController::class, 'entregarVehiculoAPolicia']);

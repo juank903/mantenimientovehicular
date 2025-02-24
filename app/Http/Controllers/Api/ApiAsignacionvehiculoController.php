@@ -114,7 +114,7 @@ class ApiAsignacionvehiculoController extends Controller
             'solicitante.subcircuito.circuito.distrito',
             'solicitante.subcircuito.circuito.distrito.provincia',
         ])
-        ->select('asignacionvehiculos.*', 'solicitudvehiculos.*', 'asignacionvehiculos.id as asignacion_id' )
+            ->select('asignacionvehiculos.*', 'solicitudvehiculos.*', 'asignacionvehiculos.id as asignacion_id')
             ->join('personalpolicia_solicitudvehiculo', 'asignacionvehiculos.personalpoliciasolicitante_id', '=', 'personalpolicia_solicitudvehiculo.personalpolicia_id')
             ->join('solicitudvehiculos', 'personalpolicia_solicitudvehiculo.solicitudvehiculo_id', '=', 'solicitudvehiculos.id')
             ->where('solicitudvehiculos_estado', $estado_solicitud)

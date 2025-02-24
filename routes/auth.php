@@ -166,6 +166,9 @@ Route::middleware('auth')->group(function () {
     Route::post('guardarsolicitudcombustible', [SolicitudcombustibleController::class, 'store'])
         ->name('solicitudcombustible.store');
 
+    Route::get('mostrarsolicitudcombustible/{id?}', [SolicitudcombustibleController::class, 'show'])
+        ->name('solicitudcombustible.show');
+
     Route::get('solicitarmantenimiento/policia/create', [SolicitudmantenimientoController::class, 'create'])
         ->name('solicitudmantenimiento.policia.create');
 

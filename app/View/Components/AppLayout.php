@@ -35,15 +35,26 @@ class AppLayout extends Component
                 $responseProcesando = Http::get(url("/api/totalsolicitudes-vehiculo/policia/{$this->userId}/Procesando"));
                 $dataProcesando = $responseProcesando->successful() ? $responseProcesando->json() : ['numero_solicitudes' => 0];
 
-                $this->menuItems = $this->generateMenuItems($rol, $dataPendientes['numero_solicitudes'] ?? 0, $dataAprobadas['numero_solicitudes'] ?? 0, $dataProcesando['numero_solicitudes'] ?? 0);
+                // New API call for combustible requests
+
+                $responseCombustiblePendientes = Http::get(url("/api/solicitudcombustible/conteo/{$this->userId}?estado=pendiente"));
+                $dataCombustiblePendiente = $responseCombustiblePendientes->successful() ? $responseCombustiblePendientes->json() : ['cantidad' => 0];
+
+                $this->menuItems = $this->generateMenuItems(
+                    $rol,
+                    $dataPendientes['numero_solicitudes'] ?? 0,
+                    $dataAprobadas['numero_solicitudes'] ?? 0,
+                    $dataProcesando['numero_solicitudes'] ?? 0,
+                    $dataCombustiblePendiente['cantidad'] ?? 0,
+                );
             }
         }
         return $this->menuItems;
     }
 
-    private function generateMenuItems(string $rol, int $solicitudPendiente, int $solicitudAprobada, int $solicitudProcesando): array
+    private function generateMenuItems(string $rol, int $solicitudPendiente, int $solicitudAprobada, int $solicitudProcesando, int $combustiblePendiente): array
     {
-        //var_dump($solicitudProcesando);
+        //var_dump($combustiblePendiente);
         return match (true) {
             $rol == "administrador" => [
                 [
@@ -85,7 +96,6 @@ class AppLayout extends Component
                     'name' => 'Solicitudes',
                     'items' => [
                         'Entrega Recepción vehículo' => "mostrarentregarecepcionvehiculo.estado, ['estadoAsignacion'=>'Aprobada/espera', 'id'=>$this->userId]",
-                        //'Entrega Recepción vehículo' => 'mostrarentregarecepcionvehiculo.policia.aprobada',
                     ],
                     'route' => 'solicitud',
                 ],
@@ -99,7 +109,7 @@ class AppLayout extends Component
                     'route' => 'solicitud',
                 ],
             ],
-            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 && $solicitudProcesando > 0 => [
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 && $solicitudProcesando > 0 && $combustiblePendiente == 0 => [
                 [
                     'name' => 'Solicitudes',
                     'items' => [
@@ -119,6 +129,37 @@ class AppLayout extends Component
                     'name' => 'Solicitudes Combustible',
                     'items' => [
                         'Solicitar combustible' => 'solicitudcombustible.policia.create',
+                    ],
+                    'route' => 'solicitudcombustible',
+                ],
+                [
+                    'name' => 'Solicitudes Mantenimiento',
+                    'items' => [
+                        'Solicitar mantenimiento' => 'solicitudmantenimiento.policia.create',
+                    ],
+                    'route' => 'solicitudmantenimiento',
+                ],
+            ],
+            $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada == 0 && $solicitudProcesando > 0 && $combustiblePendiente > 0 => [
+                [
+                    'name' => 'Solicitudes',
+                    'items' => [
+                        'Solicitud en proceso' => "mostrarentregarecepcionvehiculo.estado, ['estadoAsignacion'=>'Procesando/entregado', 'id'=>$this->userId]",
+                    ],
+                    'route' => 'solicitud',
+                ],
+                [
+                    'name' => 'Partes Novedades',
+                    'items' => [
+                        'Ingrear Parte de Novedades' => 'partenovedades.policia.create',
+                        'Listar Partes Novedades' => 'mostrartodopartesnovedades.index',
+                    ],
+                    'route' => 'partenovedades',
+                ],
+                [
+                    'name' => 'Solicitudes Combustible',
+                    'items' => [
+                        'Orden de combustible' => "solicitudcombustible.show, ['userId'=>$this->userId, 'estado'=>'pendiente']",
                     ],
                     'route' => 'solicitudcombustible',
                 ],

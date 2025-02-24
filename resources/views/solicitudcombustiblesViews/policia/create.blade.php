@@ -83,6 +83,8 @@
             </div>
             <form method="POST" action="{{ route('solicitudcombustible.store') }}">
                 @csrf
+                <input type="hidden" id="personalpolicia_id" name="personalpolicia_id"
+                    value="{{ $solicitante['id_solicitante'] }}"></input>
 
                 <input type="hidden" id="solicitudcombustible_tipo" name="solicitudcombustible_tipo"
                     value="{{ $vehiculo['tipoCombustible'] }}"></input>

@@ -11,6 +11,7 @@ class Solicitudcombustible extends Model
 
     protected $fillable = [
         'asignacionvehiculo_id',
+        'personalpolicia_id',
         'solicitudcombustible_cantidad',
         'solicitudcombustible_motivo',
         'solicitudcombustible_estado',
