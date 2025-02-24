@@ -156,7 +156,7 @@ $(document).ready(function () {
     $(document).on('click', '.show-button', function () {
         let id = $(this).data('id');
         // Puedes redirigir o usar AJAX para mostrar la información
-        const url = `/vehiculos/${id}`; // Ajusta la URL según tu necesidad
+        const url = `/vehiculo/show/${id}`; // Ajusta la URL según tu necesidad
         window.location.href = url;
     });
 

@@ -111,6 +111,9 @@ Route::middleware('auth')->group(function () {
     Route::get('vehiculos/create', [VehiculosController::class, 'create'])
         ->name('vehiculos.create');
 
+    Route::get('vehiculo/show/{userId?}', [VehiculosController::class, 'show'])
+        ->name('vehiculo.show');
+
     Route::get('mostrartodovehiculos', function () {
         return view('vehiculosViews.index');
     })->name('mostrartodovehiculos');

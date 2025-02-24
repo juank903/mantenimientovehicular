@@ -19,9 +19,12 @@ class VehiculosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function show($userId = null)
     {
         //
+        $userId = $userId ?? auth()->id();
+        $dataVehiculos = Vehiculo::find($userId);
+        return view('vehiculosViews.show', compact('dataVehiculos'));
     }
     /**
      * Show the form for creating a new resource.

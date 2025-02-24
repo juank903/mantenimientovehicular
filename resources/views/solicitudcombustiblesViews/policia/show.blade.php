@@ -61,6 +61,12 @@
                     <span class=" text-xs text-gray-600">Placa: </span>{{ $datos->placa }}
                 </dd>
             </div>
+            <div class=" flex justify-end no-print">
+                <button onclick="window.print()"
+                    class="rounded-md items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                    Imprimir
+                </button>
+            </div>
 
         </dl>
     </div>

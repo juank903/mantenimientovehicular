@@ -115,7 +115,7 @@
                         Reporte Novedades
                     </dt>
                     <dd class=" mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <textarea id="partenovedades_detalle" name="partenovedades_detalle" class="w-full"></textarea>
+                        <textarea id="partenovedades_detalle" name="partenovedades_detalle" class="w-full" required></textarea>
                     </dd>
                 </div>
                 <div class="flex gap-10 justify-end">
