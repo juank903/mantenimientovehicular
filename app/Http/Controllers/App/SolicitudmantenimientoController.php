@@ -51,7 +51,7 @@ class SolicitudmantenimientoController extends Controller
                 'asignacion' => $asignacion,
                 'solicitante' => $solicitante,
                 'vehiculo' => $vehiculo,
-                'novedadArray' => ['reporte', 'accidente', 'siniestro', 'anulación'],
+                'mantenimientoArray' => ['preventivo', 'correctivo'],
                 'combustibleArray' => ['cuarto', 'medio', 'tres cuartos', 'full'],
             ]);
         }

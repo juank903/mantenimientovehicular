@@ -116,15 +116,6 @@ $(document).ready(function () {
         lengthMenu: [5, 10, 25, 50, 100]
     });
 
-    /*     $('#nextPageButton').on('click', function () {
-            let info = table.page.info();
-            if (info.page < info.pages - 1) {
-                table.page(info.page + 1).draw(false);
-            } else {
-                console.log("Ya estás en la última página.");
-            }
-        }); */
-
     $(document).on('click', '.show-button', function () {
         let id = $(this).data('id');
         // Puedes redirigir o usar AJAX para mostrar la información

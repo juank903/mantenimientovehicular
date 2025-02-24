@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ApiAsignacionvehiculoController;
 use App\Http\Controllers\Api\ApiCircuitoController;
+use App\Http\Controllers\Api\ApiPartenovedadController;
 use App\Http\Controllers\Api\ApiPersonalpoliciaController;
 use App\Http\Controllers\Api\ApiProvinciaController;
 use App\Http\Controllers\Api\ApiSolicitudvehiculoController;
@@ -51,6 +52,7 @@ Route::get('/personal/policia/{id}/detalles', [ApiPersonalpoliciaController::cla
 Route::get('/subcircuito/{id}/provincia', [ApiSubcircuitoController::class, 'show']);
 Route::resource('/personal', ApiPersonalpoliciaController::class);
 Route::resource('/user', ApiUserController::class);
+Route::resource('/partenovedades', ApiPartenovedadController::class);
 
 /*Api Dependencias*/
 Route::get('/vehiculos/subcircuito/{id}/tipo/{tipo}', [ApiVehiculoController::class, 'getVehiculoParqueaderoSubcircuito']);

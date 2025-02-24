@@ -115,6 +115,12 @@ Route::middleware('auth')->group(function () {
         return view('vehiculosViews.index');
     })->name('mostrartodovehiculos');
 
+
+    /*Rutas Partes Novedades*/
+    Route::get('mostrartodopartesnovedades', function () {
+        return view('partenovedadesViews.policia.index');
+    })->name('mostrartodopartesnovedades.index');
+
     /*Rutas Mantenimientos*/
 
 
@@ -147,6 +153,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('partenovedades/policia/create', [PartenovedadesController::class, 'create'])
         ->name('partenovedades.policia.create');
+
+    Route::get('partenovedades/policia/show/{id?}', [PartenovedadesController::class, 'show'])
+        ->name('partenovedades.policia.show');
 
     Route::post('guardarpartenovedades', [PartenovedadesController::class, 'store'])
         ->name('partenovedades.store');

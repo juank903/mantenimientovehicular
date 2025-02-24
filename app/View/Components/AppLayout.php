@@ -111,6 +111,7 @@ class AppLayout extends Component
                     'name' => 'Partes Novedades',
                     'items' => [
                         'Ingrear Parte de Novedades' => 'partenovedades.policia.create',
+                        'Listar Partes Novedades' => 'mostrartodopartesnovedades.index',
                     ],
                     'route' => 'partenovedades',
                 ],

@@ -20,6 +20,7 @@ export default defineConfig({
                 'resources/js/showEntregarVehiculoAuxiliar.js',
                 'resources/js/editProfile.js',
                 'resources/js/createSolicitudCombustible.js',
+                'resources/js/tablePartesNovedades.js',
             ],
             refresh: true,
         }),

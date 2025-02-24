@@ -26,7 +26,7 @@ class Partenovedad extends Model
     // Relaciones (si es necesario)
     public function personalpolicia()
     {
-        return $this->belongsTo(PersonalPolicia::class, 'personalpolicia_id');
+        return $this->belongsTo(Personalpolicia::class, 'personalpolicia_id');
     }
 
     public function vehiculo()
@@ -36,6 +36,6 @@ class Partenovedad extends Model
 
     public function asignacionVehiculo()
     {
-        return $this->belongsTo(AsignacionVehiculo::class, 'asignacionvehiculo_id');
+        return $this->belongsTo(Asignacionvehiculo::class, 'asignacionvehiculo_id');
     }
 }

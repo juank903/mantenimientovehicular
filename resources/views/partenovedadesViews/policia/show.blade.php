@@ -4,7 +4,7 @@
 
     <div class=" px-4 py-1 sm:px-6">
         <h2 class=" text-xl leading-8 font-medium text-gray-900">
-            Solicitud de mantenimiento <br />
+            Parte de Novedades No {{ $asignacion_solicitudvehiculo['id'] }}<br />
         </h2>
         <p class=" mt-1 max-w-2xl text-sm text-gray-500">
 
@@ -89,10 +89,10 @@
 
                 <div class=" py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class=" text-sm font-medium text-gray-500">
-                        Tipo Mantenimiento
+                        Tipo Novedad
                     </dt>
                     <dd class=" mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        <x-select id="partenovedades_tipo" name="partenovedades_tipo" :items="$mantenimientoArray"
+                        <x-select id="partenovedades_tipo" name="partenovedades_tipo" :items="$novedadArray"
                             :indice="0" required />
                     </dd>
                 </div>
@@ -119,9 +119,9 @@
                     </dd>
                 </div>
                 <div class="flex gap-10 justify-end">
-                    <button type="submit" id="btnEntregarVehiculo"
-                        class="rounded-md items-center justify-center text-md px-3 py-2 bg-green-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
-                        Enviar Parte
+                    <button onclick="window.print()"
+                        class="rounded-md items-center justify-center text-md px-3 py-2 bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                        Imprimir
                     </button>
                 </div>
             </form>

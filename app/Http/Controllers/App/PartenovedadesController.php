@@ -22,6 +22,54 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class PartenovedadesController extends Controller
 {
     //
+    public function show(Request $request, $userId = null): View|RedirectResponse
+    {
+        $userId ??= auth()->id();
+        $user = Auth::user();
+
+        $response = Http::get(url("/api/mostrarasignaciones/Procesando/entregado/vehiculos/policia/{$userId}"));
+
+        // Manejo de errores en la respuesta de la API
+        if (!$response->successful()) {
+            $errorMessage = $response->status() . ' - ' . $response->reason();
+            return redirect()->route('dashboard')->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
+        }
+
+        $datosApi = $response->json(); // Utiliza json() para simplificar el decodificado
+
+        // Verifica si la respuesta de la API contiene datos
+        if (empty($datosApi)) {
+            return redirect()->route('dashboard')->with('error', 'No se encontraron datos.');
+        }
+
+        // Extrae el primer elemento del array (asumiendo que solo hay un resultado)
+        $datos = $datosApi[0];
+
+        $solicitante = $this->mapearDatosSolicitante($datos['solicitante']);
+        $vehiculo = $this->mapearDatosVehiculo($datos['vehiculo']);
+        $asignacion_solicitudvehiculo = $this->mapearDatosAsignacion_Solicitudvehiculo($datos);
+        $asignacion = $this->mapearDatosAsignacion($datos);
+
+        // Simplifica la lógica de roles con un array y un operador ternario
+        $vista = [
+            'policia' => 'partenovedadesViews.policia.show',
+        ];
+
+        $rol = $user->rol();
+
+        if (isset($vista[$rol])) {
+            return view($vista[$rol], [
+                'asignacion_solicitudvehiculo' => $asignacion_solicitudvehiculo,
+                'asignacion' => $asignacion,
+                'solicitante' => $solicitante,
+                'vehiculo' => $vehiculo,
+                'novedadArray' => ['reporte', 'accidente', 'siniestro', 'anulación'],
+                'combustibleArray' => ['cuarto', 'medio', 'tres cuartos', 'full'],
+            ]);
+        }
+
+        return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder.');
+    }
     public function create(Request $request, $userId = null): View|RedirectResponse
     {
         $userId ??= auth()->id();
@@ -52,7 +100,7 @@ class PartenovedadesController extends Controller
 
         // Simplifica la lógica de roles con un array y un operador ternario
         $vista = [
-            'policia' => 'partenovedadesViews.create',
+            'policia' => 'partenovedadesViews.policia.create',
         ];
 
         $rol = $user->rol();
