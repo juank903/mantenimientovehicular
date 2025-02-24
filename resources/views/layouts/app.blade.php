@@ -53,7 +53,8 @@
 
     @if (Route::is('mostrarsolicitudvehiculo.policia.pendiente') ||
             Route::is('mostrarentregarecepcionvehiculo.policia.aprobada') ||
-            Route::is('mostrarentregarecepcionvehiculo.estado'))
+            Route::is('mostrarentregarecepcionvehiculo.estado') ||
+            Route::is('solicitudcombustible.policia.create'))
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @endif
 

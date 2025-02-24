@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Solicitudcombustible;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -57,6 +60,49 @@ class SolicitudcombustibleController extends Controller
         }
 
         return redirect()->route('dashboard')->with('error', 'No tienes permisos para acceder.');
+    }
+    public function store(Request $request)
+    {
+        // Define las reglas de validación
+        //dd($request);
+        $rules = [
+            'asignacionvehiculo_id' => 'required|integer|exists:asignacionvehiculos,id',
+            'solicitudcombustible_motivo' => 'required|string|max:255',
+            'solicitudcombustible_km' => 'required|integer',
+            'solicitudcombustible_tipo' => 'required|string|max:255',
+        ];
+
+        // Ejecuta la validación
+        $validator = Validator::make($request->all(), $rules);
+
+        // Si la validación falla, regresa con los errores
+        if ($validator->fails()) {
+            session(['error' => 'validaciones']);
+            return redirect()->route('dashboard');
+            //->withErrors($validator)->withInput();
+        }
+
+
+        try {
+            DB::beginTransaction();
+
+            SolicitudCombustible::create([
+                'asignacionvehiculo_id' => $request->input('asignacionvehiculo_id'),
+                'solicitudcombustible_motivo' => $request->input('solicitudcombustible_motivo'),
+                'solicitudcombustible_km' => $request->input('solicitudcombustible_km'),
+                'solicitudcombustible_tipo' => $request->input('solicitudcombustible_tipo'),
+            ]);
+
+            DB::commit();
+            session(['mensaje' => 'Solicitud de combustible creada exitosamente.']);
+            return redirect()->route('dashboard')->with('success', 'Solicitud de combustible creada exitosamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session(['error' => 'Error al crear la solicitud de combustible: ' . $e->getMessage()]);
+            return redirect()->route('dashboard');
+            //->with('error', 'Error al crear la solicitud de combustible: ' . $e->getMessage());
+        }
     }
     private function mapearDatosSolicitante(array $datos): array
     {
@@ -125,6 +171,7 @@ class SolicitudcombustibleController extends Controller
             'color' => $datos['color_vehiculos'],
             'estado' => $datos['estado_vehiculos'],
             'kmActual' => $datos['kmactual_vehiculos'],
+            'tipoCombustible' => $datos['tipocombustible_vehiculos'],
             'combustibleActual' => $datos['combustibleactual_vehiculos'],
             'parqueadero' => $parqueaderosMapeados,
             'espacio' => $espaciosMapeados,
@@ -134,8 +181,8 @@ class SolicitudcombustibleController extends Controller
     private function mapearDatosAsignacion_Solicitudvehiculo(array $datos): array
     {
         return [
-            'fecha_elaboracion' => Carbon::parse($datos['created_at'])->toDateTimeString(),
-            'fecha_aprobacion' => Carbon::parse($datos['updated_at'])->toDateTimeString(),
+            'fecha_elaboracion' => Carbon::parse($datos['created_at'])->setTimezone('America/Guayaquil')->toDateTimeString(),
+            'fecha_aprobacion' => Carbon::parse($datos['updated_at'])->setTimezone('America/Guayaquil')->toDateTimeString(),
             'id' => $datos['id'],
             'detalle' => $datos['solicitudvehiculos_detalle'],
             'tipo' => $datos['solicitudvehiculos_tipo'],

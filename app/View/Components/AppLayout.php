@@ -120,7 +120,13 @@ class AppLayout extends Component
                         'Solicitar combustible' => 'solicitudcombustible.policia.create',
                     ],
                     'route' => 'solicitudcombustible',
-
+                ],
+                [
+                    'name' => 'Solicitudes Mantenimiento',
+                    'items' => [
+                        'Solicitar mantenimiento' => 'solicitudmantenimiento.policia.create',
+                    ],
+                    'route' => 'solicitudmantenimiento',
                 ],
             ],
             $rol == "auxiliar" => [

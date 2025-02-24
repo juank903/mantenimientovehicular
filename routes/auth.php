@@ -7,6 +7,7 @@ use App\Http\Controllers\App\DashboardPoliciaController;
 use App\Http\Controllers\App\EntregarecepcionController;
 use App\Http\Controllers\App\PartenovedadesController;
 use App\Http\Controllers\App\SolicitudcombustibleController;
+use App\Http\Controllers\App\SolicitudmantenimientoController;
 use App\Http\Controllers\App\SolicitudvehiculoController;
 use App\Http\Controllers\App\VehiculosController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -151,6 +153,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('solicitarcombustible/policia/create', [SolicitudcombustibleController::class, 'create'])
         ->name('solicitudcombustible.policia.create');
+
+    Route::post('guardarsolicitudcombustible', [SolicitudcombustibleController::class, 'store'])
+        ->name('solicitudcombustible.store');
+
+    Route::get('solicitarmantenimiento/policia/create', [SolicitudmantenimientoController::class, 'create'])
+        ->name('solicitudmantenimiento.policia.create');
 
     /*Solicitudes acciones solicitudes */
     Route::post('/personal/policia/revoke', [SolicitudvehiculoController::class, 'revoke'])

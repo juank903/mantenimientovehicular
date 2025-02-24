@@ -19,6 +19,7 @@ export default defineConfig({
                 'resources/js/modalAprobarSolicitudVehiculoAdministrador.js',
                 'resources/js/showEntregarVehiculoAuxiliar.js',
                 'resources/js/editProfile.js',
+                'resources/js/createSolicitudCombustible.js',
             ],
             refresh: true,
         }),

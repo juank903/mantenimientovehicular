@@ -4,27 +4,26 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class EntregarecepcionController extends Controller
+class SolicitudmantenimientoController extends Controller
 {
-    public function show(Request $request, string $estadoAsignacion, $userId = null): View|RedirectResponse
+    public function create(Request $request, $userId = null): View|RedirectResponse
     {
-
         $userId ??= auth()->id();
         $user = Auth::user();
 
-        $response = Http::get(url("/api/mostrarasignaciones/{$estadoAsignacion}/vehiculos/policia/{$userId}"));
+        $response = Http::get(url("/api/mostrarasignaciones/Procesando/entregado/vehiculos/policia/{$userId}"));
 
         if (!$response->successful()) {
             $errorMessage = $response->status() . ' - ' . $response->reason();
             session(['error' => "Error al obtener datos de la API: {$errorMessage}"]);
             return redirect()->route('dashboard');
-            //->with('error', 'Error al obtener datos de la API: ' . $errorMessage);
+            //->with('error', "Error al obtener datos de la API: {$errorMessage}");
         }
 
         $datosApi = $response->json();
@@ -40,18 +39,9 @@ class EntregarecepcionController extends Controller
         $asignacion_solicitudvehiculo = $this->mapearDatosAsignacion_Solicitudvehiculo($datos);
         $asignacion = $this->mapearDatosAsignacion($datos);
 
-        if ($estadoAsignacion == 'Aprobada/espera') {
-            $vista = [
-                'auxiliar' => 'entregarecepcionViews.auxiliar.entrega_show',
-                'policia' => 'solicitudesvehiculosViews.policia.aprobada_show',
-            ];
-        }
-        if ($estadoAsignacion == 'Procesando/entregado') {
-            $vista = [
-                'auxiliar' => 'entregarecepcionViews.auxiliar.recepcion_show',
-                'policia' => 'solicitudesvehiculosViews.policia.procesando_show',
-            ];
-        }
+        $vista = [
+            'policia' => 'solicitudesmantenimientoViews.policia.create',
+        ];
 
         $rol = $user->rol();
 
@@ -61,14 +51,15 @@ class EntregarecepcionController extends Controller
                 'asignacion' => $asignacion,
                 'solicitante' => $solicitante,
                 'vehiculo' => $vehiculo,
+                'novedadArray' => ['reporte', 'accidente', 'siniestro', 'anulación'],
+                'combustibleArray' => ['cuarto', 'medio', 'tres cuartos', 'full'],
             ]);
         }
-        session(['error' => 'No tienes permisos para acceder']);
+
+        session(['error' => 'No tienes permisos para acceder.']);
         return redirect()->route('dashboard');
         //->with('error', 'No tienes permisos para acceder.');
     }
-
-    // Funciones de mapeo de datos
     private function mapearDatosSolicitante(array $datos): array
     {
         $subcircuitosMapeados = [];
@@ -99,8 +90,8 @@ class EntregarecepcionController extends Controller
             'tipoSangre' => $datos['tiposangre_personal_policias'],
             'conductor' => $datos['conductor_personal_policias'],
             'rango' => $datos['rango_personal_policias'],
-            'rol' => $datos['rol_personal_policias'], // Añadido el rol
-            'genero' => $datos['personalpolicias_genero'], // Añadido el género
+            'rol' => $datos['rol_personal_policias'],
+            'genero' => $datos['personalpolicias_genero'],
             'subcircuitos' => $subcircuitosMapeados,
         ];
     }
@@ -123,7 +114,7 @@ class EntregarecepcionController extends Controller
                 'id_espacio' => $espacio['id'],
                 'nombre' => $espacio['espacioparqueaderos_nombre'],
                 'observacion' => $espacio['espacioparqueaderos_observacion'],
-                'estado' => $espacio['espacioparqueadero_estado'], // Añadido el estado del espacio
+                'estado' => $espacio['espacioparqueadero_estado'],
             ];
         }
 
@@ -147,12 +138,12 @@ class EntregarecepcionController extends Controller
         return [
             'fecha_elaboracion' => Carbon::parse($datos['created_at'])->setTimezone('America/Guayaquil')->toDateTimeString(),
             'fecha_aprobacion' => Carbon::parse($datos['updated_at'])->setTimezone('America/Guayaquil')->toDateTimeString(),
-            'id' => $datos['id'], // Añadido el ID de la solicitud
-            'detalle' => $datos['solicitudvehiculos_detalle'], // Añadido el detalle de la solicitud
-            'tipo' => $datos['solicitudvehiculos_tipo'], // Añadido el tipo de solicitud
-            'fecharequerimientodesde' => $datos['solicitudvehiculos_fecharequerimientodesde'], // Añadida la fecha de requerimiento desde
-            'fecharequerimientohasta' => $datos['solicitudvehiculos_fecharequerimientohasta'], // Añadida la fecha de requerimiento hasta
-            'estado' => $datos['solicitudvehiculos_estado'], // Añadido el estado de la solicitud
+            'id' => $datos['id'],
+            'detalle' => $datos['solicitudvehiculos_detalle'],
+            'tipo' => $datos['solicitudvehiculos_tipo'],
+            'fecharequerimientodesde' => $datos['solicitudvehiculos_fecharequerimientodesde'],
+            'fecharequerimientohasta' => $datos['solicitudvehiculos_fecharequerimientohasta'],
+            'estado' => $datos['solicitudvehiculos_estado'],
         ];
     }
 
@@ -163,5 +154,4 @@ class EntregarecepcionController extends Controller
             'estado' => $datos['asignacionvehiculos_estado'],
         ];
     }
-
 }
