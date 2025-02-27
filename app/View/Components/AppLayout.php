@@ -90,6 +90,13 @@ class AppLayout extends Component
                     ],
                     'route' => 'solicitud',
                 ],
+                [
+                    'name' => 'Registro Asistencia',
+                    'items' => [
+                        'Registrar Entrada Salida' => 'registroasistencia.create',
+                    ],
+                    'route' => 'Asistencia',
+                ],
             ],
             $rol == "policia" && $solicitudPendiente == 0 && $solicitudAprobada > 0 && $solicitudProcesando == 0 => [
                 [

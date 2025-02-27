@@ -195,7 +195,7 @@ class PersonalController extends Controller
             $codigo = General::generarCodigo($policia->id);
 
             // Actualizar el registro con el código generado
-            $policia->personalpolicia_codigo = $codigo; // Asegúrate de que este campo exista en tu tabla
+            $policia->personalpolicias_codigo = $codigo; // Asegúrate de que este campo exista en tu tabla
             $policia->save();
 
             // Obtener el subcircuito seleccionado

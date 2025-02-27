@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\AsistenciaController;
 use App\Http\Controllers\App\DashboardAdministradorController;
 use App\Http\Controllers\App\DashboardAuxiliarController;
 use App\Http\Controllers\App\DashboardGerenciaController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -120,6 +122,13 @@ Route::middleware('auth')->group(function () {
     Route::get('mostrartodovehiculos', function () {
         return view('vehiculosViews.index');
     })->name('mostrartodovehiculos');
+
+    /*Rutas Asistencia*/
+    Route::post('guardaregistroasistencia', [AsistenciaController::class, 'store'])
+        ->name('registroasistencia.store');
+
+    Route::get('registroasistencia/create', [AsistenciaController::class, 'create'])
+        ->name('registroasistencia.create');
 
 
     /*Rutas Partes Novedades*/
