@@ -146,7 +146,7 @@
                         class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer">
                     </label>
                 </div>
-                <div id="datosUsuario" class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="datosUsuario" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <p><strong>Nombre usuario: </strong>
                             {{ $personalpolicia->user->name }}</p>
@@ -154,6 +154,10 @@
                     <div>
                         <p><strong>Email: </strong>
                             {{ $personalpolicia->user->email }}</p>
+                    </div>
+                    <div>
+                        <p class="text-red-700"><strong>Codigo de usuario: </strong>
+                            {{ $personalpolicia->personalpolicia_codigo }}</p>
                     </div>
                 </div>
 

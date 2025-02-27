@@ -19,5 +19,19 @@ class General
         return $enum;
     }
 
+    public static function generarCodigo($numeroRegistro)
+    {
+        // Aseguramos que el número de registro sea un entero
+        $numeroRegistro = (int) $numeroRegistro;
+
+        // Formateamos el número de registro a tres cifras con ceros a la izquierda
+        $numeroFormateado = str_pad($numeroRegistro, 3, '0', STR_PAD_LEFT);
+
+        // Concatenamos "POL" con el número formateado
+        $codigoGenerado = 'POL' . $numeroFormateado;
+
+        return $codigoGenerado;
+    }
+
 
 }

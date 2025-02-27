@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\General;
 use App\Models\Personalpolicia;
 use App\Models\Subcircuitodependencia;
 use App\Models\User;
@@ -189,6 +190,13 @@ class PersonalController extends Controller
                 'rol_personal_policias' => $validated['rol'],
                 'personalpolicias_genero' => $validated['genero'],
             ]);
+
+            // Generar el código usando la librería
+            $codigo = General::generarCodigo($policia->id);
+
+            // Actualizar el registro con el código generado
+            $policia->personalpolicia_codigo = $codigo; // Asegúrate de que este campo exista en tu tabla
+            $policia->save();
 
             // Obtener el subcircuito seleccionado
             $subcircuito = Subcircuitodependencia::findOrFail($validated['subcircuito']);
