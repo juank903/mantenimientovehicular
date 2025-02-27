@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-navigation.botonregresar href="{{ route('dashboard') }}" />
-    <form id="registrationForm" method="POST" class="flex flex-col md:flex-row gap-4" action="{{ route('register') }}">
+    <form id="registrationForm" method="POST" class="flex flex-col md:flex-row gap-4"
+        action="{{ route('personalpolicia.store') }}">
         @csrf
         <div class="w-full md:w-1/2 p-4 ">
             <div class="flex gap-4">

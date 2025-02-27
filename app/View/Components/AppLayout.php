@@ -60,7 +60,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Personal',
                     'items' => [
-                        'Ingresar personal' => 'register',
+                        'Ingresar personal' => 'personalpolicia.create',
                         'Listar personal' => 'mostrartodopersonal',
                     ],
                     'route' => 'personal',
@@ -175,7 +175,7 @@ class AppLayout extends Component
                 [
                     'name' => 'Personal',
                     'items' => [
-                        'Ingresar personal' => 'register',
+                        'Ingresar personal' => 'personalpolicia.create',
                     ],
                     'route' => 'personal',
                 ],

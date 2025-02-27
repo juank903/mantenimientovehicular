@@ -59,10 +59,10 @@ class User extends Authenticatable
         return $this->personalpolicia ? $this->personalpolicia->rol_personal_policias : 'Rol no asignado'; // Cambia 'Rol no asignado' por lo que desees
     }
 
-    protected function getId(string $nombreusuario): int
+    /* protected function getId(string $nombreusuario): int
     {
         $id = self::where("name", $nombreusuario)->first()->id;
         return $id;
-    }
+    } */
 
 }

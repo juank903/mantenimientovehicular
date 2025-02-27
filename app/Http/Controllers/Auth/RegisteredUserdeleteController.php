@@ -19,12 +19,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
-class RegisteredUserController extends Controller
+class RegisteredUserdeleteController extends Controller
 {
     /**
      * Display the registration view.
      */
-    public function create(): View
+    /* public function create(): View
     {
         //valores para los select
         $rangosarray = [
@@ -61,9 +61,9 @@ class RegisteredUserController extends Controller
             'AB-'
         ];
         return view('personalViews.create', compact('rangosarray', 'rolesarray', 'conductorarray', 'tiposangrearray', 'generoarray'));
-    }
+    } */
 
-    public function store(Request $request): RedirectResponse
+    /* public function store(Request $request): RedirectResponse
     {
         DB::beginTransaction(); // Inicia la transacción
 
@@ -121,4 +121,5 @@ class RegisteredUserController extends Controller
             return redirect()->route('dashboard');
         }
     }
+ */
 }

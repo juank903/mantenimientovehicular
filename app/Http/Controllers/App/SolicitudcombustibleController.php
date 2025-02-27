@@ -98,7 +98,7 @@ class SolicitudcombustibleController extends Controller
             )
             ->first();
 
-        return view('solicitudcombustiblesViews.policia.show', compact('datos'));
+        return view('personalViews.create', compact('rangosarray', 'rolesarray', 'conductorarray', 'tiposangrearray', 'generoarray'));
     }
     public function store(Request $request)
     {

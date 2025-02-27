@@ -6,6 +6,7 @@ use App\Http\Controllers\App\DashboardGerenciaController;
 use App\Http\Controllers\App\DashboardPoliciaController;
 use App\Http\Controllers\App\EntregarecepcionController;
 use App\Http\Controllers\App\PartenovedadesController;
+use App\Http\Controllers\App\PersonalController;
 use App\Http\Controllers\App\SolicitudcombustibleController;
 use App\Http\Controllers\App\SolicitudmantenimientoController;
 use App\Http\Controllers\App\SolicitudvehiculoController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -84,10 +86,11 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     /* Personal */
-    Route::get('registrarpersonal', [RegisteredUserController::class, 'create'])
-        ->name('register');
+    Route::get('personalpolicia.create', [PersonalController::class, 'create'])
+        ->name('personalpolicia.create');
 
-    Route::post('registrarpersonal', [RegisteredUserController::class, 'store']);
+    Route::post('guardarpersonalpolicia', [PersonalController::class, 'store'])
+        ->name('personalpolicia.store');
 
     Route::get('/profile/edit/{user_id?}', [ProfileController::class, 'edit'])
         ->name('profile.edit');

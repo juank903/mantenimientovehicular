@@ -120,21 +120,4 @@
         </div>
     </div>
 
-    {{-- @push('scripts')
-        <script>
-            function openModal() {
-                console.log('open');
-                let modal = document.getElementById("confirmModal");
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
-            }
-
-            function closeModal() {
-                console.log('close');
-                let modal = document.getElementById("confirmModal");
-                modal.classList.remove("flex");
-                modal.classList.add("hidden");
-            }
-        </script>
-    @endpush --}}
 </x-app-layout>
