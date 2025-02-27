@@ -202,6 +202,13 @@ class AppLayout extends Component
                     ],
                     'route' => 'solicitud',
                 ],
+                [
+                    'name' => 'Informe Asistencia',
+                    'items' => [
+                        'Generar Informes' => 'asistencia.auxiliar.index',
+                    ],
+                    'route' => 'Asistencia',
+                ],
             ],
             default => [],
         };

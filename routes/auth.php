@@ -130,6 +130,11 @@ Route::middleware('auth')->group(function () {
     Route::get('registroasistencia/create', [AsistenciaController::class, 'create'])
         ->name('registroasistencia.create');
 
+    Route::get('mostrartodoasistencia', function () {
+        return view('asistenciaViews.auxiliar.index');
+    })->name('asistencia.auxiliar.index');
+
+
 
     /*Rutas Partes Novedades*/
     Route::get('mostrartodopartesnovedades', function () {

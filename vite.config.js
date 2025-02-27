@@ -21,6 +21,7 @@ export default defineConfig({
                 'resources/js/editProfile.js',
                 'resources/js/createSolicitudCombustible.js',
                 'resources/js/tablePartesNovedades.js',
+                'resources/js/tableAsistencia.js'
             ],
             refresh: true,
         }),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Models\Asistencia;
 use App\Models\Personalpolicia;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,18 @@ class AsistenciaController extends Controller
         $userId ??= auth()->id();
         $user = Auth::user();
 
-        return view('asistenciaViews.create', ['userId' => $userId]);
+        // Obtener la fecha actual sin la hora
+        $fechaActual = Carbon::today();
+
+        // Verificar si existe un registro de asistencia para el usuario y la fecha actual
+        $asistenciaExistente = Asistencia::where('personalpolicia_id', $userId)
+            ->whereDate('asistencias_ingreso', $fechaActual)
+            ->exists();
+
+        // Determinar el tipo de input basado en la existencia del registro
+        $tipoInput = $asistenciaExistente ? 'salida' : 'ingreso';
+
+        return view('asistenciaViews.create', ['userId' => $userId, 'tipoInput' => $tipoInput]);
     }
     public function store(Request $request)
     {
@@ -33,25 +45,30 @@ class AsistenciaController extends Controller
             $validator = Validator::make($request->all(), [
                 'personalpolicia_codigo' => 'required|exists:personalpolicias,personalpolicias_codigo',
                 'tipoInput' => 'required|in:ingreso,salida', // Añadimos la validación para tipoInput
-                'personapolicia_id' => 'required',
+                'personalpolicia_id' => 'required',
             ]);
 
             // Si la validación falla, lanzar ValidationException
             if ($validator->fails()) {
+                //dd($request);
                 throw new ValidationException($validator);
             }
 
             // Buscar el personal de policía por el código único
             $personalpolicia = Personalpolicia::where('personalpolicias_codigo', $request->personalpolicia_codigo)->first();
 
-
             // Validar que se encontró el personal de policía
             if (!$personalpolicia) {
                 throw new \Exception('No se encontró personal de policía con el código único proporcionado.');
             }
 
+            // Validar que el personalpolicia_id proporcionado coincide con el ID encontrado
+            if ($personalpolicia->id !== (int) $request->personalpolicia_id) {
+                throw new \Exception('El id del policia no coincide con el código proporcionado.');
+            }
+
             if ($request->tipoInput === 'ingreso') {
-                dd($request);
+                //dd($request);
                 // Crear la asistencia con la fecha de ingreso
                 Asistencia::create([
                     'personalpolicia_id' => $personalpolicia->id,

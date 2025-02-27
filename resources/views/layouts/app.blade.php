@@ -22,7 +22,8 @@
             Request::is('mostrartodasolicitudesvehiculos/pendientes') ||
             Route::is('mostrartodasolicitudesvehiculos.aprobadas') ||
             Route::is('mostrartodasolicitudesvehiculos.procesando') ||
-            Route::is('mostrartodopartesnovedades.index'))
+            Route::is('mostrartodopartesnovedades.index') ||
+            Route::is('asistencia.auxiliar.index'))
         <!-- DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
         <!-- DataTables Buttons CSS -->

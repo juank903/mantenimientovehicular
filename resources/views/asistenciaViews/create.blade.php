@@ -8,7 +8,7 @@
                 <div class="w-full">
                     <input type="hidden" id="personalpolicia_id" name="personalpolicia_id"
                         value="{{ $userId }}"></input>
-                    <input type="hidden" id= "tipoInput" name="tipoInput" value="ingreso"></input>
+                    <input type="hidden" id= "tipoInput" name="tipoInput" value="{{ $tipoInput }}"></input>
                     <x-inputs.input-label for="personalpolicia_codigo" :value="__('Ingrese Codigo único')" />
                     <x-inputs.text-input-capitalize id="personalpolicia_codigo" class="block mt-1 w-full" type="text"
                         name="personalpolicia_codigo" :value="old('personalpolicia_codigo')" required autofocus

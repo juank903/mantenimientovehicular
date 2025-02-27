@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiAsignacionvehiculoController;
+use App\Http\Controllers\Api\ApiAsistenciaController;
 use App\Http\Controllers\Api\ApiCircuitoController;
 use App\Http\Controllers\Api\ApiPartenovedadController;
 use App\Http\Controllers\Api\ApiPersonalpoliciaController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiVehiculoController;
 use App\Http\Controllers\App\ReportesController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -67,3 +69,7 @@ Route::get('/listarasignaciones/vehiculos/policia/{idSolicitante}', [ApiAsignaci
 //Route::get('/mostrarasignaciones/espera/vehiculos', [ApiAsignacionvehiculoController::class, 'getAsignacionesPorEstadoSolicitud']);
 //Route::get('/mostrarasignaciones/espera/vehiculos/policia/{idSolicitante}', [ApiAsignacionvehiculoController::class, 'getAsignacionesPorEstadoSolicitud']);
 Route::get('/mostrarasignaciones/{estado_solicitud}/{estado_asignacion}/vehiculos/policia/{idSolicitante?}', [ApiAsignacionvehiculoController::class, 'getAsignacionesPorEstadoSolicitud']);
+
+
+Route::get('/asistencias', [ApiAsistenciaController::class, 'index']);
+Route::get('/asistencias/{id}', [ApiAsistenciaController::class, 'show']);

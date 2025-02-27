@@ -58,4 +58,8 @@ class Personalpolicia extends Model
     {
         return $this->hasMany(Asignacionvehiculo::class, 'personalpoliciarecibe_id');
     }
+    public function asistencias()
+    {
+        return $this->hasMany(Asistencia::class, 'personalpolicial_id');
+    }
 }
